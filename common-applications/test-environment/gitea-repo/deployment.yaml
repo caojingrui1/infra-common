@@ -62,14 +62,9 @@ spec:
             port: 3000
           timeoutSeconds: 5
         volumeMounts:
-        - mountPath: /etc/gitea/
+        - mountPath: /var/lib/gitea/
           name: data-volume
-        - mountPath: /etc/gitea-obs/
-          name: obs
       volumes:
       - name: data-volume
         persistentVolumeClaim:
           claimName: gitea-repo-data-volume
-      - name: obs
-        persistentVolumeClaim:
-          claimName: pvc-obs-gitea-test
