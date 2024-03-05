@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: label
+  name: message-server
   namespace: merlin-icsl
 spec:
   selector:
@@ -18,9 +18,11 @@ spec:
         vault.hashicorp.com/role: 'merlin-icsl'
         vault.hashicorp.com/agent-inject-secret-label.yml: 'internal/data/icsl/merlin'
         vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/icsl/merlin'
+        vault.hashicorp.com/agent-inject-secret-redis.crt: 'internal/data/icsl/merlin'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-label.yml: "0400"
         vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
+        vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/agent-inject-template-label.yml: |  
@@ -30,6 +32,10 @@ spec:
         vault.hashicorp.com/agent-inject-template-kafka.crt: |  
           {{- with secret "internal/data/icsl/merlin" -}}  
           {{ .Data.data.kafkaCA }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-redis.crt: |  
+          {{- with secret "internal/data/icsl/merlin" -}}  
+          {{ .Data.data.redisCA }}
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
       labels:

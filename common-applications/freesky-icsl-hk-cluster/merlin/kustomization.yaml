@@ -6,7 +6,7 @@ resources:
 - merlin-website
 - merlin-docs
 - hook-delivery
-- label
+- message-server
 - git-access
 namespace: merlin-icsl
 apiVersion: kustomize.config.k8s.io/v1beta1
