@@ -14,4 +14,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-website-test
-  newTag: main-e2d8df-icsl
+  newTag: main-1eb20c-icsl
