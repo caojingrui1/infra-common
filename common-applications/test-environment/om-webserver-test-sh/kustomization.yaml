@@ -11,5 +11,3 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/om/om-webserver
   newName: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-test
   newTag: master-8bc09d
-- name: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-test
-  newTag: master-db7ac9
