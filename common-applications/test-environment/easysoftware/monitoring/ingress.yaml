@@ -10,7 +10,7 @@ spec:
   tls:
     - hosts:
         - easysoftware-monitoring.test.osinfra.cn
-      secretName: test-osinfra-cn-tls
+      secretName: website-tls
   rules:
   - host: easysoftware-monitoring.test.osinfra.cn
     http:
