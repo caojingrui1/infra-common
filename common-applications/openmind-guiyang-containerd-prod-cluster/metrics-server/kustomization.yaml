@@ -1,0 +1,10 @@
+resources:
+- deployment.yaml
+commonAnnotations:
+  kubernetes.ops.cluster: openmind-guiyang-containerd-prod-cluster
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: ""
+  kubernetes.ops.owner: liuyang
+  kubernetes.ops.region: guiyang
+namespace: kube-system
+
