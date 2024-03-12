@@ -11,4 +11,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/modelfoundry-operator
-  newTag: main-c1b27c
+  newTag: main-00f8a7
