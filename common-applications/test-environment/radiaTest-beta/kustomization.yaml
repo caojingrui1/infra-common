@@ -2,6 +2,7 @@ resources:
 - namespace.yaml
 - pvc.yaml
 - secret.yaml
+- sa.yaml
 - website
 - casefile-resolver
 - celerybeat
