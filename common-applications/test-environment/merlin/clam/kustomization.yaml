@@ -12,3 +12,6 @@ resources:
 - deployment.yaml
 - statefulset.yaml
 - pvc.yaml
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-clam-go-test
+  newTag: main-dadc19
