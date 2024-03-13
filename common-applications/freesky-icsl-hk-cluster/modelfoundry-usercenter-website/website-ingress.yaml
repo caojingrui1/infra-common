@@ -4,6 +4,9 @@ kind: Ingress
 metadata:
   name: website-ingress
   namespace: modelfoundry-usercenter-website-icsl
+  annotations:
+    nginx.ingress.kubernetes.io/limit-connections: 100
+    nginx.ingress.kubernetes.io/limit-rps: 100
 spec:
   tls:
   - hosts:
