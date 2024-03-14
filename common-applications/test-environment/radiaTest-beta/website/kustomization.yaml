@@ -2,7 +2,6 @@ resources:
 - ingress.yaml
 - service.yaml
 - deployment.yaml
-- configmap.yaml
 - autoscaler.yaml
 commonAnnotations:
   kubernetes.ops.cluster: test
