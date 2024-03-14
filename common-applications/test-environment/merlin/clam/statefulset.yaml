@@ -8,7 +8,7 @@ spec:
     matchLabels:
       app: clam-go 
   serviceName: "nginx-clam-go"
-  replicas: 20 
+  replicas: 1 
   minReadySeconds: 10 
   template:
     metadata:
