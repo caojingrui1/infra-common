@@ -8,7 +8,6 @@ resources:
 - celerybeat
 - database-updator
 - gunicorn
-- issuerate-updator
 - openqa-reader
 - periodic-worker
 - root-resolver
