@@ -7,7 +7,3 @@ resources:
 namespace: om-webserver-test-sh
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-images:
-- name: swr.cn-north-4.myhuaweicloud.com/om/om-webserver
-  newName: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-test
-  newTag: master-8bc09d
