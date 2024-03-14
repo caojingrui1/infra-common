@@ -14,4 +14,4 @@ resources:
 - ingress.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-monitoring-test
-  newTag: master-5643e6
+  newTag: master-e4e10e
