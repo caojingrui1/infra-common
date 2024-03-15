@@ -245,7 +245,7 @@ spec:
       from:
         - podSelector:
             matchLabels:
-              app: messageserver
+              app: label
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
