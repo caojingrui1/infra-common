@@ -80,3 +80,10 @@ spec:
       - name: periodic-worker-share
         persistentVolumeClaim:
           claimName: radiatest-tmp-share-volume
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token
