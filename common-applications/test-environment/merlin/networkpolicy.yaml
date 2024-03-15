@@ -249,7 +249,26 @@ spec:
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
-
+---
+kind: NetworkPolicy
+metadata:
+  name: merlin-access-policy-03
+  namespace: merlin
+spec:
+  podSelector:
+    matchLabels:
+      app: git-access
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: clam-go
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
 
 
 
