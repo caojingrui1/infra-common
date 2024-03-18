@@ -15,6 +15,7 @@ spec:
       annotations:
         vault.hashicorp.com/agent-inject: "true"
         vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/tls-skip-verify: "true"
         vault.hashicorp.com/role: openeuler-devops
         vault.hashicorp.com/agent-run-as-user: "998"
         vault.hashicorp.com/agent-run-as-group: "998"
