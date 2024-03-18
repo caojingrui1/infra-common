@@ -10,10 +10,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - modelfoundry-usercenter-icsl.test.osinfra.cn
+    - modelfoundry-usercenter-icsl.modelfoundry-icsl.test.osinfra.cn
     secretName: website-tls
   rules:
-  - host: modelfoundry-usercenter-icsl.test.osinfra.cn
+  - host: modelfoundry-usercenter-icsl.modelfoundry-icsl.test.osinfra.cn
     http:
       paths:
       - path: /

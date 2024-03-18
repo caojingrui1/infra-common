@@ -41,6 +41,7 @@ spec:
           {{- with secret "internal/data/infra-test/easysoftware" -}}  
           {{ .Data.data.alembicConf }}
           {{- end }}
+        vault.hashicorp.com/tls-skip-verify: "true"
       labels:
         app: easysoftware-monitoring
     spec:
