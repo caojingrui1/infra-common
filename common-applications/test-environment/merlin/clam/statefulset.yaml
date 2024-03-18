@@ -14,6 +14,7 @@ spec:
     metadata:
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/tls-skip-verify: "true"
         vault.hashicorp.com/role: 'merlin'
         vault.hashicorp.com/agent-inject-secret-compose-config.yml: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin'
@@ -29,6 +30,12 @@ spec:
         vault.hashicorp.com/agent-inject-template-kafka.crt: |  
           {{- with secret "internal/data/infra-test/merlin" -}}  
           {{ .Data.data.kafkaCA }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-clamd.conf: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-perms-clamd.conf: "0400"
+        vault.hashicorp.com/agent-inject-template-clamd.conf: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.clamdConf }}
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
       labels:
