@@ -16,4 +16,4 @@ resources:
 - secret.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/modelfoundry-usercenter-website
-  newTag: test-8010e5-test
+  newTag: test-95ce0d-test
