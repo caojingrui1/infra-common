@@ -46,7 +46,6 @@ spec:
           {{- with secret "internal/data/infra-test/easysoftware" -}}
           {{ .Data.data.dhparamPem }}
           {{- end }}
-        vault.hashicorp.com/tls-skip-verify: "true"
       labels:
         app: website
     spec:
