@@ -5,7 +5,7 @@ resources:
 - autoscaler.yaml
 commonAnnotations:
   kubernetes.ops.cluster: test
-  kubernetes.ops.email: 15710801006@163.com
+  kubernetes.ops.email: ""
   kubernetes.ops.os.base: openeuler
   kubernetes.ops.owner: wangdi
   kubernetes.ops.region: hk
