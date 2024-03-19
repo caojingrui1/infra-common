@@ -15,4 +15,4 @@ resources:
 - service.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/ccs-server-test
-  newTag: certtype_br-866545
+  newTag: certtype_br-6e5c83
