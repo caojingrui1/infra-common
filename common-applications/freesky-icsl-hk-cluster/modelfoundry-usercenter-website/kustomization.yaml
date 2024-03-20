@@ -15,4 +15,4 @@ resources:
 - secret.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/modelfoundry-usercenter-website
-  newTag: test-5ee318-icsl
+  newTag: test-f38282-icsl
