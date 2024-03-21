@@ -4,14 +4,13 @@ commonAnnotations:
   kubernetes.ops.email: ""
   kubernetes.ops.os.base: openeuler
   kubernetes.ops.owner: wangweifeng
-  kubernetes.ops.region: shanghai
+  kubernetes.ops.region: hk
 kind: Kustomization
-namespace: easysoftware
 resources:
 - service.yaml
 - deployment.yaml
 - autoscaler.yaml
 - ingress.yaml
-images:
-- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-monitoring-test
-  newTag: master-cebaf8
+- sa.yaml
+- secret.yaml
+- namespace.yaml

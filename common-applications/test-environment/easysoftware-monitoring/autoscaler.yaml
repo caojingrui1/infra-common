@@ -2,7 +2,7 @@ apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: easysoftware-monitoring-deployment-autoscaler
-  namespace: easysoftware
+  namespace: easysoftware-monitoring
 spec:
   scaleTargetRef:
     name: easysoftware-monitoring-deployment

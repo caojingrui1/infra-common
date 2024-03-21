@@ -5,7 +5,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
   name: easysoftware-monitoring-ingress
-  namespace: easysoftware
+  namespace: easysoftware-monitoring
 spec:
   tls:
     - hosts:

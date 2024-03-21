@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: easysoftware-monitoring-deployment
-  namespace: easysoftware
+  namespace: easysoftware-monitoring
 spec:
   selector:
     matchLabels:
@@ -15,36 +15,35 @@ spec:
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/agent-pre-populate-only: "true"
-        vault.hashicorp.com/tls-skip-verify: "true"
-        vault.hashicorp.com/role: 'easysoftware'
+        vault.hashicorp.com/role: 'easysoftware-monitoring'
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/agent-inject-containers: 'anitya'
         vault.hashicorp.com/secret-volume-path-config.toml: "/etc/fedora-messaging"
-        vault.hashicorp.com/agent-inject-secret-config.toml: 'internal/data/infra-test/easysoftware'
+        vault.hashicorp.com/agent-inject-secret-config.toml: 'internal/data/infra-test/easysoftware-monitoring'
         vault.hashicorp.com/agent-inject-perms-config.toml: "0400"
         vault.hashicorp.com/agent-inject-template-config.toml: |  
-          {{- with secret "internal/data/infra-test/easysoftware" -}}  
+          {{- with secret "internal/data/infra-test/easysoftware-monitoring" -}}  
           {{ .Data.data.pgConf }}
           {{- end }}
         vault.hashicorp.com/secret-volume-path-anitya.toml: "/etc/anitya"
-        vault.hashicorp.com/agent-inject-secret-anitya.toml: 'internal/data/infra-test/easysoftware'
+        vault.hashicorp.com/agent-inject-secret-anitya.toml: 'internal/data/infra-test/easysoftware-monitoring'
         vault.hashicorp.com/agent-inject-perms-anitya.toml: "0400"
         vault.hashicorp.com/agent-inject-template-anitya.toml: |  
-          {{- with secret "internal/data/infra-test/easysoftware" -}}  
+          {{- with secret "internal/data/infra-test/easysoftware-monitoring" -}}  
           {{ .Data.data.anityaConf }}
           {{- end }}
         vault.hashicorp.com/secret-volume-path-alembic.ini: "/etc/alembic"
-        vault.hashicorp.com/agent-inject-secret-alembic.ini: 'internal/data/infra-test/easysoftware'
+        vault.hashicorp.com/agent-inject-secret-alembic.ini: 'internal/data/infra-test/easysoftware-monitoring'
         vault.hashicorp.com/agent-inject-perms-alembic.ini: "0400"
         vault.hashicorp.com/agent-inject-template-alembic.ini: |  
-          {{- with secret "internal/data/infra-test/easysoftware" -}}  
+          {{- with secret "internal/data/infra-test/easysoftware-monitoring" -}}  
           {{ .Data.data.alembicConf }}
           {{- end }}
       labels:
         app: easysoftware-monitoring
     spec:
-      serviceAccount: easysoftware
+      serviceAccount: easysoftware-monitoring
       imagePullSecrets:
       - name: huawei-swr-image-pull-secret
       containers:
@@ -91,7 +90,7 @@ spec:
         - name: FLASK_APP
           value: anitya.wsgi
         - name: START_COMMAND
-          value: python3 runserver.py
+          value: flask run -h 0.0.0.0
         - name: BEFORE_COMMAND
           value: python3 updatedb.py 
         - name: ALEMBIC_CONFIG

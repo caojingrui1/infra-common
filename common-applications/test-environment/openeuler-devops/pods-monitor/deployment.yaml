@@ -68,6 +68,11 @@ spec:
           value: "/etc/ods/openeuler-devops.conf"
         - name: KUBE_NAMESPACE
           value: "openeuler-devops"
+        - name: LOG_ROOT_DIR
+          value: "/srv/log"
+        volumeMounts:
+        - mountPath: /srv/log
+          name: pods-monitor-data-volume
         resources:
           limits:
             cpu: 500m
@@ -75,3 +80,7 @@ spec:
           requests:
             cpu: 500m
             memory: 500Mi
+      volumes:        
+        - name: pods-monitor-data-volume
+          persistentVolumeClaim:
+            claimName: pods-monitor-data-volume
