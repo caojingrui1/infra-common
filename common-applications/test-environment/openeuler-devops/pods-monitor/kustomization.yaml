@@ -7,7 +7,7 @@ commonAnnotations:
   kubernetes.ops.region: shanghai
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-devops/pods_monitor
-  newTag: master-40ad51
+  newTag: master-bd9144
 kind: Kustomization
 namespace: openeuler-devops
 resources:
