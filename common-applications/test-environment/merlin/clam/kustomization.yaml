@@ -16,4 +16,4 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-clam-go-test
   newTag: main-f39843
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-local-clam-db-test
-  newTag: main-1d58cd
+  newTag: main-684d55
