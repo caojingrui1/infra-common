@@ -14,3 +14,6 @@ resources:
 - sa.yaml
 - secret.yaml
 - namespace.yaml
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-monitoring-test
+  newTag: master-fa0131
