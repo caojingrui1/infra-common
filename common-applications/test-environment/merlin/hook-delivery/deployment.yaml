@@ -96,6 +96,9 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 5000
+          capabilities:
+            drop:
+              - ALL
       volumes:
       - name: token-vol
         projected:

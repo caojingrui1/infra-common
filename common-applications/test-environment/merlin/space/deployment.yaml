@@ -103,6 +103,9 @@ spec:
         #   periodSeconds: 30
         securityContext:
           privileged: true
+          capabilities:
+            drop:
+              - ALL
         resources:
           limits:
             cpu: "8"
@@ -160,6 +163,9 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1000
+          capabilities:
+            drop:
+              - ALL
       volumes:
       - name: buildkitd
         emptyDir: {}

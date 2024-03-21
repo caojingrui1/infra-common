@@ -32,7 +32,12 @@ spec:
             memory: 4Gi
         volumeMounts:
           - name: data-volume
-            mountPath: /home/openmind/clamdb      
+            mountPath: /home/openmind/clamdb
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
       volumes:
       - name: token-vol
         projected:
