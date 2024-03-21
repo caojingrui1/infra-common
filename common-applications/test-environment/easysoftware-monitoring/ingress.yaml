@@ -1,5 +1,4 @@
----
-apiVersion: networking.k8s.io/v1
+apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
@@ -7,19 +6,16 @@ metadata:
   name: easysoftware-monitoring-ingress
   namespace: easysoftware-monitoring
 spec:
-  tls:
-    - hosts:
-        - easysoftware-monitoring.test.osinfra.cn
-      secretName: website-tls
   rules:
   - host: easysoftware-monitoring.test.osinfra.cn
     http:
       paths:
-      - path: /
+      - backend:
+          serviceName: easysoftware-monitoring-service
+          servicePort: 5000
+        path: /
         pathType: Prefix
-        backend:
-          service:
-            name: easysoftware-monitoring-service
-            port:
-              number: 5000
-  ingressClassName: nginx
+  tls:
+  - hosts: 
+    - easysoftware-monitoring.test.osinfra.cn
+    secretName: website-tls
