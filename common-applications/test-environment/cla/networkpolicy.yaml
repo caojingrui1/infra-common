@@ -1,0 +1,46 @@
+---
+kind: NetworkPolicy
+metadata:
+  name: cla-policy-01
+  namespace: cla
+spec:
+  podSelector:
+    matchLabels:
+      component: cla-frontend
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: ingress-nginx
+          namespaceSelector:
+            matchLabels:
+              project: ingress-nginx
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+---
+kind: NetworkPolicy
+metadata:
+  name: cla-policy-02
+  namespace: cla
+spec:
+  podSelector:
+    matchLabels:
+      component: cla-backend
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: ingress-nginx
+          namespaceSelector:
+            matchLabels:
+              project: ingress-nginx
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
