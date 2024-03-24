@@ -7,7 +7,7 @@ commonAnnotations:
   kubernetes.ops.region: shanghai
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-git-access-test
-  newTag: yw_fix_bug_virus-181137
+  newTag: yw_fix_bug_virus-1e3ecc
 kind: Kustomization
 namespace: merlin
 resources:
