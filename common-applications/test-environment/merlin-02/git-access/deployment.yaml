@@ -49,6 +49,12 @@ spec:
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.kafkaCA }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-secret-pqsql.crt: 'internal/data/infra-test/merlin-sh'
+        vault.hashicorp.com/agent-inject-perms-pqsql.crt: "0400"
+        vault.hashicorp.com/agent-inject-template-pqsql.crt: |  
+          {{- with secret "internal/data/infra-test/merlin-sh" -}}  
+          {{ .Data.data.pqsqlCA }}
+          {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
       labels:
