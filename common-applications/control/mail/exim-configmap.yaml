@@ -356,6 +356,9 @@ data:
         authenticated = *
         control = submission/sender_retain
         control = dkim_disable_verify
+        condition = ${if match_ip{$sender_host_address}{172.20.0.0/16 : 127.0.0.1 : ::::1 : 192.168.1.0/24}}
+        deny
+            message = Your IP address $sender_host_address is not allowed to send mail.
 
       require message	= nice hosts say HELO first
               condition	= ${if def:sender_helo_name}
