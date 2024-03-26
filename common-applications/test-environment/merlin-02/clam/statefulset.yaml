@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: clam-go
+  namespace: merlin-02
+spec:
+  selector:
+    matchLabels:
+      app: clam-go 
+  serviceName: "nginx-clam-go"
+  replicas: 1 
+  minReadySeconds: 10 
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/role: 'merlin-sh'
+        vault.hashicorp.com/agent-inject-secret-compose-config.yml: 'internal/data/infra-test/merlin-sh'
+        vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin-sh'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/agent-inject-perms-compose-config.yml: "0400"
+        vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
+        vault.hashicorp.com/agent-run-as-user: "996"
+        vault.hashicorp.com/agent-run-as-group: "993"
+        vault.hashicorp.com/agent-inject-template-compose-config.yml: |  
+          {{- with secret "internal/data/infra-test/merlin-sh" -}}  
+          {{ .Data.data.clamConf }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-kafka.crt: |  
+          {{- with secret "internal/data/infra-test/merlin-sh" -}}  
+          {{ .Data.data.kafkaCA }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-clamd.conf: 'internal/data/infra-test/merlin-sh'
+        vault.hashicorp.com/agent-inject-perms-clamd.conf: "0400"
+        vault.hashicorp.com/agent-inject-template-clamd.conf: |  
+          {{- with secret "internal/data/infra-test/merlin-sh" -}}  
+          {{ .Data.data.clamdConf }}
+          {{- end }}
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+      labels:
+        app: clam-go
+    spec:
+      terminationGracePeriodSeconds: 10
+      serviceAccount: merlin
+      securityContext:
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      containers:
+      - name: clam-go
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-clam-go-test:main-5b8e43  
+        args:
+        - --config-file=/vault/secrets/compose-config.yml 
+        resources:
+          limits:
+            cpu: "2"
+            memory: 8Gi
+          requests:
+            cpu: "1"
+            memory: 4Gi  
+        volumeMounts:
+        - name: clamscan-model
+          mountPath: /tmp/clam_scan_tmp
+        - name: data-volume
+          mountPath: /data/clamdata
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: clam-data-volume
+        - name: token-vol
+          projected:
+            sources:
+            - serviceAccountToken:
+                audience: api
+                expirationSeconds: 600
+                path: token
+  volumeClaimTemplates:
+  - metadata:
+      name: clamscan-model
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "csi-disk"
+      resources:
+        requests:
+          storage: 100Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-clam-go 
+  namespace: merlin-02
+spec:
+  clusterIP: None
+  selector:
+    app: clam-go
