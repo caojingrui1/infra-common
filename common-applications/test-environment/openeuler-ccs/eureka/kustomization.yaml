@@ -15,4 +15,4 @@ resources:
 - service.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/ccs-eureka-test
-  newTag: certtype_br-10919c
+  newTag: certtype_br-94ce02
