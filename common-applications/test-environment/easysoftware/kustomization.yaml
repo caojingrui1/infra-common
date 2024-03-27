@@ -2,6 +2,7 @@ resources:
 - namespace.yaml
 - sa.yaml
 - secret.yaml
+- pvc.yaml
 - server
 - website
 namespace: easysoftware
