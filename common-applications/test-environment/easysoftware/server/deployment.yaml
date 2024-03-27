@@ -39,6 +39,9 @@ spec:
         env:
         - name: APPLICATION_PATH
           value: /vault/secrets/application.yaml
+        volumeMounts:
+        - mountPath: /tmp/easy/
+          name: data-volume
         resources:
           limits:
             cpu: 2000m
@@ -62,4 +65,8 @@ spec:
           tcpSocket:
             port: 8080
           timeoutSeconds: 5
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: server-data-volume
         
