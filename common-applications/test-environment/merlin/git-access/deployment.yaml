@@ -84,7 +84,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTPS
-            path: /api/swagger/index.html
+            path: /internal/heartbeat
             port: 8080
           timeoutSeconds: 5
         name: git-access
@@ -95,7 +95,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTPS
-            path: /api/swagger/index.html
+            path: /internal/heartbeat
             port: 8080
           timeoutSeconds: 5
         resources:
