@@ -10,5 +10,5 @@ spec:
     protocol: TCP
     targetPort: 8123
   selector:
-    app: server
+    app: space
   type: ClusterIP
