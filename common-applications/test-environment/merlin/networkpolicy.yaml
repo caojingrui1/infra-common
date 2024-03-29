@@ -34,7 +34,7 @@ spec:
       from:
         - podSelector:
             matchLabels:
-              app: merlin-website
+              k8s-app: oauth2-proxy
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
