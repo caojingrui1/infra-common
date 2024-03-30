@@ -37,18 +37,6 @@ spec:
       http:
         paths:
           - backend:
-              serviceName: mailman-service
-              servicePort: 8001
-            path: /mailman(/|$)(.*)
-          - backend:
-              serviceName: nginx-purger-service
-              servicePort: 80
-            path: /nginx-purger(/|$)(.*)
-          - backend:
-              serviceName: sca-api-gateway-service
-              servicePort: 8020
-            path: /sca/gateway(/|$)(.*)
-          - backend:
               serviceName: metadata-service
               servicePort: 80
             path: /metadata(/|$)(.*)
