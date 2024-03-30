@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dragonfly-cache-service
+spec:
+  ports:
+    - name: proxy-service
+      port: 65001
+      protocol: TCP
+      targetPort: 65001
+  selector:
+    component: dragonfly-cache
+  type: ClusterIP

@@ -1,0 +1,13 @@
+resources:
+- deployment-1
+- deployment-2
+- deployment-3
+- deployment-4
+- deployment-5
+- service.yaml
+- config.yaml
+commonLabels:
+  owner: tommylike
+namespace: dragonfly-cache
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
