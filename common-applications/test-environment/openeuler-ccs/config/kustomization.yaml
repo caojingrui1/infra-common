@@ -15,4 +15,4 @@ resources:
 - service.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/ccs-config-test
-  newTag: certtype_br-99ed06
+  newTag: master-fcd27c
