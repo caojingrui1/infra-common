@@ -14,7 +14,7 @@
       },
       {
         "mountPath": "/var/lib/om/mindspore-search.json",
-        "subPath": "service__account",
+        "subPath": "service_account",
         "name": "om-collect-secrets-volume"
       }
     ]
