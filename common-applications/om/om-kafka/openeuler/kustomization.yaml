@@ -11,6 +11,7 @@ resources:
   - community-tracker
   - user-apply
   - model-foundry
+  - openmind
 commonAnnotations:
   owner: zhongjun
   email: "jun.zhongjun2@gmail.com"
