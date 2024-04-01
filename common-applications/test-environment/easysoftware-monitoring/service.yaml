@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: easysoftware-monitoring-service
+  name: easysoftware-monitoring-anitya-service
   namespace: easysoftware-monitoring
 spec:
   ports:
@@ -12,3 +12,19 @@ spec:
   selector:
     app: easysoftware-monitoring
   type: ClusterIP
+
+  ---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: easysoftware-monitoring-rabbitmq-service
+    namespace: easysoftware-monitoring
+  spec:
+    ports:
+      - name: http
+        port: 5672
+        protocol: TCP
+        targetPort: 5672
+    selector:
+      app: easysoftware-monitoring
+    type: ClusterIP
