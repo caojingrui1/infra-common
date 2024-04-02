@@ -15,4 +15,4 @@ resources:
 - service.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/ccs-eureka-test
-  newTag: master-fcd27c
+  newTag: master-a321f0
