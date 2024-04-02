@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    everest.io/disk-volume-type: ssd
+  name: euler-copilot-frame-data-volume
+  namespace: euler-copilot
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: csi-disk
+  volumeMode: Filesystem
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    everest.io/disk-volume-type: ssd
+  name: euler-copilot-rag-data-volume
+  namespace: euler-copilot
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: csi-disk
+  volumeMode: Filesystem
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    everest.io/disk-volume-type: ssd
+  name: euler-copilot-vectorize-data-volume
+  namespace: euler-copilot
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: csi-disk
+  volumeMode: Filesystem

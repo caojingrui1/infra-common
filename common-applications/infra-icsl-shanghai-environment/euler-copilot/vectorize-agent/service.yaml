@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vectorize-agent-service
+  namespace: euler-copilot
+spec:
+  ports:
+  - name: httpport
+    protocol: TCP
+    port: 8002
+    targetPort: 8002
+  selector:
+    app: vectorize-agent
+  type: LoadBalancer

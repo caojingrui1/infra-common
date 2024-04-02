@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+  namespace: euler-copilot
+  annotations:
+    kubernetes.io/elb.id: d8d37eec-99be-4115-9de2-0cd8f64c2c51
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
+spec:
+  ports:
+  - name: httpport
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: web
+  type: LoadBalancer
