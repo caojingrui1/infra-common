@@ -18,7 +18,7 @@ spec:
         vault.hashicorp.com/role: 'easysoftware-monitoring'
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
-        vault.hashicorp.com/agent-inject-containers: 'anitya'
+        vault.hashicorp.com/agent-inject-containers: 'anitya','anitya2'
         vault.hashicorp.com/secret-volume-path-config.toml: "/etc/fedora-messaging"
         vault.hashicorp.com/agent-inject-secret-config.toml: 'internal/data/infra-test/easysoftware-monitoring'
         vault.hashicorp.com/agent-inject-perms-config.toml: "0400"
@@ -93,6 +93,18 @@ spec:
           value: flask run -h 0.0.0.0
         - name: BEFORE_COMMAND
           value: python3 updatedb.py 
+        - name: ALEMBIC_CONFIG
+          value: /etc/alembic/alembic.ini 
+      - name: anitya2 
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-monitoring-test:master-1184bd
+        imagePullPolicy: IfNotPresent 
+        env:
+        - name: FLASK_APP
+          value: anitya.wsgi
+        - name: START_COMMAND
+          value: flask run -h 0.0.0.0
+        - name: BEFORE_COMMAND
+          value: python3 anitya/check_service.py 
         - name: ALEMBIC_CONFIG
           value: /etc/alembic/alembic.ini 
         livenessProbe:
