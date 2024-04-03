@@ -30,7 +30,7 @@ spec:
           - --provider-display-name=authing
           - --cookie-expire=12h0m0s
           - --skip-auth-regex=^/api/
-          - --skip-auth-regex=^/[a-zA-Z0-9]+\/[a-zA-Z0-9]+(\.git)/(info/lfs|info/refs|HEAD|git-upload-pack|git-receive-pack|objects)
+          - --skip-auth-regex=^/[a-zA-Z0-9]+\/[a-zA-Z0-9]+(\.git|)/(info/lfs|info/refs|HEAD|git-upload-pack|git-receive-pack|objects)
           - --redirect-url=https://modelfoundry.test.osinfra.cn/oauth2/callback
           - --oidc-issuer-url=https://openmind-oauth.authing.cn/oidc
           - --insecure-oidc-allow-unverified-email=true
