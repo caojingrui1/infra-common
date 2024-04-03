@@ -72,7 +72,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTPS
-            path: /
+            path: /check_health/ping
             port: 8001
           timeoutSeconds: 10
         livenessProbe:
@@ -82,7 +82,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTPS
-            path: /
+            path: /check_health/ping
             port: 8001
           timeoutSeconds: 10
         resources:
