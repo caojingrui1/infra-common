@@ -7,6 +7,8 @@ metadata:
   labels: 
     app: vectorize-agent
 spec:
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: vectorize-agent
@@ -69,7 +71,7 @@ spec:
           periodSeconds: 30
           successThreshold: 1
           httpGet:
-            scheme: HTTP
+            scheme: HTTPS
             path: /
             port: 8001
           timeoutSeconds: 10
@@ -79,7 +81,7 @@ spec:
           periodSeconds: 30
           successThreshold: 1
           httpGet:
-            scheme: HTTP
+            scheme: HTTPS
             path: /
             port: 8001
           timeoutSeconds: 10
