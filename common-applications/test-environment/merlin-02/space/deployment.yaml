@@ -25,6 +25,7 @@ spec:
         vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-sql.crt: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-docker.json: 'internal/data/infra-test/merlin-sh'
+        vault.hashicorp.com/agent-inject-secret-vault.crt: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-compose-config.yml: "0400"
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
@@ -34,6 +35,7 @@ spec:
         vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-sql.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-docker.json: "0400"
+        vault.hashicorp.com/agent-inject-perms-vault.crt: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/agent-inject-template-compose-config.yml: |  
@@ -67,6 +69,10 @@ spec:
         vault.hashicorp.com/agent-inject-template-docker.json: |  
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.spaceSwrLogin }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-vault.crt: |  
+          {{- with secret "internal/data/infra-test/merlin-sh" -}}  
+          {{ .Data.data.vaultCA }}
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
