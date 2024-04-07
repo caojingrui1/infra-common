@@ -65,6 +65,12 @@ spec:
         volumeMounts:
         - mountPath: /home/eulercopilot/vectorize_logs
           name: data-volume
+        - mountPath: /home/eulercopilot/nltk_data           
+          name: obs-euler-copilot
+          subPath: nltk_data
+        - mountPath: /vectorize-agent/models         
+          name: obs-euler-copilot
+          subPath: models
         readinessProbe:
           failureThreshold: 3
           initialDelaySeconds: 30
@@ -109,3 +115,6 @@ spec:
         - name: data-volume
           persistentVolumeClaim:
             claimName: euler-copilot-vectorize-data-volume
+        - name: obs-euler-copilot
+          persistentVolumeClaim:
+            claimName: obs-euler-copilot-volume
