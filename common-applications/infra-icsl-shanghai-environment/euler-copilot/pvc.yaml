@@ -47,3 +47,27 @@ spec:
       storage: 10Gi
   storageClassName: csi-disk
   volumeMode: Filesystem
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: obs-euler-copilot-volume
+  namespace: euler-copilot
+  annotations:
+    csi.storage.k8s.io/fstype: obsfs
+    csi.storage.k8s.io/node-publish-secret-name: obs-token
+    csi.storage.k8s.io/node-publish-secret-namespace: euler-copilot
+    everest.io/enterprise-project-id: '0'
+    everest.io/obs-volume-type: STANDARD
+    pv.kubernetes.io/bind-completed: 'yes'
+    volume.beta.kubernetes.io/storage-provisioner: everest-csi-provisioner
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: pv-obs-euler-copilot
+  storageClassName: csi-obs
+  volumeMode: Filesystem
