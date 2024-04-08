@@ -96,8 +96,8 @@ spec:
             cpu: 2
             memory: 2Gi
           limits:
-            cpu: 4
-            memory: 2Gi
+            cpu: 8
+            memory: 24Gi
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1001
