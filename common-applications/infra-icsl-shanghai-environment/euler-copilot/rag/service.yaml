@@ -8,8 +8,8 @@ spec:
   ports:
   - name: httpport
     protocol: TCP
-    port: 8002
-    targetPort: 8002
+    port: 8005
+    targetPort: 8005
   selector:
     app: rag
   type: LoadBalancer
