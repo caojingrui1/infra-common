@@ -27,6 +27,12 @@ spec:
           {{- with secret "internal/data/infra-test/easysoftware" -}}  
           {{ .Data.data.application }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
+        vault.hashicorp.com/agent-inject-secret-redis.crt: 'internal/data/infra-test/easysoftware'
+        vault.hashicorp.com/agent-inject-template-redis.crt: |  
+          {{- with secret "internal/data/infra-test/easysoftware" -}}  
+          {{ .Data.data.redis }}
+          {{- end }}
       labels:
         app: easysoftware
     spec:
