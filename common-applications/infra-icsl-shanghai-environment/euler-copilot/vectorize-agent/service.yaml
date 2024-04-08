@@ -8,8 +8,8 @@ spec:
   ports:
   - name: httpport
     protocol: TCP
-    port: 8002
-    targetPort: 8002
+    port: 8001
+    targetPort: 8001
   selector:
     app: vectorize-agent
   type: LoadBalancer
