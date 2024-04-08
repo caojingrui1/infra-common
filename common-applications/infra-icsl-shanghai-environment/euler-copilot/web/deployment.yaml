@@ -89,7 +89,7 @@ spec:
             port: 8080
             httpHeaders:
             - name: "Host"
-              value: "euler-copilot.test.osinfra.cn"
+              value: "euler-copilot-icsl.test.osinfra.cn"
           timeoutSeconds: 10
         livenessProbe:
           failureThreshold: 3
@@ -102,7 +102,7 @@ spec:
             port: 8080
             httpHeaders:
             - name: "Host"
-              value: "euler-copilot.test.osinfra.cn"
+              value: "euler-copilot-icsl.test.osinfra.cn"
           timeoutSeconds: 10
         resources:
           requests:
