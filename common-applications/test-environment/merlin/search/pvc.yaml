@@ -1,0 +1,23 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: obs-merlin-search-test
+  namespace: merlin
+  annotations:
+    csi.storage.k8s.io/fstype: obsfs
+    csi.storage.k8s.io/node-publish-secret-name: obs-token
+    csi.storage.k8s.io/node-publish-secret-namespace: merlin
+    everest.io/enterprise-project-id: '0'
+    everest.io/obs-volume-type: STANDARD
+    pv.kubernetes.io/bind-completed: 'yes'
+    volume.beta.kubernetes.io/storage-provisioner: everest-csi-provisioner
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: pv-obs-merlin-search-test
+  storageClassName: csi-obs
+  volumeMode: Filesystem
