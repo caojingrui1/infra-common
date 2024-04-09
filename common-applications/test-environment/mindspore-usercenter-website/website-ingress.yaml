@@ -1,19 +1,23 @@
-apiVersion: extensions/v1beta1
+---
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: website-ingress
   namespace: mindspore-usercenter-website
 spec:
-  ingressClassName: nginx
   tls:
-    - hosts:
-        - mindspore-usercenter.test.osinfra.cn
-      secretName: website-tls
+  - hosts:
+    - mindspore-usercenter.test.osinfra.cn
+    secretName: website-tls
   rules:
-    - host: mindspore-usercenter.test.osinfra.cn
-      http:
-        paths:
-          - backend:
-              serviceName: website-service
-              servicePort: 80
-            path: /
+  - host: mindspore-usercenter.test.osinfra.cn
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: website-service
+            port:
+              number: 80
+  ingressClassName: nginx
