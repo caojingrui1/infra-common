@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-deployment
+  namespace: merlin-02
+spec:
+  selector:
+    matchLabels:
+      app: search
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/role: 'merlin-sh'
+        vault.hashicorp.com/agent-run-as-user: "1001"
+        vault.hashicorp.com/agent-run-as-group: "1001"
+        vault.hashicorp.com/agent-inject-secret-application.yml: 'internal/data/infra-test/merlin-sh'
+        vault.hashicorp.com/agent-inject-perms-application.yml: "0400"
+        vault.hashicorp.com/agent-inject-template-application.yml: |  
+          {{- with secret "internal/data/infra-test/merlin-sh" -}}  
+          {{ .Data.data.searchConf }}
+          {{- end }}
+      labels:
+        app: search
+    spec:
+      serviceAccount: merlin
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      securityContext:
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      containers:
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-search-test:v1.0.20240410165426
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: APPLICATION_PATH
+          value: "/vault/secrets/application.yml"
+        volumeMounts:
+        - mountPath: /opt/sql
+          name: es-cert-volume
+          subPath: sh
+        name: search
+        # livenessProbe:
+        #   failureThreshold: 3
+        #   initialDelaySeconds: 30
+        #   periodSeconds: 30
+        #   successThreshold: 1
+        #   httpGet:
+        #     scheme: HTTPS
+        #     path: /
+        #     port: 8080
+        #   timeoutSeconds: 5
+        # readinessProbe:
+        #   failureThreshold: 3
+        #   initialDelaySeconds: 30
+        #   periodSeconds: 30
+        #   successThreshold: 1
+        #   httpGet:
+        #     scheme: HTTPS
+        #     path: /
+        #     port: 8080
+        #   timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1001
+          readOnlyRootFilesystem: false
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token
+      - name: es-cert-volume
+        persistentVolumeClaim:
+          claimName: obs-merlin-search-test
