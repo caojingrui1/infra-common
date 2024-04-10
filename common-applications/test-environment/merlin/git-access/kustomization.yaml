@@ -7,7 +7,7 @@ commonAnnotations:
   kubernetes.ops.region: shanghai
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-git-access-test
-  newTag: FetchUploadModes-181171
+  newTag: FetchUploadModes-85c530
 kind: Kustomization
 namespace: merlin
 resources:
