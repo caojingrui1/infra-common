@@ -13,3 +13,6 @@ commonAnnotations:
 namespace: cla
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+images:
+- name: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/cla-backend-test
+  newTag: 45dde8b92355d0ddebb654957fcb0d3b6d3c9ccb
