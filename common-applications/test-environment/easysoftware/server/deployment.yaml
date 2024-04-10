@@ -48,6 +48,8 @@ spec:
         volumeMounts:
         - mountPath: /tmp/easy/
           name: data-volume
+        - mountPath: /home/easysoftware/obs
+          name: cert-volume
         resources:
           limits:
             cpu: 2000m
@@ -75,4 +77,7 @@ spec:
         - name: data-volume
           persistentVolumeClaim:
             claimName: server-data-volume
+        - name: cert-volume
+          persistentVolumeClaim:
+            claimName: obs-easysoftware-test-data
         
