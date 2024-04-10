@@ -1,0 +1,8 @@
+resources:
+- deployment.yaml
+- secrets.yaml
+- ingress.yaml
+- service.yaml
+- namespace.yaml
+- autoscaler.yaml
+namespace: datastat-server
