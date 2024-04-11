@@ -14,4 +14,4 @@ images:
   newName: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-test
   newTag: oneid-webserver-41f8dc
 - name: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-test
-  newTag: oneid-webserver-49f3a9
+  newTag: oneid-webserver-a529c3
