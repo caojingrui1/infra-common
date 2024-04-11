@@ -16,9 +16,11 @@ spec:
         vault.hashicorp.com/secret-volume-path: "/etc/nginx/ssl/"
         vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/test-osinfra-cn-tls'
         vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/test-osinfra-cn-tls'
+        vault.hashicorp.com/agent-inject-secret-radiatest.pem: 'internal/data/infra-test/radiatest-beta'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-server.key: "0400"
+        vault.hashicorp.com/agent-inject-perms-radiatest.pem: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/agent-inject-template-server.crt: |  
@@ -28,6 +30,10 @@ spec:
         vault.hashicorp.com/agent-inject-template-server.key: |  
           {{- with secret "internal/data/infra-test/test-osinfra-cn-tls" -}}  
           {{ .Data.data.ServerKey }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-radiatest.pem: |  
+          {{- with secret "internal/data/infra-test/radiatest-beta" -}}  
+          {{ .Data.data.dhparam }}
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
       labels:
