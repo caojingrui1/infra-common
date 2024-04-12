@@ -21,14 +21,14 @@ spec:
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/secret-volume-path: "/etc/nginx/cert/"
-        vault.hashicorp.com/agent-inject-secret-server.crt: "internal/data/infra-test/merlin-sh"
+        vault.hashicorp.com/agent-inject-secret-server.crt: "internal/data/infra-test/merlin-website-sh"
         vault.hashicorp.com/agent-inject-template-server.crt: |
-          {{- with secret "internal/data/infra-test/merlin-sh" -}}
+          {{- with secret "internal/data/infra-test/merlin-website-sh" -}}
           {{ .Data.data.ServerCrt }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-secret-server.key: "internal/data/infra-test/merlin-sh"
+        vault.hashicorp.com/agent-inject-secret-server.key: "internal/data/infra-test/merlin-website-sh"
         vault.hashicorp.com/agent-inject-template-server.key: |
-          {{- with secret "internal/data/infra-test/merlin-sh" -}}
+          {{- with secret "internal/data/infra-test/merlin-website-sh" -}}
           {{ .Data.data.ServerKey }}
           {{- end }}
         vault.hashicorp.com/agent-inject-secret-abc.txt: "internal/data/infra-test/merlin-sh"
@@ -60,7 +60,7 @@ spec:
         imagePullPolicy: IfNotPresent
         env:
         - name: DET_URL
-          value: https://modelfoundrysh.test.osinfra.cn/docs/
+          value: https://openmind.test.osinfra.cn/docs/
         ports:
         - containerPort: 8080
           name: http
