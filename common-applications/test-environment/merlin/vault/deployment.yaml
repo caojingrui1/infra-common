@@ -200,7 +200,7 @@ spec:
           emptyDir: {}
       containers:
         - name: vault
-          image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/vault:1.14.10
+          image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/vault:1.14.8
           imagePullPolicy: IfNotPresent
           command:
           - "/bin/sh"
