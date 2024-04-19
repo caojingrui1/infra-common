@@ -13,6 +13,8 @@ resources:
 - maildatabase.yaml
 - scan_subscribe_pending.yaml
 - exim-configmap.yaml
+- dovecot.yaml
+- sa.yaml
 commonAnnotations:
   email: tommylikehu@gmail.com
   owner: tommylike
