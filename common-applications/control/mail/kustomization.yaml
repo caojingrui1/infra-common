@@ -26,6 +26,8 @@ kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/app-mailman/clean-pending-subscription
   newTag: 4a229e7f654a4ba58ca0df6c84d81ed0e011ab701702451209
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/app-mailman/dovecot
+  newTag: 17111e9906f4392e5c6b529c6d6a3b33018231a21713489857
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/app-mailman/mailman-core-new-build
   newTag: 4a229e7f654a4ba58ca0df6c84d81ed0e011ab701702450969
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/app-mailman/mailman-exim-new-build
