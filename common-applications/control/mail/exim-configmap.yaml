@@ -616,7 +616,7 @@ data:
     dovecot_router:
       driver = manualroute
       domains = +dovecot_domains
-      route_list = "* mailman-dovecot-0.mail-suit-service.mail.svc.cluster.local byname"
+      route_list = "* dovecot-service.mail.svc.cluster.local byname"
       transport = dovecot_transport
 
     .ifdef DCconfig_satellite
