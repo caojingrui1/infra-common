@@ -7,7 +7,7 @@ commonAnnotations:
   kubernetes.ops.region: shanghai
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-git-access-test
-  newTag: main-9ac309
+  newTag: bug-fix-dragonfly-issue-88fb2a
 kind: Kustomization
 namespace: merlin
 resources:
