@@ -56,6 +56,7 @@ spec:
           {{ .Data.data.kafkaCA }}
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/tls-skip-verify: "true"
       labels:
         app: server
     spec:
@@ -79,23 +80,23 @@ spec:
         - --key=/vault/secrets/server.key
         livenessProbe:
           failureThreshold: 3
-          initialDelaySeconds: 30
-          periodSeconds: 30
+          initialDelaySeconds: 5
+          periodSeconds: 3
           successThreshold: 1
           httpGet:
             scheme: HTTPS
-            path: /api/swagger/index.html
+            path: /internal/heartbeat
             port: 8080
           timeoutSeconds: 5
         name: server
         readinessProbe:
           failureThreshold: 3
-          initialDelaySeconds: 30
-          periodSeconds: 30
+          initialDelaySeconds: 5
+          periodSeconds: 3
           successThreshold: 1
           httpGet:
             scheme: HTTPS
-            path: /api/swagger/index.html
+            path: /internal/heartbeat
             port: 8080
           timeoutSeconds: 5
         resources:
@@ -108,6 +109,10 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1000
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
       volumes:
       - name: token-vol
         projected:

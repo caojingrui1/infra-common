@@ -180,7 +180,7 @@ spec:
             secretKeyRef:
               key: admin_password
               name: ether-secret-v2
-        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/etherpad:dev-1.8.18-238541
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/etherpad:develop-93e26a
         imagePullPolicy: IfNotPresent
         name: etherpad-lite
         ports:

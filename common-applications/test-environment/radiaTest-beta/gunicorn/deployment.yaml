@@ -12,13 +12,53 @@ spec:
       app: gunicorn
   template:
     metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: 'radiatest-beta'
+        vault.hashicorp.com/secret-volume-path: "/etc/radiaTest/"
+        vault.hashicorp.com/agent-inject-secret-casbinmodel.conf: 'internal/data/infra-test/radiatest-beta'
+        vault.hashicorp.com/agent-inject-secret-server.ini: 'internal/data/infra-test/radiatest-beta'
+        vault.hashicorp.com/agent-inject-secret-gunicorn.conf.py: 'internal/data/infra-test/radiatest-beta'
+        vault.hashicorp.com/agent-inject-secret-redis.crt: 'internal/data/infra-test/radiatest-beta'
+        vault.hashicorp.com/agent-inject-secret-mysql.crt: 'internal/data/infra-test/radiatest-beta'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/agent-inject-perms-casbinmodel.conf: "0400"
+        vault.hashicorp.com/agent-inject-perms-server.ini: "0400"
+        vault.hashicorp.com/agent-inject-perms-gunicorn.conf.py: "0400"
+        vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
+        vault.hashicorp.com/agent-inject-perms-mysql.crt: "0400"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/agent-inject-template-casbinmodel.conf: |  
+          {{- with secret "internal/data/infra-test/radiatest-beta" -}}  
+          {{ .Data.data.Casbinmodel }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-server.ini: |  
+          {{- with secret "internal/data/infra-test/radiatest-beta" -}}  
+          {{ .Data.data.Server }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-gunicorn.conf.py: |  
+          {{- with secret "internal/data/infra-test/radiatest-beta" -}}  
+          {{ .Data.data.GunicornConf }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-redis.crt: |  
+          {{- with secret "internal/data/infra-test/radiatest-beta" -}}  
+          {{ .Data.data.Redis }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-mysql.crt: |  
+          {{- with secret "internal/data/infra-test/radiatest-beta" -}}  
+          {{ .Data.data.Mysql }}
+          {{- end }}
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
       labels:
         app: gunicorn
     spec:
+      serviceAccount: radiatest-beta
       imagePullSecrets:
       - name: huawei-swr-image-pull-secret
       nodeSelector:
         autoscaler: "true"
+      automountServiceAccountToken: false
       containers:
       - name: gunicorn
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/radia-test/gunicorn-beta:v1.0.20230302191356
@@ -26,15 +66,6 @@ spec:
         volumeMounts:
         - mountPath: /opt/radiaTest/radiaTest-server/migrations
           name: radiatest-server
-        - mountPath: /etc/radiaTest/casbinmodel.conf
-          name: radiatest-secret
-          subPath: casbinmodel.conf
-        - mountPath: /etc/radiaTest/server.ini
-          name: radiatest-secret
-          subPath: server.ini
-        - mountPath: /opt/radiaTest/radiaTest-server/gunicorn/gunicorn.conf.py
-          name: radiatest-secret
-          subPath: gunicorn.conf.py
         - mountPath: /var/lib/messengers_certifi
           name: messengers-certifi-storage
         - mountPath: /etc/radiaTest_ssl
@@ -50,6 +81,9 @@ spec:
           limits:
             cpu: 4000m
             memory: 4000Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
       volumes:
       - name: ssl-data
         persistentVolumeClaim:
@@ -66,6 +100,10 @@ spec:
       - name: pkglist-storage
         persistentVolumeClaim:
           claimName: radiatest-pkg-volume
-      - name: radiatest-secret
-        secret:
-          secretName: radiatest-secret
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token

@@ -1,0 +1,15 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: clamdb-deployment-autoscaler
+  namespace: merlin
+spec:
+  scaleTargetRef:
+    name: clamdb-deployment
+  triggers:
+  - type: cron
+    metadata:
+      timezone: Asia/Shanghai
+      start: 40 8 * * *
+      end: 55 23 * * *
+      desiredReplicas: "1"

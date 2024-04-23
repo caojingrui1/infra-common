@@ -1,10 +1,7 @@
 resources:
   - ingress.yaml
-  - mailman.yaml
   - namespace.yaml
   - secrets.yaml
-  - nginx-purger.yaml
-  - sca-api-gateway.yaml
   - metadata.yaml
 commonLabels:
   app: osinfra-api

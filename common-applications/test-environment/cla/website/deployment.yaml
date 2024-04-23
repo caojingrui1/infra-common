@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: cla-frontend
+  name: cla-frontend
+  namespace: cla
+spec:
+  selector:
+    matchLabels:
+      component: cla-frontend
+  template:
+    metadata:
+      labels:
+        component: cla-frontend
+    spec:
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      nodeSelector:
+        autoscaler: "true"
+      automountServiceAccountToken: false
+      containers:
+      - image: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/cla-website-test:b9025329d0ad9cf624674d0c9470ac686ef63d5c
+        imagePullPolicy: IfNotPresent
+        name: cla-frontend-pod
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 500m
+            memory: 500Mi
+          limits:
+            cpu: 500m
+            memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 10
+          failureThreshold: 3
+          successThreshold: 1
+          periodSeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+          timeoutSeconds: 5
+        securityContext:
+          allowPrivilegeEscalation: false
+          #runAsUser: 1000
+        

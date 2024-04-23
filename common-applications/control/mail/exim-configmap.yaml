@@ -58,7 +58,7 @@ data:
     MAIN_PACKAGE_VERSION=4.93-13ubuntu1.5
     .endif
     .ifndef MAIN_LOCAL_DOMAINS
-    MAIN_LOCAL_DOMAINS=@:localhost:lists.osinfra.cn:lists.openhetuengine.org:lists.george-cao.site
+    MAIN_LOCAL_DOMAINS=@:localhost:lists.osinfra.cn:lists.openhetuengine.org:lists.george-cao.site:dovecot.osinfra.org
     .endif
     .ifndef MAIN_RELAY_TO_DOMAINS
     MAIN_RELAY_TO_DOMAINS=
@@ -242,6 +242,7 @@ data:
     .else
     .endif
 
+    domainlist dovecot_domains=dovecot.osinfra.org
     domainlist mm3_domains=lists.osinfra.cn:lists.openhetuengine.org:lists.george-cao.site
     MM3_LMTP_HOST=mailman-core-0.mail-suit-service.mail.svc.cluster.local
     MM3_LMTP_PORT=8024
@@ -611,6 +612,12 @@ data:
         -owner     : -request   : \
         -subscribe : -unsubscribe
       transport = mailman3_transport
+    
+    dovecot_router:
+      driver = manualroute
+      domains = +dovecot_domains
+      route_list = "* dovecot-service.mail.svc.cluster.local byname"
+      transport = dovecot_transport
 
     .ifdef DCconfig_satellite
     hub_user:
@@ -939,6 +946,12 @@ data:
       port = MM3_LMTP_PORT
       rcpt_include_affixes = true
 
+    dovecot_transport:
+      driver = smtp
+      rcpt_include_affixes
+      protocol = lmtp
+      port = 24
+  
     begin retry
 
     *                      *           F,2h,15m; G,16h,1h,1.5; F,4d,6h
@@ -953,11 +966,13 @@ data:
     .endif
 
     begin authenticators
+    
+    CLIENT_ALLOW_IP_HOSTS = 172.20.0.0/16 : 127.0.0.1 : ::::1 : 192.168.1.0/24
 
     plain_server:
       driver = plaintext
       public_name = PLAIN
-      server_condition = "${if crypteq{$auth3}{${extract{1}{:}{${lookup{$auth2}lsearch{CONFDIR/passwd}{$value}{*:*}}}}}{1}{0}}"
+      server_condition = "${if and{{match_ip{$sender_host_address}{CLIENT_ALLOW_IP_HOSTS}}{crypteq{$auth3}{${extract{1}{:}{${lookup{$auth2}lsearch{CONFDIR/passwd}{$value}{*:*}}}}}}}{1}{0}}"
       server_set_id = $auth2
       server_prompts = :
       .ifndef AUTH_SERVER_ALLOW_NOTLS_PASSWORDS
@@ -968,7 +983,7 @@ data:
       driver = plaintext
       public_name = LOGIN
       server_prompts = "Username:: : Password::"
-      server_condition = "${if crypteq{$auth2}{${extract{1}{:}{${lookup{$auth1}lsearch{CONFDIR/passwd}{$value}{*:*}}}}}{1}{0}}"
+      server_condition = "${if and{{match_ip{$sender_host_address}{CLIENT_ALLOW_IP_HOSTS}}{crypteq{$auth2}{${extract{1}{:}{${lookup{$auth1}lsearch{CONFDIR/passwd}{$value}{*:*}}}}}}}{1}{0}}"
       server_set_id = $auth1
       .ifndef AUTH_SERVER_ALLOW_NOTLS_PASSWORDS
       server_advertise_condition = ${if eq{$tls_in_cipher}{}{}{*}}

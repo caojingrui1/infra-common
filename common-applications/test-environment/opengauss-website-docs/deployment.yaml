@@ -5,6 +5,8 @@ metadata:
   name: website
   namespace: opengauss-website-docs
 spec:
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: website

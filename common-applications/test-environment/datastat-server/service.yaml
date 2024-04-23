@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: datastat-server-service
+  namespace: datastat-server
+spec:
+  ports:
+    - name: srv
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: datastat-server
+  type: ClusterIP

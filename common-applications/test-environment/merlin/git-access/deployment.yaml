@@ -43,7 +43,20 @@ spec:
           {{- with secret "internal/data/infra-test/merlin" -}}  
           {{ .Data.data.redisCA }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-secret-pqsql.crt: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-perms-pqsql.crt: "0400"
+        vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
+        vault.hashicorp.com/agent-inject-template-pqsql.crt: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.pqsqlCA }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-kafka.crt: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.kafkaCA }}
+          {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/tls-skip-verify: "true"
       labels:
         app: git-access
     spec:
@@ -71,7 +84,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTPS
-            path: /api/swagger/index.html
+            path: /internal/heartbeat
             port: 8080
           timeoutSeconds: 5
         name: git-access
@@ -82,7 +95,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTPS
-            path: /api/swagger/index.html
+            path: /internal/heartbeat
             port: 8080
           timeoutSeconds: 5
         resources:
@@ -95,6 +108,10 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1000
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
       volumes:
       - name: token-vol
         projected:

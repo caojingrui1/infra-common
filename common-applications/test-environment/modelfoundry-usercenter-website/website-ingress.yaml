@@ -7,10 +7,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - modelfoundry-usercenter.test.osinfra.cn
+    - modelfoundry-usercenter.modelfoundry.test.osinfra.cn
     secretName: website-tls
   rules:
-  - host: modelfoundry-usercenter.test.osinfra.cn
+  - host: modelfoundry-usercenter.modelfoundry.test.osinfra.cn
     http:
       paths:
       - path: /

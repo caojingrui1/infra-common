@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: oauth2-proxy
+  name: oauth2-proxy
+  namespace: merlin
+spec:
+  selector:
+    matchLabels:
+      k8s-app: oauth2-proxy
+  template:
+    metadata:
+      labels:
+        k8s-app: oauth2-proxy
+    spec:
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      securityContext:
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      containers:
+        - args:
+          - --provider=oidc
+          - --email-domain=*
+          - --upstream=https://merlin-website.merlin.svc.cluster.local:8080
+          - --http-address=0.0.0.0:4180
+          - --provider-display-name=authing
+          - --cookie-expire=12h0m0s
+          - --skip-auth-regex=^/api/
+          - --skip-auth-regex=^/[a-zA-Z0-9_-]+\/[a-zA-Z0-9._-]+(\.git|)/(|info/lfs|info/refs|HEAD|git-upload-pack|git-receive-pack|objects)
+          - --redirect-url=https://modelfoundry.test.osinfra.cn/oauth2/callback
+          - --oidc-issuer-url=https://openmind-oauth.authing.cn/oidc
+          - --insecure-oidc-allow-unverified-email=true
+          - --session-cookie-minimal=false
+          - --pass-access-token=true
+          - --cookie-secure=false
+          - --login-url=https://modelfoundry-oneid.test.osinfra.cn/oneid/oidc/authorize
+          - --redeem-url=https://modelfoundry-oneid.test.osinfra.cn/oneid/oidc/token
+          - --profile-url=https://modelfoundry-oneid.test.osinfra.cn/oneid/oidc/user
+          - --skip-oidc-discovery=true
+          - --insecure-oidc-skip-issuer-verification=true
+          - --skip-jwt-bearer-tokens=false
+          - --oidc-jwks-url=https://oauth2-proxy.authing.cn/oidc/.well-known/jwks.json
+          - --set-xauthrequest=true
+          - --skip-auth-strip-headers=false
+          - --set-authorization-header=true
+          - --scope=profile openid email id_token
+          - --ssl-upstream-insecure-skip-verify
+          env:
+            - name: OAUTH2_PROXY_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  key: client_id
+                  name: merlin-oauth
+            - name: OAUTH2_PROXY_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: client_secret
+                  name: merlin-oauth
+            - name: OAUTH2_PROXY_COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: cookie_secret
+                  name: merlin-oauth
+          image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/oauth2-proxy:b2d87e8e29285720327bf01aee604f929ea64dd4
+          imagePullPolicy: Always
+          name: oauth2-proxy
+          ports:
+            - containerPort: 4180
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 4180
+            timeoutSeconds: 5
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 4180
+            timeoutSeconds: 5
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 500m
+              memory: 500Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+
+
+

@@ -18,13 +18,11 @@ spec:
         vault.hashicorp.com/agent-inject-secret-app.ini: 'internal/data/infra-test/gitea-repo-sh'
         vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/merlin-sh'
-        vault.hashicorp.com/agent-inject-secret-mysql.crt: 'internal/data/infra-test/gitea-repo-sh'
         vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/gitea-repo-sh'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-app.ini: "0600"
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-server.key: "0400"
-        vault.hashicorp.com/agent-inject-perms-mysql.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
@@ -40,15 +38,12 @@ spec:
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.ServerKey }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-template-mysql.crt: |  
-          {{- with secret "internal/data/infra-test/gitea-repo-sh" -}}  
-          {{ .Data.data.MysqlCert }}
-          {{- end }}
         vault.hashicorp.com/agent-inject-template-kafka.crt: |  
           {{- with secret "internal/data/infra-test/gitea-repo-sh" -}}  
           {{ .Data.data.kafkaCA }}
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/tls-skip-verify: "true"
       labels:
         app: gitea-repo-sh
     spec:
@@ -66,7 +61,7 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
         - --config=/vault/secrets/app.ini
-        - --rm-cfg
+        - --rm-cfg=false
         resources:
           requests:
             cpu: "6"

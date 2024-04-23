@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  name: easysoftware-monitoring-ingress
+  namespace: easysoftware-monitoring
+spec:
+  rules:
+  - host: easysoftware-monitoring.test.osinfra.cn
+    http:
+      paths:
+      - backend:
+          serviceName: easysoftware-monitoring-service
+          servicePort: 5000
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts: 
+    - easysoftware-monitoring.test.osinfra.cn
+    secretName: website-tls

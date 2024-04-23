@@ -5,6 +5,7 @@ metadata:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/proxy-body-size: 100M
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
   name: radia-test-ingress
   namespace: radia-test-beta
 spec:

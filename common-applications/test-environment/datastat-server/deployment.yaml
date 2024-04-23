@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datastat-server
+  namespace: datastat-server
+  labels:
+    app: datastat-server
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: datastat-server
+  template:
+    metadata:
+      labels:
+        app: datastat-server
+    spec:
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      containers:
+        - name: datastat-server
+          image: swr.cn-north-4.myhuaweicloud.com/opensourceway/datastat/server-test:test-6f0db0
+          resources:
+            limits:
+              cpu: 2
+              memory: 8Gi
+            requests:
+              cpu: 1
+              memory: 4Gi
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 8080
+            timeoutSeconds: 5
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 8080
+            timeoutSeconds: 5
+          ports:
+            - containerPort: 8080
+              name: datastat-server
+          volumeMounts:
+            - mountPath: /var/lib/ds/custom.properties
+              subPath: custom_properties
+              name: datastat-server-secrets-volume
+            - mountPath: /var/lib/ds/openEuler.properties
+              subPath: openEuler_properties
+              name: datastat-server-secrets-volume
+            - mountPath: /var/lib/ds/openGauss.properties
+              subPath: openGauss_properties
+              name: datastat-server-secrets-volume
+            - mountPath: /var/lib/ds/openLookeng.properties
+              subPath: openLookeng_properties
+              name: datastat-server-secrets-volume
+            - mountPath: /var/lib/ds/mindSpore.properties
+              subPath: mindSpore_properties
+              name: datastat-server-secrets-volume
+            - mountPath: /var/lib/ds/application.properties
+              subPath: application_properties
+              name: datastat-server-secrets-volume
+            - mountPath: /var/lib/ds/foundry.properties
+              subPath: foundry_properties
+              name: datastat-server-secrets-volume
+            - mountPath: /var/lib/ds/software.properties
+              subPath: software_properties
+              name: datastat-server-secrets-volume
+      volumes:
+        - name: datastat-server-secrets-volume
+          secret:
+            secretName: datastat-server-secrets

@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dragonfly-cache-deployment-1  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: dragonfly-cache
+      instance: dragonfly-cache-peer1
+  template:
+    metadata:
+      labels:
+        component: dragonfly-cache
+        instance: dragonfly-cache-peer1
+    spec:
+      initContainers:        
+        - name: config-update
+          image: swr.cn-southwest-2.myhuaweicloud.com/modelinfra/alpine:3.19.1
+          env:
+            - name: DRAGONFLY_CACHE_POD_IP
+              #it's the elb1's ip address
+              value: "172.21.0.103"
+          command:
+            - /bin/sh
+            - -c
+            - |
+              # copy file into data volume and replace with real ip address
+              cp /var/dragonfly/peer.yaml /data2/peer/peer.yaml
+              sed -i "s^_REPLACE_ME_WIATH_REAL_IP_ADDRESS_^$DRAGONFLY_CACHE_POD_IP^g" /data2/peer/peer.yaml
+          volumeMounts:
+            - mountPath: /var/dragonfly/peer.yaml
+              name: config-volume
+              subPath: peer.yaml
+            - mountPath: /data2/peer
+              name: database-volume
+      containers:
+        - image: swr.cn-southwest-2.myhuaweicloud.com/modelinfra/dfdaemon:v2.1.32
+          imagePullPolicy: Always
+          name: dragonfly-cache-server
+          command:
+            - /opt/dragonfly/bin/dfget
+            - daemon
+            - --config
+            - /data2/peer/peer.yaml
+            # used for debug
+            # - /bin/sh
+            # - -c
+            # - |
+            #   sleep 10000
+          resources:
+            requests:
+              cpu: 2000m
+              memory: 4Gi
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+          ports:
+            - containerPort: 65000
+              name: download-port
+              protocol: TCP
+            - containerPort: 65001
+              name: proxy-port
+              protocol: TCP
+            - containerPort: 65002
+              name: upload-port
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /data2/peer
+              name: database-volume
+            - mountPath: /etc/peer/keys/tls.key
+              name: tls-volume
+              subPath: tls.key
+            - mountPath: /etc/peer/keys/tls.crt
+              name: tls-volume
+              subPath: tls.crt
+          livenessProbe:
+            exec:
+              command:
+              - /bin/grpc_health_probe
+              - -addr=:65000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+              - /bin/grpc_health_probe
+              - -addr=:65000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+      volumes:
+        - name: tls-volume
+          secret:
+            secretName: cache-server-secret
+        - name: config-volume
+          configMap:
+            name: dragonfly-config
+        - name: database-volume
+          persistentVolumeClaim:
+            claimName: cci-evs-dragonfly-cache-volume-1

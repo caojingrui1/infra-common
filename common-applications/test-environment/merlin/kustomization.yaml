@@ -9,6 +9,10 @@ resources:
 - message-server
 - git-access
 - space
+- clam
+- vault
+- oauth-proxy
+- search
 namespace: merlin
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization

@@ -1,0 +1,53 @@
+## helm template repo hashicorp/vault --values helm-vault-values.yaml --namespace merlin > deployment.yaml
+global:
+  enabled: true
+  imagePullSecrets: 
+    - name: huawei-swr-image-pull-secret
+  tlsDisable: false
+  externalVaultAddr: ""
+
+injector:
+  enabled: false
+
+server:
+  enabled: true
+  image:
+    repository: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/vault
+    tag: 1.14.10
+  updateStrategyType: "OnDelete"
+  extraEnvironmentVars:
+    VAULT_CACERT: /vault/userconfig/vault-server-tls/vault.ca
+  volumes:
+    - name: userconfig-vault-server-tls
+      secret:
+        defaultMode: 420
+        secretName: vault-server-tls # Matches the ${SECRET_NAME} from above
+  volumeMounts:
+    - mountPath: /vault/userconfig/vault-server-tls
+      name: userconfig-vault-server-tls
+      readOnly: true
+  route:
+    enabled: true
+    activeService: true
+  standalone:
+    enabled: true
+    config: |
+        ui = true
+        listener "tcp" {
+            address     = "0.0.0.0:8200"
+            tls_cert_file = "/vault/userconfig/vault-server-tls/vault.crt"
+            tls_key_file  = "/vault/userconfig/vault-server-tls/vault.key"
+            tls_client_ca_file = "/vault/userconfig/vault-server-tls/vault.ca"
+        }
+
+        storage "file" {
+            path = "/vault/data"
+        }
+  dataStorage:
+    enabled: true
+    size: 10Gi
+    mountPath: /vault/data
+    storageClass: csi-disk
+    accessMode: ReadWriteOnce
+ui:
+  enabled: true

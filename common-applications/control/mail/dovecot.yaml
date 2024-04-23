@@ -1,0 +1,121 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: dovecot
+  namespace: mail
+  labels:
+    app: dovecot
+spec:
+  selector:
+    matchLabels:
+      app: dovecot
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/role: 'mail'
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/secret-volume-path: "/etc/dovecot/user/passwd"
+        vault.hashicorp.com/agent-inject-secret-passwd: 'internal/data/infra-common/mail'
+        vault.hashicorp.com/agent-inject-perms-passwd: "0400"
+        vault.hashicorp.com/agent-inject-template-passwd: |  
+          {{- with secret "internal/data/infra-common/mail" -}}  
+          {{ .Data.data.vmail }}
+          {{- end }}
+      labels:
+        app: dovecot
+    spec:
+      serviceAccount: mail
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      automountServiceAccountToken: false
+      containers:
+        - name: dovecot
+          image: swr.cn-north-4.myhuaweicloud.com/opensourceway/app-mailman/dovecot:fa38d6b7c1798576c0a61336021ac46f9f85b5bb1713440452
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - mountPath: /srv/vmail
+              name: dovecot-volume    
+          securityContext:
+            allowPrivilegeEscalation: false 
+            capabilities:
+              drop:
+                - ALL
+      volumes:
+        - name: token-vol
+          projected:
+            sources:
+            - serviceAccountToken:
+                audience: api
+                expirationSeconds: 600
+                path: token
+        - name: dovecot-volume
+          persistentVolumeClaim:
+            claimName: dovecot-data
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dovecot-service
+  namespace: mail
+spec:
+  ports:
+  - name: port-01
+    port: 24    
+    targetPort: 24
+    protocol: TCP
+  - name: port-02
+    port: 110    
+    targetPort: 110
+    protocol: TCP
+  - name: port-03
+    port: 143   
+    targetPort: 143
+    protocol: TCP
+  - name: port-04
+    port: 587  
+    targetPort: 587
+    protocol: TCP
+  - name: port-05
+    port: 990   
+    targetPort: 990
+    protocol: TCP
+  - name: port-06
+    port: 993   
+    targetPort: 993
+    protocol: TCP
+  - name: port-07
+    port: 4190   
+    targetPort: 4190
+    protocol: TCP
+  selector:
+    app: dovecot
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    everest.io/disk-volume-type: ssd
+  name: dovecot-data
+  namespace: mail
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: csi-disk
+  volumeMode: Filesystem

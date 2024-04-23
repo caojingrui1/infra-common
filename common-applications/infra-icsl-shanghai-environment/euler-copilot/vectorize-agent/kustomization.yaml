@@ -1,0 +1,17 @@
+resources:
+- service.yaml
+- deployment.yaml
+commonLabels:
+  app: vectorize-agent
+namespace: euler-copilot
+commonAnnotations:
+  kubernetes.ops.cluster: test
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: openeuler
+  kubernetes.ops.owner: zhangshoucheng
+  kubernetes.ops.region: shanghai
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/euler-copilot/euler-copilot-vectorize-agent-test
+  newTag: 330-release-f7ad16

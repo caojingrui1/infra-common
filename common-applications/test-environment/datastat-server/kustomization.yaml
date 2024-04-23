@@ -1,0 +1,13 @@
+resources:
+- deployment.yaml
+- secrets.yaml
+- ingress.yaml
+- service.yaml
+- namespace.yaml
+- autoscaler.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: datastat-server
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/datastat/server-test
+  newTag: test-4537fe

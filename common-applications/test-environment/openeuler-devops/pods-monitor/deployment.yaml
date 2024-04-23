@@ -16,6 +16,7 @@ spec:
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/tls-skip-verify: "true"
         vault.hashicorp.com/role: 'openeuler-devops'
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
@@ -67,6 +68,11 @@ spec:
           value: "/etc/ods/openeuler-devops.conf"
         - name: KUBE_NAMESPACE
           value: "openeuler-devops"
+        - name: LOG_ROOT_DIR
+          value: "/srv/log"
+        volumeMounts:
+        - mountPath: /srv/log
+          name: pods-monitor-data-volume
         resources:
           limits:
             cpu: 500m
@@ -74,3 +80,7 @@ spec:
           requests:
             cpu: 500m
             memory: 500Mi
+      volumes:        
+        - name: pods-monitor-data-volume
+          persistentVolumeClaim:
+            claimName: pods-monitor-data-volume

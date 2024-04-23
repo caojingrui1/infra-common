@@ -34,7 +34,7 @@ spec:
       from:
         - podSelector:
             matchLabels:
-              app: merlin-website
+              k8s-app: oauth2-proxy
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
@@ -55,7 +55,7 @@ spec:
       from:
         - podSelector:
             matchLabels:
-              app: space
+              app: server
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
@@ -229,8 +229,106 @@ spec:
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
-
-
+---
+kind: NetworkPolicy
+metadata:
+  name: merlin-access-policy-02
+  namespace: merlin
+spec:
+  podSelector:
+    matchLabels:
+      app: git-access
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: label
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+---
+kind: NetworkPolicy
+metadata:
+  name: merlin-access-policy-03
+  namespace: merlin
+spec:
+  podSelector:
+    matchLabels:
+      app: git-access
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: clam-go
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+---
+kind: NetworkPolicy
+metadata:
+  name: vault-policy-01
+  namespace: merlin
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: vault
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8200
+      from:
+        - podSelector:
+            matchLabels:
+              app: server
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+---
+kind: NetworkPolicy
+metadata:
+  name: vault-policy-02
+  namespace: merlin
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: vault
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8200
+      from:
+        - podSelector:
+            matchLabels:
+              app: space
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+---
+kind: NetworkPolicy
+metadata:
+  name: vault-policy-03
+  namespace: merlin
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: vault
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8201
+      from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: vault
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
 
 
 

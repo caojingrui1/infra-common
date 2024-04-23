@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clamdb-deployment
+  namespace: merlin
+spec:
+  selector:
+    matchLabels:
+      app: clamdb
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: clamdb
+    spec:
+      serviceAccount: merlin
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      containers:
+      - name: clamdb
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-local-clam-db-test:main-824447
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: "1"
+            memory: 4Gi
+          requests:
+            cpu: "1"
+            memory: 4Gi
+        volumeMounts:
+          - name: data-volume
+            mountPath: /home/openmind/clamdb
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: clam-data-volume

@@ -1,7 +1,0 @@
-kind: Service
-apiVersion: v1
-metadata:
-  name: sca-api-gateway-service
-spec:
-  type: ExternalName
-  externalName: sca-api-gateway.sca.svc.cluster.local

@@ -2,11 +2,10 @@ resources:
 - ingress.yaml
 - service.yaml
 - deployment.yaml
-- configmap.yaml
 - autoscaler.yaml
 commonAnnotations:
   kubernetes.ops.cluster: test
-  kubernetes.ops.email: 15710801006@163.com
+  kubernetes.ops.email: ""
   kubernetes.ops.os.base: openeuler
   kubernetes.ops.owner: wangdi
   kubernetes.ops.region: hk
@@ -15,4 +14,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/radia-test/nginx-beta
-  newTag: v1.0.20240202145529
+  newTag: v1.0.20240423095833

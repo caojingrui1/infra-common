@@ -1,0 +1,35 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/limit-connections: "400"
+    nginx.ingress.kubernetes.io/limit-rps: "400"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      add_header Content-Security-Policy "script-src 'self' 'unsafe-inline' 'unsafe-eval' ; object-src 'none'; frame-src https://clasign.test.osinfra.cn";
+      add_header X-XSS-Protection "1; mode=block";
+      add_header X-Frame-Options "SAMEORIGIN";
+      add_header Cache-Control "no-cache";
+      add_header Pragma "no-cache";
+      add_header X-Content-Type-Options "nosniff";
+    nginx.ingress.kubernetes.io/server-snippet: |
+      rewrite ^/sign/Z2l0ZWUlMkZvcGVuZXVsZXI=         /sign/gitee_openeuler-1611298811283968340   redirect;
+      rewrite ^/sign/Z2l0ZWUlMkZvcGVuZ2F1c3M=         /sign/gitee_opengauss-1614047760000855378   redirect;
+      rewrite ^/sign/Z2l0ZWUlMkZvcGVubG9va2VuZw==     /sign/gitee_openlookeng-1614322910578209320 redirect;
+      rewrite ^/sign/Z2l0ZWUlMkZtaW5kc3BvcmU=         /sign/gitee_mindspore-1614155835277678289   redirect;
+  name: cla-ingress
+  namespace: cla
+spec:
+  tls:
+    - hosts:
+        - clasign.test.osinfra.cn
+      secretName: cla-tls
+  rules:
+    - host: clasign.test.osinfra.cn
+      http:
+        paths:
+          - backend:
+              serviceName: claservice
+              servicePort: 80
+            path: /

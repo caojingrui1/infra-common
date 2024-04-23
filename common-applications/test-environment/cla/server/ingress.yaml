@@ -1,0 +1,23 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/proxy-body-size: 8m
+  name: cla-ingress-backend
+  namespace: cla
+spec:
+  tls:
+    - hosts:
+        - clasign.test.osinfra.cn
+      secretName: cla-tls
+  rules:
+    - host: clasign.test.osinfra.cn
+      http:
+        paths:
+        - backend:
+            serviceName: cla-backend-service
+            servicePort: 80
+          path: /api(/|$)(.*)

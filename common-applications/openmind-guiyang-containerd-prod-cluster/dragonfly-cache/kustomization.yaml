@@ -1,0 +1,13 @@
+resources:
+- daemonset.yaml
+- service.yaml
+- config.yaml
+commonAnnotations:
+  kubernetes.ops.cluster: openmind-guiyang-prod-cluster
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: ""
+  kubernetes.ops.owner: tommylike
+  kubernetes.ops.region: guiyang
+namespace: dragonfly-cache
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization

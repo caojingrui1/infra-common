@@ -22,7 +22,7 @@ spec:
       - name: huawei-swr-image-pull-secret
       containers:
         - name: om-webserver-sh
-          image: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-test:test-pwd-8a3648
+          image: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-test:master-8bc09d
           env:
           - name: APPLICATION_PATH
             value: "/var/lib/om-webserver/application.properties"
