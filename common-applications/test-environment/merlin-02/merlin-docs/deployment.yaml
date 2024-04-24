@@ -72,7 +72,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTPS
-            path: /index.html
+            path: /404.html
             port: 8080
           timeoutSeconds: 10
         livenessProbe:
@@ -82,7 +82,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTPS
-            path: /index.html
+            path: /404.html
             port: 8080
           timeoutSeconds: 10
         resources:
