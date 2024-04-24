@@ -8,8 +8,7 @@ spec:
     matchLabels:
       app: space
   strategy:
-    rollingUpdate:
-      maxUnavailable: 1
+    type: Recreate
   replicas: 1
   template:
     metadata:
