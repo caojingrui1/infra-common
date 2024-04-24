@@ -329,6 +329,61 @@ spec:
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
+---
+kind: NetworkPolicy
+metadata:
+  name: search-policy-01
+  namespace: merlin
+spec:
+  podSelector:
+    matchLabels:
+      app: search
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: merlin-website
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+---
+kind: NetworkPolicy
+metadata:
+  name: clamdb-policy-01
+  namespace: merlin
+spec:
+  podSelector:
+    matchLabels:
+      app: clamdb
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: clamdb
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+---
+kind: NetworkPolicy
+metadata:
+  name: clamgo-policy-01
+  namespace: merlin
+spec:
+  podSelector:
+    matchLabels:
+      app: clam-go
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: clam-go
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
 
 
 

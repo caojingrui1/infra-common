@@ -4,6 +4,7 @@ resources:
 - ingress.yaml
 - service.yaml
 - namespace.yaml
+- networkpolicy.yaml
 namespace: om-webserver-test-sh
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization

@@ -14,6 +14,7 @@ resources:
 - website-deployment.yaml
 - autoscaler.yaml
 - secret.yaml
+- networkpolicy.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/modelfoundry-usercenter-website
   newTag: test-5b879e-test

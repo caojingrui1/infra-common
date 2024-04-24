@@ -1,0 +1,19 @@
+kind: NetworkPolicy
+metadata:
+  name: om-webserver-test-sh-policy-01
+  namespace: om-webserver-test-sh
+spec:
+  podSelector:
+    matchLabels:
+      app: om-webserver-sh
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - namespaceSelector:
+            matchLabels:
+              project: ingress-nginx
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
