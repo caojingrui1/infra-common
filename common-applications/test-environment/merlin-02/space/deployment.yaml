@@ -8,8 +8,7 @@ spec:
     matchLabels:
       app: space
   strategy:
-    rollingUpdate:
-      maxUnavailable: 1
+    type: Recreate
   replicas: 1
   template:
     metadata:
@@ -164,6 +163,8 @@ spec:
             name: data-volume
           - mountPath: /tmp/
             name: tmp-volume
+          - mountPath: /home/openmind/images
+            name: images-volume
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1000
@@ -176,6 +177,9 @@ spec:
       - name: tmp-volume
         persistentVolumeClaim:
           claimName: space-data-volume
+      - name: images-volume
+        persistentVolumeClaim:
+          claimName: space-images-volume
       - name: token-vol
         projected:
           sources:
