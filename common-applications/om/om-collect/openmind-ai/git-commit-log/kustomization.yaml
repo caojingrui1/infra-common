@@ -1,0 +1,9 @@
+resources:
+- deployment.yaml
+- secrets.yaml
+- pvc.yaml
+commonAnnotations:
+  owner: zhongjun
+  email: "jun.zhongjun2@gmail.com"
+commonLabels:
+  common-app: om-commit-log
