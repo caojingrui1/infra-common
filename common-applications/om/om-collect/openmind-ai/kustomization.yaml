@@ -1,8 +1,8 @@
 resources:
   - namespace.yaml
   - git-commit-log
+  - gitee
 
 commonAnnotations:
   owner: zhongjun
-  email: "jun.zhongjun2@gmail.com"
 namespace: openmind-ai-om
