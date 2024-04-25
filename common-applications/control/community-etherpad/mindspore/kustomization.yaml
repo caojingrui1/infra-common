@@ -16,4 +16,4 @@ commonAnnotations:
   kubernetes.ops.region: hk
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/etherpad
-  newTag: develop-f1c8af
+  newTag: openeuler-f1c8af
