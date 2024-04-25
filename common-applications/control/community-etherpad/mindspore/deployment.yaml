@@ -180,6 +180,16 @@ spec:
             secretKeyRef:
               key: admin_password
               name: ether-secret-v2
+        - name: CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: ether-secret-v2
+              key: client_id
+        - name: CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: ether-secret-v2
+              key: client_secret
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/etherpad:dev-1.8.18-238541
         imagePullPolicy: IfNotPresent
         name: etherpad-lite
