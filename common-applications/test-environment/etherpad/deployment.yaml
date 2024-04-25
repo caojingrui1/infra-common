@@ -66,6 +66,16 @@ spec:
             secretKeyRef:
               name: etherpad-secrets
               key: skin_name
+        - name: CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: etherpad-secrets
+              key: client_id
+        - name: CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: etherpad-secrets
+              key: client_secret
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/etherpad:1.8.18
         imagePullPolicy: IfNotPresent
         name: etherpad
