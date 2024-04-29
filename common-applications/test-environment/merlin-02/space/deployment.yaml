@@ -87,38 +87,6 @@ spec:
           localhostProfile: infra-seccomp.json
       automountServiceAccountToken: false
       containers:
-      - name: buildkitd
-        image: moby/buildkit:master
-        args:
-          - --addr=tcp://0.0.0.0:1234
-        # readinessProbe:
-        #   exec:
-        #     command:
-        #       - buildctl
-        #       - debug
-        #       - workers
-        #   initialDelaySeconds: 5
-        #   periodSeconds: 30
-        # livenessProbe:
-        #   exec:
-        #     command:
-        #       - buildctl
-        #       - debug
-        #       - workers
-        #   initialDelaySeconds: 5
-        #   periodSeconds: 30
-        securityContext:
-          privileged: true
-        resources:
-          limits:
-            cpu: "8"
-            memory: 16Gi
-          requests:
-            cpu: "8"
-            memory: 16Gi
-        volumeMounts:
-          - mountPath: /home/user/.local/share/buildkit
-            name: buildkitd
       - name: space 
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-space-test:main-5a3d7e
         imagePullPolicy: IfNotPresent
