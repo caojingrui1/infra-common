@@ -12,6 +12,7 @@ resources:
   - user-apply
   - model-foundry
   - openmind
+  - openmind-model-event
 commonAnnotations:
   owner: zhongjun
   email: "jun.zhongjun2@gmail.com"
