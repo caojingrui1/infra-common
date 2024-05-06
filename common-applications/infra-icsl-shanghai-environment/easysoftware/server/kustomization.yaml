@@ -10,3 +10,6 @@ commonAnnotations:
   kubernetes.ops.owner: wucaiping
   kubernetes.ops.region: shanghai
 kind: Kustomization
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-icsl
+  newTag: master-9a958c
