@@ -229,6 +229,27 @@ spec:
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: merlin-server-policy-05
+  namespace: merlin
+spec:
+  podSelector:
+    matchLabels:
+      app: server
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: update-data
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
 ---
 kind: NetworkPolicy
 metadata:
