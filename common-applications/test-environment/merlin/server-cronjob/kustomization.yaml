@@ -9,3 +9,6 @@ kind: Kustomization
 namespace: merlin
 resources:
 - cronjob.yaml
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test
+  newTag: wmk-9aa9d6
