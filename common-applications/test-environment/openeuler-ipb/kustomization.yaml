@@ -3,12 +3,14 @@ resources:
 - ingress.yaml
 - service.yaml
 - deployment.yaml
-- secret.yaml
 - autoscaler.yaml
+- sa.yaml
+- networkpolicy.yaml
+- tls.yaml
 namespace: openeuler-ipb
 commonAnnotations:
   kubernetes.ops.cluster: test
-  kubernetes.ops.email: nicliuqi@gmail.com
+  kubernetes.ops.email: ""
   kubernetes.ops.os.base: openEuler
   kubernetes.ops.owner: liuqi
   kubernetes.ops.region: hk
