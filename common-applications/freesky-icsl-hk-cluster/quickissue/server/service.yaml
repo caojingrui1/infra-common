@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: openeuler-ipb-service
+  namespace: openeuler-quickissue
+  annotations:
+    kubernetes.io/elb.id: 085026ec-640a-4bf4-906d-b28f7d0b5a81
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
+spec:
+  ports:
+  - name: http-port
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: openeuler-ipb
+  type: LoadBalancer
+

@@ -1,0 +1,15 @@
+resources:
+- service.yaml
+- deployment.yaml
+namespace: openeuler-quickissue
+commonAnnotations:
+  kubernetes.ops.cluster: test
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: openEuler
+  kubernetes.ops.owner: liuqi
+  kubernetes.ops.region: sh
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-ipb-test
+  newTag: "1714997300"

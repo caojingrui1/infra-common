@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quickissue-website
+  namespace: openeuler-quickissue
+  annotations:
+    kubernetes.io/elb.id: edb5b23e-9c43-47ef-bac9-748e32bd2024
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
+spec:
+  ports:
+  - name: httpport
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: quickissue-website
+  type: LoadBalancer
