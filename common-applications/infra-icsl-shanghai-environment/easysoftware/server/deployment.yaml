@@ -81,7 +81,7 @@ spec:
           timeoutSeconds: 5
         securityContext:
           allowPrivilegeEscalation: false
-          runAsUser: 1000
+          runAsUser: 1001
           capabilities:
             drop:
               - ALL
