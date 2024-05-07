@@ -1,0 +1,84 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openeuler-ipb-deployment
+  namespace: openeuler-quickissue
+spec:
+  selector:
+    matchLabels:
+      app: openeuler-ipb
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: 'openeuler-quickissue'
+        vault.hashicorp.com/agent-inject-perms-secrets.yaml: "0400"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-inject-secret-secrets.yaml: 'internal/data/icsl/openeuler-quickissue'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/agent-inject-template-secrets.yaml: |  
+          {{- with secret "internal/data/icsl/openeuler-quickissue" -}}  
+          {{ .Data.data.server }}
+          {{- end }}
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/tls-skip-verify: "true"
+      labels:
+        app: openeuler-ipb
+    spec:
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      serviceAccount: openeuler-quickissue
+      securityContext:
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      containers:
+      - name: openeuler-ipb
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-ipb-test:5fb920d68f3826f17af93b01b9d159d052f6ac38
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: CONFIG_PATH
+          value: /vault/secrets/secrets.yaml
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 500m
+            memory: 500Mi
+          limits:
+            cpu: 500m
+            memory: 500Mi
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 3
+          successThreshold: 1
+          tcpSocket:
+            port: 8080
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 3
+          successThreshold: 1
+          tcpSocket:
+            port: 8080
+          timeoutSeconds: 5
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token

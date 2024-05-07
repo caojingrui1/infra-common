@@ -1,0 +1,9 @@
+resources:
+- namespace.yaml
+- networkpolicy.yaml
+- sa.yaml
+- website
+- server
+namespace: openeuler-quickissue
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization

@@ -1,0 +1,46 @@
+kind: NetworkPolicy
+metadata:
+  name: openeuler-quickissue-policy-01
+  namespace: openeuler-quickissue
+spec:
+  podSelector:
+    matchLabels:
+      app: openeuler-ipb
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openeuler-quickissue
+        - podSelector:
+            matchLabels:
+              app: openeuler-ipb
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: openeuler-quickissue-policy-02
+  namespace: openeuler-quickissue
+spec:
+  podSelector:
+    matchLabels:
+      app: quickissue-website
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openeuler-quickissue
+        - podSelector:
+            matchLabels:
+              app: quickissue-website
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
