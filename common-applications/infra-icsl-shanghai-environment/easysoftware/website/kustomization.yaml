@@ -10,3 +10,6 @@ namespace: easysoftware
 resources:
 - service.yaml
 - deployment.yaml
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-website-icsl
+  newTag: new-3f9766
