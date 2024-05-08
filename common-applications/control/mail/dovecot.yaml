@@ -23,8 +23,6 @@ spec:
         vault.hashicorp.com/tls-skip-verify: "true"
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/role: 'mail'
-        vault.hashicorp.com/agent-run-as-user: "1000"
-        vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/secret-volume-path: "/etc/dovecot/user"
         vault.hashicorp.com/agent-inject-secret-passwd: 'internal/data/infra-common/mail'
         vault.hashicorp.com/agent-inject-perms-passwd: "0400"
