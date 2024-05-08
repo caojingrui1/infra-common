@@ -48,9 +48,6 @@ spec:
               name: dovecot-volume    
           securityContext:
             allowPrivilegeEscalation: false 
-            capabilities:
-              drop:
-                - ALL
       volumes:
         - name: token-vol
           projected:
