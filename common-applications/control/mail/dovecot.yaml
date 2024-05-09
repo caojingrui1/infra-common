@@ -66,6 +66,10 @@ kind: Service
 metadata:
   name: dovecot-service
   namespace: mail
+  annotations:
+    kubernetes.io/elb.id: a63cb241-a689-4058-9479-0ab673771df9
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
 spec:
   ports:
   - name: port-01
@@ -98,7 +102,7 @@ spec:
     protocol: TCP
   selector:
     app: dovecot
-  type: ClusterIP
+  type: LoadBalancer
 
 ---
 apiVersion: v1
