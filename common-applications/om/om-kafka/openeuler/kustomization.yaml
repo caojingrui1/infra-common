@@ -13,6 +13,7 @@ resources:
   - model-foundry
   - openmind
   - openmind-model-event
+  - openmind-model-download-sh
 commonAnnotations:
   owner: zhongjun
   email: "jun.zhongjun2@gmail.com"
