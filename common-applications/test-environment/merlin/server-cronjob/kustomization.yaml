@@ -11,4 +11,4 @@ resources:
 - cronjob.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test
-  newTag: new-b58072
+  newTag: new-d42a96
