@@ -12,4 +12,4 @@ resources:
 - deployment.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-website-icsl
-  newTag: icsl-8cf8a9
+  newTag: icsl-9c30ae
