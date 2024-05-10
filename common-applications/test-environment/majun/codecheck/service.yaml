@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: majun-codecheck
+  namespace: majun
+spec:
+  ports:
+  - name: http-port
+    port: 8091
+    protocol: TCP
+    targetPort: 8091
+  selector:
+    app: codecheck
+  type: ClusterIP

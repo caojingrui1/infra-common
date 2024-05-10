@@ -1,0 +1,208 @@
+kind: NetworkPolicy
+metadata:
+  name: basic-policy-01
+  namespace: majun
+spec:
+  podSelector:
+    matchLabels:
+      app: basic
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8077
+      from:
+        - podSelector:
+            matchLabels:
+              app: servicecomb
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: codecheck-policy-01
+  namespace: majun
+spec:
+  podSelector:
+    matchLabels:
+      app: codecheck
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8091
+      from:
+        - podSelector:
+            matchLabels:
+              app: servicecomb
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: dashboard-policy-01
+  namespace: majun
+spec:
+  podSelector:
+    matchLabels:
+      app: dashboard
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8093
+      from:
+        - podSelector:
+            matchLabels:
+              app: servicecomb
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: forwarding-policy-01
+  namespace: majun
+spec:
+  podSelector:
+    matchLabels:
+      app: forwarding
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8083
+      from:
+        - podSelector:
+            matchLabels:
+              app: servicecomb
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: gateway-policy-01
+  namespace: majun
+spec:
+  podSelector:
+    matchLabels:
+      app: gateway
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8089
+      from:
+        - podSelector:
+            matchLabels:
+              app: majun-website
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: manager-policy-01
+  namespace: majun
+spec:
+  podSelector:
+    matchLabels:
+      app: manager
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8023
+      from:
+        - podSelector:
+            matchLabels:
+              app: servicecomb
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: platform-release-policy-01
+  namespace: majun
+spec:
+  podSelector:
+    matchLabels:
+      app: platform-release
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8085
+      from:
+        - podSelector:
+            matchLabels:
+              app: servicecomb
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: servicecomb-policy-01
+  namespace: majun
+spec:
+  podSelector:
+    matchLabels:
+      app: servicecomb
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 30100
+      from:
+        - podSelector:
+            matchLabels:
+              app: servicecomb
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: vulnerability-view-policy-01
+  namespace: majun
+spec:
+  podSelector:
+    matchLabels:
+      app: vulnerability
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8097
+      from:
+        - podSelector:
+            matchLabels:
+              app: servicecomb
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: website-policy-01
+  namespace: majun
+spec:
+  podSelector:
+    matchLabels:
+      app: majun-website
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8091
+      from:
+        - podSelector:
+            matchLabels:
+              app: servicecomb
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1

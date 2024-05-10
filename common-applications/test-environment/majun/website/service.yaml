@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: majun-website
+  namespace: majun
+  annotations:
+    kubernetes.io/elb.id: 37630ae5-2a47-4753-b781-332b659274e2
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
+spec:
+  ports:
+  - name: httpport
+    protocol: TCP
+    port: 8079
+    targetPort: 8079
+  selector:
+    app: majun-website
+  type: LoadBalancer

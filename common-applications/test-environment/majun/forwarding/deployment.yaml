@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: majun-forwarding
+  namespace: majun
+spec:
+  selector:
+    matchLabels:
+      app: forwarding
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: forwarding
+    spec:
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      securityContext:
+        fsGroup: 1000
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      containers:
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/majun/forwarding-beta:icsl_beta-1f631e
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: servicecomb.credentials.accessKey
+          valueFrom:
+            secretKeyRef:
+              name: majun-secret
+              key: accesskey
+        - name: servicecomb.credentials.secretKey
+          valueFrom:
+            secretKeyRef:
+              name: majun-secret
+              key: secretkey
+        - name: rootSalt
+          valueFrom:
+            secretKeyRef:
+              name: majun-secret
+              key: rootsalt
+        volumeMounts:
+        - mountPath: /opt/app/work/tcwFile.ks
+          name: majun-secret
+          subPath: tcwFile5-ks
+        - mountPath: /opt/app/primary/tcpFile.ks
+          name: majun-secret
+          subPath: tcpFile5-ks
+        - mountPath: /opt/app/standby/tcsFile.ks
+          name: majun-secret
+          subPath: tcsFile5-ks
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 3
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /api/http/majun-service-forwarding/health-check/checkStart
+            port: 8083
+          timeoutSeconds: 5
+        name: forwarding
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 3
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /api/http/majun-service-forwarding/health-check/checkStart
+            port: 8083
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 2000Mi
+          requests:
+            cpu: 2000m
+            memory: 2000Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          runAsGroup: 1000
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: majun-secret
+        secret:
+          defaultMode: 256
+          secretName: majun-secret

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: majun-servicecomb
+  namespace: majun
+spec:
+  selector:
+    matchLabels:
+      app: servicecomb
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: servicecomb
+    spec:
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      securityContext:
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      containers:
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/majun/servicecomb:2.0.0
+        imagePullPolicy: IfNotPresent
+        name: servicecomb
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1000Mi
+          requests:
+            cpu: 1000m
+            memory: 1000Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
