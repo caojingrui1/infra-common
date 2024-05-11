@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: radia-test-nginx-service
+  namespace: radia-test-beta
+  annotations:
+    kubernetes.io/elb.id: 75862f5e-bfdf-48ed-8c6b-3d8df3e0bb40
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
+spec:
+  ports:
+    - name: http-port-1
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: radia-test-nginx
+  type: LoadBalancer

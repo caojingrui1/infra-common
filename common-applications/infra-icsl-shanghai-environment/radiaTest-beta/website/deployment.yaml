@@ -1,0 +1,68 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radia-test-nginx
+  namespace: radia-test-beta
+spec:
+  selector:
+    matchLabels:
+      app: radia-test-nginx
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/role: 'radiatest-beta'
+        vault.hashicorp.com/secret-volume-path: "/etc/nginx/ssl/"
+        vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/domain-tls'
+        vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/domain-tls'
+        vault.hashicorp.com/agent-inject-secret-radiatest.pem: 'internal/data/icsl/radia-test-beta'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
+        vault.hashicorp.com/agent-inject-perms-server.key: "0400"
+        vault.hashicorp.com/agent-inject-perms-radiatest.pem: "0400"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/agent-inject-template-server.crt: |  
+          {{- with secret "internal/data/domain-tls" -}}  
+          {{ .Data.data.ServerCrt }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-server.key: |  
+          {{- with secret "internal/data/domain-tls" -}}  
+          {{ .Data.data.ServerKey }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-radiatest.pem: |  
+          {{- with secret "internal/data/icsl/radia-test-beta" -}}  
+          {{ .Data.data.dhparam }}
+          {{- end }}
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+      labels:
+        app: radia-test-nginx
+    spec:
+      serviceAccount: radiatest-beta
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      automountServiceAccountToken: false
+      containers:
+      - name: radia-test-nginx
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/radia-test/nginx-beta:v1.0.20230306102621
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 200m
+            memory: 200Mi
+          limits:
+            cpu: 500m
+            memory: 500Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token

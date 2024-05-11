@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: 100M
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+  name: radia-test-ingress
+  namespace: radia-test-beta
+spec:
+  tls:
+    - hosts:
+        - radiatest.test.osinfra.cn
+      secretName: radia-test-tls
+  rules:
+    - host: radiatest.test.osinfra.cn
+      http:
+        paths:
+          - backend:
+              serviceName: radia-test-nginx-service
+              servicePort: 80
+            path: /
