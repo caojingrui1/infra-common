@@ -47,7 +47,7 @@ spec:
         - mountPath: /opt/app/work/tcwFile.ks
           name: majun-secret
           subPath: tcwFile4-ks
-        - mountPath: /opt/app/primary/tcpFile.ks
+        - mountPath: /opt/app/primary/ocpFile.ks
           name: majun-secret
           subPath: tcpFile4-ks
         - mountPath: /opt/app/standby/tcsFile.ks
