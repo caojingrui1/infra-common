@@ -14,6 +14,7 @@ resources:
   - openmind
   - openmind-model-event
   - openmind-model-download-sh
+  - openmind-space-event
 commonAnnotations:
   owner: zhongjun
   email: "jun.zhongjun2@gmail.com"
