@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: supervisor-service
+  namespace: radia-test
+spec:
+  ports:
+    - name: http-port-1
+      protocol: TCP
+      port: 21500
+      targetPort: 21500
+  selector:
+    app: gunicorn
+  type: ClusterIP
