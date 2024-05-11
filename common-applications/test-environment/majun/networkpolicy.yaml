@@ -105,6 +105,27 @@ apiVersion: networking.k8s.io/v1
 ---
 kind: NetworkPolicy
 metadata:
+  name: gateway-policy-02
+  namespace: majun
+spec:
+  podSelector:
+    matchLabels:
+      app: gateway
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8089
+      from:
+        - podSelector:
+            matchLabels:
+              app: servicecomb
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
   name: manager-policy-01
   namespace: majun
 spec:
@@ -160,7 +181,28 @@ spec:
       from:
         - podSelector:
             matchLabels:
-              app: servicecomb
+              app: basic
+        - podSelector:
+            matchLabels:
+              app: codecheck
+        - podSelector:
+            matchLabels:
+              app: dashboard
+        - podSelector:
+            matchLabels:
+              app: forwarding
+        - podSelector:
+            matchLabels:
+              app: gateway
+        - podSelector:
+            matchLabels:
+              app: manager
+        - podSelector:
+            matchLabels:
+              app: platform-release
+        - podSelector:
+            matchLabels:
+              app: vulnerability
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
