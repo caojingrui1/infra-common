@@ -1,0 +1,12 @@
+resources:
+- deployment.yaml
+- namespace.yaml
+- rbac.yaml
+- networkpolicy.yaml
+commonAnnotations:
+  kubernetes.ops.cluster: mindspore-cn4-xihe-npu-cluster
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: alpine
+  kubernetes.ops.owner: ""
+  kubernetes.ops.region: cn4
+namespace: imagepullsecret-patcher
