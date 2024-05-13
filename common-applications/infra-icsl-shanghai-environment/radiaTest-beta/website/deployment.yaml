@@ -36,7 +36,7 @@ spec:
           {{- end }}
         vault.hashicorp.com/agent-inject-template-radiatest.pem: |  
           {{- with secret "internal/data/domain-tls-ssl" -}}  
-          {{ .Data.data.dhparam }}
+          {{ .Data.data.dhparamPem }}
           {{- end }}
         vault.hashicorp.com/agent-inject-template-radiaTest.txt: |  
           {{- with secret "internal/data/domain-tls-ssl" -}}  
