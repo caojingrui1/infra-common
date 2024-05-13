@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: imagepullsecret-patcher
+  namespace: imagepullsecret-patcher
+  labels:
+    name: imagepullsecret-patcher
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: imagepullsecret-patcher
+  template:
+    metadata:
+      labels:
+        name: imagepullsecret-patcher
+    spec:
+      serviceAccountName: imagepullsecret-patcher
+      imagePullSecrets:
+      - name: swr-image-pull
+      containers:
+        - name: imagepullsecret-patcher
+          imagePullPolicy: Always
+          image: swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/imagepullsecret-patcher:0.14-arm
+          env:
+            - name: CONFIG_FORCE
+              value: "true"
+            - name: CONFIG_DEBUG
+              value: "true"
+            - name: CONFIG_MANAGEDONLY
+              value: "true"
+            - name: CONFIG_SECRETNAME
+              value: "swr-image-pull"
+            - name: CONFIG_DOCKERCONFIGJSONPATH
+              value: "/app/secrets/dockerconfigjson"
+          volumeMounts:
+            - name: src-dockerconfigjson
+              mountPath: "/app/secrets"
+              readOnly: true
+          resources:
+            requests:
+              cpu: 100m
+              memory: 15Mi
+            limits:
+              cpu: 100m
+              memory: 30Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+      volumes:
+        - name: src-dockerconfigjson
+          secret:
+            secretName: image-pull-secret-src
