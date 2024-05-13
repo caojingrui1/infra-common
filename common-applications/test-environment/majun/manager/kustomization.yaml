@@ -10,3 +10,6 @@ commonAnnotations:
   kubernetes.ops.region: shanghai
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/majun/manager-beta
+  newTag: icsl_beta-5b4753
