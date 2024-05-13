@@ -60,7 +60,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: /api/http/majun-dashboard/health-check/checkStart
+            path: /majun-dashboard/health-check/checkStart
             port: 8093
           timeoutSeconds: 5
         name: dashboard
@@ -71,7 +71,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: /api/http/majun-dashboard/health-check/checkStart
+            path: /majun-dashboard/health-check/checkStart
             port: 8093
           timeoutSeconds: 5
         resources:

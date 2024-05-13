@@ -60,7 +60,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: /api/http/majun-manager-service/health-check/checkStart
+            path: /majun-manager-service/health-check/checkStart
             port: 8023
           timeoutSeconds: 5
         name: manager
@@ -71,7 +71,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: /api/http/majun-manager-service/health-check/checkStart
+            path: /majun-manager-service/health-check/checkStart
             port: 8023
           timeoutSeconds: 5
         resources:

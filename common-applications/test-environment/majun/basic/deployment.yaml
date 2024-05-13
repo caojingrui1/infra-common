@@ -60,7 +60,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: /api/http/majun-basic-framework/health-check/checkStart
+            path: /majun-basic/health-check/checkStart
             port: 8077
           timeoutSeconds: 5
         name: server
@@ -71,7 +71,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: /api/http/majun-basic-framework/health-check/checkStart
+            path: /majun-basic/health-check/checkStart
             port: 8077
           timeoutSeconds: 5
         resources:

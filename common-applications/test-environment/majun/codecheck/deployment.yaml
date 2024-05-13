@@ -60,7 +60,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: /api/ci-backend/majun-codecheck/health-check/checkStart
+            path: /majun-codecheck/health-check/checkStart
             port: 8091
           timeoutSeconds: 5
         name: codecheck
@@ -71,7 +71,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: /api/ci-backend/majun-codecheck/health-check/checkStart
+            path: /majun-codecheck/health-check/checkStart
             port: 8091
           timeoutSeconds: 5
         resources:

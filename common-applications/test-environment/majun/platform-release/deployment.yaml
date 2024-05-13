@@ -60,7 +60,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: /api/http/majun-platform-release/health-check/checkStart
+            path: /majun-platform-release/health-check/checkStart
             port: 8085
           timeoutSeconds: 5
         name: platform-release
@@ -71,7 +71,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: /api/http/majun-platform-release/health-check/checkStart
+            path: /majun-platform-release/health-check/checkStart
             port: 8085
           timeoutSeconds: 5
         resources:

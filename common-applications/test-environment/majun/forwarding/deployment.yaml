@@ -60,7 +60,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: /api/http/majun-service-forwarding/health-check/checkStart
+            path: /majun-service-forwarding/health-check/checkStart
             port: 8083
           timeoutSeconds: 5
         name: forwarding
@@ -71,7 +71,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: /api/http/majun-service-forwarding/health-check/checkStart
+            path: /majun-service-forwarding/health-check/checkStart
             port: 8083
           timeoutSeconds: 5
         resources:
