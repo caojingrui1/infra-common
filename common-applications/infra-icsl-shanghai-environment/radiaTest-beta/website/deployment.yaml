@@ -15,25 +15,31 @@ spec:
         vault.hashicorp.com/tls-skip-verify: "true"
         vault.hashicorp.com/role: 'radiatest-beta'
         vault.hashicorp.com/secret-volume-path: "/etc/nginx/ssl/"
-        vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/domain-tls'
-        vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/domain-tls'
-        vault.hashicorp.com/agent-inject-secret-radiatest.pem: 'internal/data/icsl/radia-test-beta'
+        vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/domain-tls-ssl'
+        vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/domain-tls-ssl'
+        vault.hashicorp.com/agent-inject-secret-radiatest.pem: 'internal/data/domain-tls-ssl'
+        vault.hashicorp.com/agent-inject-secret-radiatest.txt: 'internal/data/domain-tls-ssl'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-server.key: "0400"
         vault.hashicorp.com/agent-inject-perms-radiatest.pem: "0400"
+        vault.hashicorp.com/agent-inject-perms-radiatest.txt: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/agent-inject-template-server.crt: |  
-          {{- with secret "internal/data/domain-tls" -}}  
+          {{- with secret "internal/data/domain-tls-ssl" -}}  
           {{ .Data.data.ServerCrt }}
           {{- end }}
         vault.hashicorp.com/agent-inject-template-server.key: |  
-          {{- with secret "internal/data/domain-tls" -}}  
+          {{- with secret "internal/data/domain-tls-ssl" -}}  
           {{ .Data.data.ServerKey }}
           {{- end }}
         vault.hashicorp.com/agent-inject-template-radiatest.pem: |  
-          {{- with secret "internal/data/icsl/radia-test-beta" -}}  
+          {{- with secret "internal/data/domain-tls-ssl" -}}  
+          {{ .Data.data.dhparam }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-radiatest.txt: |  
+          {{- with secret "internal/data/domain-tls-ssl" -}}  
           {{ .Data.data.dhparam }}
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
