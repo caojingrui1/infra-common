@@ -3,7 +3,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: server-update-data
-  namespace: merlin
+  namespace: merlin-02
   labels:
     app: update-data
 spec:
@@ -16,13 +16,13 @@ spec:
         metadata:
           annotations:
             vault.hashicorp.com/agent-inject: 'true'
-            vault.hashicorp.com/role: 'merlin'
-            vault.hashicorp.com/agent-inject-secret-compose-config.yml: 'internal/data/infra-test/merlin'
-            vault.hashicorp.com/agent-inject-secret-redis.crt: 'internal/data/infra-test/merlin'
-            vault.hashicorp.com/agent-inject-secret-pqsql.crt: 'internal/data/infra-test/merlin'
-            vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/merlin'
-            vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/merlin'
-            vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin'
+            vault.hashicorp.com/role: 'merlin-sh'
+            vault.hashicorp.com/agent-inject-secret-compose-config.yml: 'internal/data/infra-test/merlin-sh'
+            vault.hashicorp.com/agent-inject-secret-redis.crt: 'internal/data/infra-test/merlin-sh'
+            vault.hashicorp.com/agent-inject-secret-pqsql.crt: 'internal/data/infra-test/merlin-sh'
+            vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/merlin-sh'
+            vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/merlin-sh'
+            vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin-sh'
             vault.hashicorp.com/agent-pre-populate-only: "true"
             vault.hashicorp.com/agent-inject-perms-compose-config.yml: "0400"
             vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
@@ -33,27 +33,27 @@ spec:
             vault.hashicorp.com/agent-run-as-user: "1000"
             vault.hashicorp.com/agent-run-as-group: "1000"
             vault.hashicorp.com/agent-inject-template-compose-config.yml: |  
-              {{- with secret "internal/data/infra-test/merlin" -}}  
+              {{- with secret "internal/data/infra-test/merlin-sh" -}}  
               {{ .Data.data.label }}
               {{- end }}
             vault.hashicorp.com/agent-inject-template-redis.crt: |  
-              {{- with secret "internal/data/infra-test/merlin" -}}  
+              {{- with secret "internal/data/infra-test/merlin-sh" -}}  
               {{ .Data.data.redisCA }}
               {{- end }}
             vault.hashicorp.com/agent-inject-template-pqsql.crt: |  
-              {{- with secret "internal/data/infra-test/merlin" -}}  
+              {{- with secret "internal/data/infra-test/merlin-sh" -}}  
               {{ .Data.data.pqsqlCA }}
               {{- end }}
             vault.hashicorp.com/agent-inject-template-server.crt: |  
-              {{- with secret "internal/data/infra-test/merlin" -}}  
+              {{- with secret "internal/data/infra-test/merlin-sh" -}}  
               {{ .Data.data.ServerCrt }}
               {{- end }}
             vault.hashicorp.com/agent-inject-template-server.key: |  
-              {{- with secret "internal/data/infra-test/merlin" -}}  
+              {{- with secret "internal/data/infra-test/merlin-sh" -}}  
               {{ .Data.data.ServerKey }}
               {{- end }}
             vault.hashicorp.com/agent-inject-template-kafka.crt: |  
-              {{- with secret "internal/data/infra-test/merlin" -}}  
+              {{- with secret "internal/data/infra-test/merlin-sh" -}}  
               {{ .Data.data.kafkaCA }}
               {{- end }}
             vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
@@ -71,7 +71,7 @@ spec:
               localhostProfile: infra-seccomp.json
           automountServiceAccountToken: false
           containers:
-          - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test:wmk-9ab081
+          - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test:new
             imagePullPolicy: IfNotPresent 
             args:
             - --config-file=/vault/secrets/compose-config.yml   
