@@ -6,6 +6,7 @@ resources:
 - autoscaler.yaml
 - sa.yaml
 - networkpolicy.yaml
+- cronjob.yaml
 commonAnnotations:
   kubernetes.ops.cluster: test
   kubernetes.ops.email: ""
