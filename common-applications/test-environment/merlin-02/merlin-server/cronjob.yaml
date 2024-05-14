@@ -71,7 +71,7 @@ spec:
               localhostProfile: infra-seccomp.json
           automountServiceAccountToken: false
           containers:
-          - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test:new
+          - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/server-cronjob:new
             imagePullPolicy: IfNotPresent 
             args:
             - --config-file=/vault/secrets/compose-config.yml   
