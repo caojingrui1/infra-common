@@ -10,6 +10,7 @@ namespace: merlin
 resources:
 - deployment.yaml
 - autoscaler.yaml
+- pvc.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-label-test
   newTag: 525_space-ca5569
