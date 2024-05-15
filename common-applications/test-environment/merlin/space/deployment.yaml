@@ -20,6 +20,7 @@ spec:
         vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-cci-config.yml: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-k8s-config.yml: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-k8s-config-tianyiyun.yml: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-sql.crt: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-docker.json: 'internal/data/infra-test/merlin'
@@ -30,6 +31,7 @@ spec:
         vault.hashicorp.com/agent-inject-perms-server.key: "0400"
         vault.hashicorp.com/agent-inject-perms-cci-config.yml: "0400"
         vault.hashicorp.com/agent-inject-perms-k8s-config.yml: "0400"
+        vault.hashicorp.com/agent-inject-perms-k8s-config-tianyiyun.yml: "0400"
         vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-sql.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-docker.json: "0400"
@@ -55,6 +57,10 @@ spec:
         vault.hashicorp.com/agent-inject-template-k8s-config.yml: |  
           {{- with secret "internal/data/infra-test/merlin" -}}  
           {{ .Data.data.k8sConf }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-k8s-config-tianyiyun.yml: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.k8sConfTianyiyun }}
           {{- end }}
         vault.hashicorp.com/agent-inject-template-kafka.crt: |  
           {{- with secret "internal/data/infra-test/merlin" -}}  
