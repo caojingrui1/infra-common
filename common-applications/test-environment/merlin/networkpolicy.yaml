@@ -425,4 +425,23 @@ spec:
     - Ingress
 apiVersion: networking.k8s.io/v1
 
-
+---
+kind: NetworkPolicy
+metadata:
+  name: merlin-space-monitor-policy-01
+  namespace: merlin
+spec:
+  podSelector:
+    matchLabels:
+      app: space-monitor
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8124
+      from:
+        - podSelector:
+            matchLabels:
+              app: space
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
