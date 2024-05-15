@@ -1,0 +1,11 @@
+resources:
+- deployment.yaml
+- namespace.yaml
+commonAnnotations:
+  kubernetes.ops.cluster: mindspore-cn4-xihe-npu-cluster
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: Alpine
+  kubernetes.ops.owner: gouzhonglin
+  kubernetes.ops.region: bj
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
