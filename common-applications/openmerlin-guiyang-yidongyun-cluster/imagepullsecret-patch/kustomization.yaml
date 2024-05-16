@@ -1,0 +1,12 @@
+resources:
+- deployment.yaml
+- namespace.yaml
+- rbac.yaml
+commonAnnotations:
+  kubernetes.ops.cluster: openmerlin-guiyang-yidongyun-cluster
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: ""
+  kubernetes.ops.owner: liuyang
+  kubernetes.ops.region: guiyang
+namespace: imagepullsecret-patch
+
