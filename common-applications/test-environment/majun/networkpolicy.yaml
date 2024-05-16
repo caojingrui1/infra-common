@@ -14,6 +14,27 @@ spec:
         - podSelector:
             matchLabels:
               app: servicecomb
+        - podSelector:
+            matchLabels:
+              app: codecheck
+        - podSelector:
+            matchLabels:
+              app: dashboard
+        - podSelector:
+            matchLabels:
+              app: forwarding
+        - podSelector:
+            matchLabels:
+              app: gateway
+        - podSelector:
+            matchLabels:
+              app: manager
+        - podSelector:
+            matchLabels:
+              app: platform-release
+        - podSelector:
+            matchLabels:
+              app: vulnerability
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
@@ -35,6 +56,27 @@ spec:
         - podSelector:
             matchLabels:
               app: servicecomb
+        - podSelector:
+            matchLabels:
+              app: basic
+        - podSelector:
+            matchLabels:
+              app: dashboard
+        - podSelector:
+            matchLabels:
+              app: forwarding
+        - podSelector:
+            matchLabels:
+              app: gateway
+        - podSelector:
+            matchLabels:
+              app: manager
+        - podSelector:
+            matchLabels:
+              app: platform-release
+        - podSelector:
+            matchLabels:
+              app: vulnerability
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
@@ -56,6 +98,27 @@ spec:
         - podSelector:
             matchLabels:
               app: servicecomb
+        - podSelector:
+            matchLabels:
+              app: basic
+        - podSelector:
+            matchLabels:
+              app: codecheck
+        - podSelector:
+            matchLabels:
+              app: forwarding
+        - podSelector:
+            matchLabels:
+              app: gateway
+        - podSelector:
+            matchLabels:
+              app: manager
+        - podSelector:
+            matchLabels:
+              app: platform-release
+        - podSelector:
+            matchLabels:
+              app: vulnerability
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
@@ -77,6 +140,27 @@ spec:
         - podSelector:
             matchLabels:
               app: servicecomb
+        - podSelector:
+            matchLabels:
+              app: basic
+        - podSelector:
+            matchLabels:
+              app: codecheck
+        - podSelector:
+            matchLabels:
+              app: dashboard
+        - podSelector:
+            matchLabels:
+              app: gateway
+        - podSelector:
+            matchLabels:
+              app: manager
+        - podSelector:
+            matchLabels:
+              app: platform-release
+        - podSelector:
+            matchLabels:
+              app: vulnerability
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
@@ -119,6 +203,30 @@ spec:
         - podSelector:
             matchLabels:
               app: servicecomb
+        - podSelector:
+            matchLabels:
+              app: basic
+        - podSelector:
+            matchLabels:
+              app: codecheck
+        - podSelector:
+            matchLabels:
+              app: dashboard
+        - podSelector:
+            matchLabels:
+              app: forwarding
+        - podSelector:
+            matchLabels:
+              app: gateway
+        - podSelector:
+            matchLabels:
+              app: manager
+        - podSelector:
+            matchLabels:
+              app: platform-release
+        - podSelector:
+            matchLabels:
+              app: vulnerability
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
@@ -140,6 +248,27 @@ spec:
         - podSelector:
             matchLabels:
               app: servicecomb
+        - podSelector:
+            matchLabels:
+              app: basic
+        - podSelector:
+            matchLabels:
+              app: codecheck
+        - podSelector:
+            matchLabels:
+              app: dashboard
+        - podSelector:
+            matchLabels:
+              app: gateway
+        - podSelector:
+            matchLabels:
+              app: forwarding
+        - podSelector:
+            matchLabels:
+              app: platform-release
+        - podSelector:
+            matchLabels:
+              app: vulnerability
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
@@ -161,6 +290,27 @@ spec:
         - podSelector:
             matchLabels:
               app: servicecomb
+        - podSelector:
+            matchLabels:
+              app: basic
+        - podSelector:
+            matchLabels:
+              app: codecheck
+        - podSelector:
+            matchLabels:
+              app: dashboard
+        - podSelector:
+            matchLabels:
+              app: gateway
+        - podSelector:
+            matchLabels:
+              app: manager
+        - podSelector:
+            matchLabels:
+              app: forwarding
+        - podSelector:
+            matchLabels:
+              app: vulnerability
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
@@ -224,6 +374,27 @@ spec:
         - podSelector:
             matchLabels:
               app: servicecomb
+        - podSelector:
+            matchLabels:
+              app: basic
+        - podSelector:
+            matchLabels:
+              app: codecheck
+        - podSelector:
+            matchLabels:
+              app: dashboard
+        - podSelector:
+            matchLabels:
+              app: gateway
+        - podSelector:
+            matchLabels:
+              app: manager
+        - podSelector:
+            matchLabels:
+              app: platform-release
+        - podSelector:
+            matchLabels:
+              app: forwarding
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
@@ -244,7 +415,7 @@ spec:
       from:
         - podSelector:
             matchLabels:
-              app: servicecomb
+              app: majun-website
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
