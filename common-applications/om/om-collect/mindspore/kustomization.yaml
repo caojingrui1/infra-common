@@ -39,6 +39,7 @@ resources:
   - big-model-research
   - big-model-commit
   - pypi-download
+  - event-log
 commonAnnotations:
   owner: zhongjun
   email: "jun.zhongjun2@gmail.com"
