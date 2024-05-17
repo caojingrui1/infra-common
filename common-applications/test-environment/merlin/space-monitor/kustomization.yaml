@@ -13,4 +13,4 @@ resources:
 - autoscaler.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-space-monitor-test
-  newTag: jq-d7509c
+  newTag: jq-07fe93
