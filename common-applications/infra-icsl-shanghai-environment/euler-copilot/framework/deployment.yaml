@@ -56,9 +56,9 @@ spec:
       - name: framework
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/euler-copilot/euler-copilot-framework-test:330-feature-fdeafe
         imagePullPolicy: IfNotPresent
-        - env:
-          - name: PROD
-            value: enabled
+        env:
+        - name: PROD
+          value: enabled
         volumeMounts:
         - mountPath: /euler-copilot-frame/logs
           name: data-volume

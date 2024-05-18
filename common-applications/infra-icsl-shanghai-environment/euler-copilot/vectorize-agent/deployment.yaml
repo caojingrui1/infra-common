@@ -56,11 +56,11 @@ spec:
       - name: vectorize-agent
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/euler-copilot/euler-copilot-vectorize-agent-test:330-release-24cac6
         imagePullPolicy: IfNotPresent
-        - env:
-          - name: PROD
-            value: enabled
-          - name: HF_HOME
-            value: /tmp
+        env:
+        - name: PROD
+          value: enabled
+        - name: HF_HOME
+          value: /tmp
         volumeMounts:
         - mountPath: /home/eulercopilot/vectorize_logs
           name: data-volume
