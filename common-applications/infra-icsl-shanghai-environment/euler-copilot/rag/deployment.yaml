@@ -56,9 +56,9 @@ spec:
       - name: rag
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/euler-copilot/euler-copilot-rag-test:330-feature-106db6
         imagePullPolicy: IfNotPresent
-        - env:
-          - name: PROD
-            value: enabled
+        env:
+        - name: PROD
+          value: enabled
         volumeMounts:
         - mountPath: /home/eulercopilot/rag_logs
           name: data-volume
