@@ -114,9 +114,13 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1001
+          readOnlyRootFilesystem: true
           capabilities:
             drop:
               - ALL
+        volumeMounts:
+        - mountPath: /var/lib/nginx/tmp
+          name: tmp-volume
       volumes:
         - name: token-vol
           projected:
@@ -125,3 +129,6 @@ spec:
                 audience: api
                 expirationSeconds: 600
                 path: token
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
