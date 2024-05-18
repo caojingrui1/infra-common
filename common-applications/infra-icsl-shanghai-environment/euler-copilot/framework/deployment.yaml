@@ -23,12 +23,6 @@ spec:
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/role: 'euler-copilot'
         vault.hashicorp.com/secret-volume-path: "/euler-copilot-frame/config"
-        vault.hashicorp.com/agent-inject-secret-encrypted_config.json: 'internal/data/icsl/euler-copilot'
-        vault.hashicorp.com/agent-inject-perms-encrypted_config.json: "0400"
-        vault.hashicorp.com/agent-inject-template-encrypted_config.json: |  
-          {{- with secret "internal/data/icsl/euler-copilot" -}}  
-          {{ .Data.data.frameworkConf }}
-          {{- end }}
         vault.hashicorp.com/agent-inject-secret-.env: 'internal/data/icsl/euler-copilot'
         vault.hashicorp.com/agent-inject-perms-.env: "0400"
         vault.hashicorp.com/agent-inject-template-.env: |  
