@@ -71,6 +71,8 @@ spec:
         - mountPath: /vectorize-agent/models         
           name: obs-euler-copilot
           subPath: models
+        - mountPath: /tmp
+          name: tmp-volume
         readinessProbe:
           failureThreshold: 3
           initialDelaySeconds: 30
@@ -101,6 +103,7 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1001
+          readOnlyRootFilesystem: true
           capabilities:
             drop:
               - ALL
@@ -118,3 +121,6 @@ spec:
         - name: obs-euler-copilot
           persistentVolumeClaim:
             claimName: obs-euler-copilot-volume
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory

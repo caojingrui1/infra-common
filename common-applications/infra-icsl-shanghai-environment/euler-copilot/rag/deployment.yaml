@@ -65,6 +65,8 @@ spec:
         volumeMounts:
         - mountPath: /home/eulercopilot/rag_logs
           name: data-volume
+        - mountPath: /tmp
+          name: tmp-volume
         readinessProbe:
           failureThreshold: 3
           initialDelaySeconds: 30
@@ -95,6 +97,7 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1001
+          readOnlyRootFilesystem: true
           capabilities:
             drop:
               - ALL
@@ -109,3 +112,6 @@ spec:
         - name: data-volume
           persistentVolumeClaim:
             claimName: euler-copilot-rag-data-volume
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
