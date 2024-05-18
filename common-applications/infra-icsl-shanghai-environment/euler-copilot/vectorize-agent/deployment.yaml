@@ -22,7 +22,7 @@ spec:
         vault.hashicorp.com/agent-run-as-group: "1001"
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/role: 'euler-copilot'
-        vault.hashicorp.com/secret-volume-path: "/config"
+        vault.hashicorp.com/secret-volume-path: "/vectorize-agent/config"
         vault.hashicorp.com/agent-inject-secret-.env: 'internal/data/icsl/euler-copilot'
         vault.hashicorp.com/agent-inject-perms-.env: "0400"
         vault.hashicorp.com/agent-inject-template-.env: |  
