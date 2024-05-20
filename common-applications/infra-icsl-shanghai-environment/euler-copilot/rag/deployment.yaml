@@ -29,16 +29,16 @@ spec:
           {{- with secret "internal/data/icsl/euler-copilot" -}}  
           {{ .Data.data.ragEnv }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/domain-tls'
+        vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/icsl/euler-copilot'
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
         vault.hashicorp.com/agent-inject-template-server.crt: |  
-          {{- with secret "internal/data/domain-tls" -}}  
+          {{- with secret "internal/data/icsl/euler-copilot" -}}  
           {{ .Data.data.ServerCrt }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/domain-tls'
+        vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/icsl/euler-copilot'
         vault.hashicorp.com/agent-inject-perms-server.key: "0400"
         vault.hashicorp.com/agent-inject-template-server.key: |  
-          {{- with secret "internal/data/domain-tls" -}}  
+          {{- with secret "internal/data/icsl/euler-copilot" -}}  
           {{ .Data.data.ServerKey }}
           {{- end }}
       labels:
