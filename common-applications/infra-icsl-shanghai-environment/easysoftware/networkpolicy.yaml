@@ -1,0 +1,41 @@
+---
+kind: NetworkPolicy
+metadata:
+  name: easysoftware-website-policy-01
+  namespace: easysoftware
+spec:
+  podSelector:
+    matchLabels:
+      app: website
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: website
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: easysoftware-server-policy-01
+  namespace: easysoftware
+spec:
+  podSelector:
+    matchLabels:
+      app: easysoftware
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: website
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
