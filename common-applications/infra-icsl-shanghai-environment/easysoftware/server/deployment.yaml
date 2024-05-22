@@ -52,8 +52,6 @@ spec:
         - name: APPLICATION_PATH
           value: /vault/secrets/application.yaml
         volumeMounts:
-        - mountPath: /tmp/easy/
-          name: data-volume
         - mountPath: /home/easysoftware/obs
           name: cert-volume
         resources:
@@ -93,9 +91,6 @@ spec:
                 audience: api
                 expirationSeconds: 600
                 path: token
-        - name: data-volume
-          persistentVolumeClaim:
-            claimName: server-data-volume
         - name: cert-volume
           persistentVolumeClaim:
             claimName: obs-easysoftware-icsl-data
