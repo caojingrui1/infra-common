@@ -68,7 +68,7 @@ spec:
       - args:
         - --max-probe-retry=20
         - --max-concurrency=20
-        - --domain-name=pool1.mindspore.cn
+        - --domain-name=xihe2.test.osinfra.cn
         command:
         - /app/manager
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/playground/codeserver-controller:master-f7b716-arm
