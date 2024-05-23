@@ -26,7 +26,7 @@ spec:
         vault.hashicorp.com/agent-inject-secret-mysql.jks: 'internal/data/infra-test/easysoftware'
         vault.hashicorp.com/agent-inject-template-mysql.jks: |  
           {{- with secret "internal/data/infra-test/easysoftware" -}}  
-          {{ .Data.data.mysql.jks }}
+          {{ .Data.data.mysqljks }}
           {{- end }}
         vault.hashicorp.com/agent-inject-secret-application.yaml: 'internal/data/infra-test/easysoftware'
         vault.hashicorp.com/agent-inject-template-application.yaml: |  
