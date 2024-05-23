@@ -12,4 +12,4 @@ commonAnnotations:
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-icsl
-  newTag: IT-ICSL-e2a1b7
+  newTag: IT-ICSL-396ee1
