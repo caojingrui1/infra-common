@@ -15,6 +15,16 @@ spec:
       labels:
         app: etherpad
     spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - etherpad
+            topologyKey: kubernetes.io/hostname
       imagePullSecrets:
       - name: huawei-swr-image-pull-secret
       nodeSelector:
