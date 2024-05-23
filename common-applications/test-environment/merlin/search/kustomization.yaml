@@ -14,4 +14,4 @@ resources:
 - pvc.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-search-test
-  newTag: v1.0.20240426153007
+  newTag: v1.0.20240523113232
