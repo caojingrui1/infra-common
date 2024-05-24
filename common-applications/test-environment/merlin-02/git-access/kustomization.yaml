@@ -7,7 +7,7 @@ commonAnnotations:
   kubernetes.ops.region: shanghai
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-git-access-test
-  newTag: main-33627d
+  newTag: v0.8.12-a4d408
 kind: Kustomization
 namespace: merlin-02
 resources:
