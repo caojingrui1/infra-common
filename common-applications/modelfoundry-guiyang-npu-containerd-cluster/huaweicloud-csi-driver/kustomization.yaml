@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+commonAnnotations:
+  kubernetes.ops.cluster: modelfoundry-guiyang-npu-containerd-cluster
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: ""
+  kubernetes.ops.owner: hwcloud
+  kubernetes.ops.region: guiyang
+kind: Kustomization
+namespace: hwcloud-csi-driver
+resources:
+- rbac.yaml
+- csi-evs.yaml
+- sc.yaml

@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+commonAnnotations:
+  kubernetes.ops.cluster: modelfoundry-guiyang-npu-containerd-cluster
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: ""
+  kubernetes.ops.owner: liuyang
+  kubernetes.ops.region: guiyang
+kind: Kustomization
+resources:
+- deployment.yaml

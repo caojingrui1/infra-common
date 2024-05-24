@@ -1,0 +1,314 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: CSIDriver
+metadata:
+  name: evs.csi.huaweicloud.com
+spec:
+  attachRequired: true
+  podInfoOnMount: true
+  volumeLifecycleModes:
+    - Persistent
+    - Ephemeral
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hwcloud-csi-driver
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: csi-evs-controller
+  namespace: hwcloud-csi-driver
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: csi-evs-provisioner
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: 'csi-evs-controller'
+        vault.hashicorp.com/agent-inject-secret-cloud-config: 'internal/data/openmind/evs-csi-plugin'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/agent-inject-containers: "evs-csi-provisioner"
+        vault.hashicorp.com/agent-inject-perms-cloud-config: "0400"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/agent-inject-template-cloud-config: |  
+          {{- with secret "internal/data/openmind/evs-csi-plugin" -}}  
+          {{ .Data.data.cloudConfig }}
+          {{- end }}
+        vault.hashicorp.com/tls-skip-verify: "true"
+      labels:
+        app: csi-evs-provisioner
+    spec:
+      serviceAccount: csi-evs-controller-sa
+      nodeSelector:
+        kubernetes.io/os: linux
+        node-role.kubernetes.io/worker: worker
+      imagePullSecrets:
+      - name: swr-image-pull
+      priorityClassName: system-cluster-critical
+      tolerations:
+        - key: "node-role.kubernetes.io/master"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+      containers:
+        - name: csi-attacher
+          image: swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/csi-attacher:v3.3.0-arm
+          args:
+            - "--csi-address=$(ADDRESS)"
+            - "--timeout=3m"
+            - "--leader-election=true"
+          env:
+            - name: ADDRESS
+              value: /var/lib/csi/sockets/pluginproxy/csi.sock
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /var/lib/csi/sockets/pluginproxy/
+        - name: csi-provisioner
+          image: swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/csi-provisioner:v3.0.0-arm
+          args:
+            - "--csi-address=$(ADDRESS)"
+            - "--timeout=3m"
+            - "--default-fstype=ext4"
+            - "--feature-gates=Topology=true"
+            - "--extra-create-metadata"
+            - "--leader-election=true"
+          env:
+            - name: ADDRESS
+              value: /var/lib/csi/sockets/pluginproxy/csi.sock
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /var/lib/csi/sockets/pluginproxy/
+        - name: csi-snapshotter
+          image: swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/csi-snapshotter:v4.2.1-arm
+          args:
+            - "--csi-address=$(ADDRESS)"
+            - "--timeout=3m"
+            - "--extra-create-metadata"
+            - "--leader-election=true"
+          env:
+            - name: ADDRESS
+              value: /var/lib/csi/sockets/pluginproxy/csi.sock
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /var/lib/csi/sockets/pluginproxy/
+              name: socket-dir
+        - name: csi-resizer
+          image: swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/csi-resizer:v1.3.0-arm
+          args:
+            - "--csi-address=$(ADDRESS)"
+            - "--timeout=3m"
+            - "--handle-volume-inuse-error=false"
+            - "--leader-election=true"
+          env:
+            - name: ADDRESS
+              value: /var/lib/csi/sockets/pluginproxy/csi.sock
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /var/lib/csi/sockets/pluginproxy/
+        - name: liveness-probe
+          image: swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/livenessprobe:v2.5.0-arm
+          args:
+            - "--csi-address=$(ADDRESS)"
+          env:
+            - name: ADDRESS
+              value: /var/lib/csi/sockets/pluginproxy/csi.sock
+          volumeMounts:
+            - mountPath: /var/lib/csi/sockets/pluginproxy/
+              name: socket-dir
+        - name: evs-csi-provisioner
+          #image: swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/evs-csi-plugin:v0.1.10-arm
+          image: swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/evs-csi-plugin:ca817324523beedf13d91e2f995e89ec1fb0dfea
+          args:
+            - /bin/evs-csi-plugin
+            - "-v=5"
+            - "--endpoint=$(CSI_ENDPOINT)"
+            - "--cloud-config=$(CLOUD_CONFIG)"
+            - "--cluster=$(CLUSTER_NAME)"
+            - "--remove-config"
+          env:
+            - name: CSI_ENDPOINT
+              value: unix://csi/csi.sock
+            - name: CLOUD_CONFIG
+              value: /vault/secrets/cloud-config
+            - name: CLUSTER_NAME
+              value: kubernetes
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 9808
+              name: healthz
+              protocol: TCP
+          # The probe
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /healthz
+              port: healthz
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+            periodSeconds: 30
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+      volumes:
+        - name: socket-dir
+          emptyDir:
+
+---
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: csi-evs-plugin
+  namespace: hwcloud-csi-driver
+spec:
+  selector:
+    matchLabels:
+      app: csi-evs-plugin
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: 'csi-evs-node'
+        vault.hashicorp.com/agent-inject-secret-cloud-config: 'internal/data/openmind/evs-csi-plugin'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/agent-inject-containers: "evs-csi-plugin"
+        vault.hashicorp.com/agent-inject-perms-cloud-config: "0400"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/agent-inject-template-cloud-config: |  
+          {{- with secret "internal/data/openmind/evs-csi-plugin" -}}  
+          {{ .Data.data.cloudConfig }}
+          {{- end }}
+        vault.hashicorp.com/tls-skip-verify: "true"
+      labels:
+        app: csi-evs-plugin
+    spec:
+      tolerations:
+        - operator: Exists
+      nodeSelector:
+        node-role.kubernetes.io/worker: worker
+      imagePullSecrets:
+      - name: swr-image-pull
+      serviceAccount: csi-evs-node-sa
+      containers:
+        - name: evs-driver-registrar
+          image: swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/csi-node-driver-registrar:v2.4.0-arm
+          args:
+            - "--v=5"
+            - "--csi-address=$(ADDRESS)"
+            - "--kubelet-registration-path=$(DRIVER_REG_SOCK_PATH)"
+          env:
+            - name: ADDRESS
+              value: /csi/csi.sock
+            - name: DRIVER_REG_SOCK_PATH
+              value: /var/lib/kubelet/plugins/evs.csi.huaweicloud.com/csi.sock
+            - name: KUBE_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+            - name: registration-dir
+              mountPath: /registration
+        - name: liveness-probe
+          image: swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/livenessprobe:v2.5.0-arm
+          args:
+            - --csi-address=/csi/csi.sock
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+        - name: evs-csi-plugin
+          securityContext:
+            capabilities:
+              add:
+                - SYS_ADMIN
+              drop:
+                - all
+            privileged: true
+            readOnlyRootFilesystem: true
+          #image: swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/evs-csi-plugin:v0.1.10-arm
+          image: swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/evs-csi-plugin:ca817324523beedf13d91e2f995e89ec1fb0dfea
+          args:
+            - /bin/evs-csi-plugin
+            - "--v=5"
+            - "--endpoint=$(CSI_ENDPOINT)"
+            - "--cloud-config=$(CLOUD_CONFIG)"
+            - "--remove-config"
+          env:
+            - name: CSI_ENDPOINT
+              value: unix://csi/csi.sock
+            - name: CLOUD_CONFIG
+              value: /vault/secrets/cloud-config
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 9808
+              name: healthz
+              protocol: TCP
+          # The probe
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /healthz
+              port: healthz
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+            periodSeconds: 30
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+            - name: kubelet-dir
+              mountPath: /var/lib/kubelet
+              mountPropagation: Bidirectional
+            - name: pass-pods-mount-dir
+              mountPath: /mnt/paas/kubernetes/kubelet
+              mountPropagation: Bidirectional
+            - name: pods-probe-dir
+              mountPath: /dev
+              mountPropagation: HostToContainer
+            - name: host-sys
+              mountPath: /sys
+              readOnly: true
+            - name: host-run-udev
+              mountPath: /run/udev
+              readOnly: true
+      volumes:
+        - name: socket-dir
+          hostPath:
+            path: /var/lib/kubelet/plugins/evs.csi.huaweicloud.com
+            type: DirectoryOrCreate
+        - name: registration-dir
+          hostPath:
+            path: /var/lib/kubelet/plugins_registry/
+            type: Directory
+        - name: kubelet-dir
+          hostPath:
+            path: /var/lib/kubelet
+            type: Directory
+        - name: pass-pods-mount-dir
+          hostPath:
+            path: /mnt/paas/kubernetes/kubelet
+            type: DirectoryOrCreate
+        - name: pods-probe-dir
+          hostPath:
+            path: /dev
+            type: Directory
+        - hostPath:
+            path: /sys
+            type: Directory
+          name: host-sys
+        - hostPath:
+            path: /run/udev
+            type: Directory
+          name: host-run-udev
