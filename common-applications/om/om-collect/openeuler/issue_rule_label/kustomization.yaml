@@ -13,5 +13,5 @@ patchesStrategicMerge:
 images:
   - name: swr.cn-north-4.myhuaweicloud.com/om/om-collect
     newName: swr.cn-north-4.myhuaweicloud.com/om/om-collection
-    newTag: 0.2.64
+    newTag: 0.5.68
 namePrefix: issue-rule-label-
