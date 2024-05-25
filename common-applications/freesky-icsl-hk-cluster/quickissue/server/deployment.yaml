@@ -5,6 +5,7 @@ metadata:
   name: openeuler-ipb-deployment
   namespace: openeuler-quickissue
 spec:
+  replicas: 2
   selector:
     matchLabels:
       app: openeuler-ipb
