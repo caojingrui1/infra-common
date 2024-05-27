@@ -31,7 +31,7 @@ spec:
         - name: DATASTAT_BASE_URL
           value: https://datastat-opengauss.osinfra.cn/query/sig/
         - name: TC_REPO_PATH
-          value: /root/
+          value: /backend/
         - name: ISSUES_BASE_URL
           value: https://quickissue.openeuler.org/api-issues/issues/
         - name: MEET_BASE_URL
