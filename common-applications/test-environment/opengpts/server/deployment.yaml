@@ -33,11 +33,11 @@ spec:
         - name: TC_REPO_PATH
           value: /backend/
         - name: ISSUES_BASE_URL
-          value: https://quickissue.openeuler.org/api-issues/issues/
+          value: https://dsapi.test.osinfra.cn/query/issue/
         - name: MEET_BASE_URL
           value: https://opengauss.org/api-meeting/
         - name: PULL_BASE_URL
-          value: https://dsapi.test.osinfra.cn/query/issue/
+          value: https://dsapi.test.osinfra.cn/query/pulls/
         - name: REPO_BASE_URL
           value: https://quickissue.openeuler.org/api-issues/repos/
         - name: COMMUNITY
