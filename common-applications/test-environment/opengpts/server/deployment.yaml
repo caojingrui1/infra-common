@@ -119,7 +119,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: /
+            path: /health
             port: 8000
           timeoutSeconds: 5
         name: server
@@ -130,7 +130,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: /
+            path: /health
             port: 8000
           timeoutSeconds: 5
         resources:
