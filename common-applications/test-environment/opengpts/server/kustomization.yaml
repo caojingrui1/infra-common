@@ -12,3 +12,6 @@ resources:
 - deployment.yaml
 - autoscaler.yaml
 - secrets.yaml
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/opengpts-server-test
+  newTag: main-d338f6
