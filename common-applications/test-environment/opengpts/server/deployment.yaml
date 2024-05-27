@@ -114,7 +114,7 @@ spec:
               name: opengpts-secret                                                                                   
         livenessProbe:
           failureThreshold: 3
-          initialDelaySeconds: 5
+          initialDelaySeconds: 60
           periodSeconds: 3
           successThreshold: 1
           httpGet:
@@ -125,7 +125,7 @@ spec:
         name: server
         readinessProbe:
           failureThreshold: 3
-          initialDelaySeconds: 5
+          initialDelaySeconds: 60
           periodSeconds: 3
           successThreshold: 1
           httpGet:
