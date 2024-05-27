@@ -12,3 +12,4 @@ resources:
 - website
 - namespace.yaml
 - sa.yaml
+- networkpolicy.yaml

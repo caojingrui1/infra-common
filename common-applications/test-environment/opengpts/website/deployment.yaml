@@ -27,6 +27,9 @@ spec:
       containers:
       - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/opengpts-website-test:main-15971b
         imagePullPolicy: IfNotPresent
+        env:
+        - name: VITE_BACKEND_URL
+          value: "http://server-service.opengpts:8000"
         livenessProbe:
           failureThreshold: 3
           initialDelaySeconds: 5
