@@ -1,0 +1,23 @@
+---
+kind: NetworkPolicy
+metadata:
+  name: jupyter-policy-01
+  namespace: mindspore-xihe
+spec:
+  podSelector:
+    matchLabels:
+      app: codeserver
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: ingress-nginx
+          namespaceSelector:
+            matchLabels:
+              app.kubernetes.io/name: ingress-nginx
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1

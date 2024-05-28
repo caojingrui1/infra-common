@@ -1,6 +1,7 @@
 resources:
 - deployment.yaml
 - namespace.yaml
+- networkpolicy.yaml
 commonAnnotations:
   kubernetes.ops.cluster: mindspore-cn4-xihe-npu-cluster
   kubernetes.ops.email: ""
