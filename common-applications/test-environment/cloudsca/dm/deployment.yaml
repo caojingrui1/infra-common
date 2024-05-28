@@ -1,0 +1,119 @@
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sca-dm
+  namespace: sca
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: sca-dm
+  template:
+    metadata:
+      labels:
+        app: sca-dm
+    spec:
+      imagePullSecrets:
+        - name: huawei-swr-image-pull-secret
+      securityContext:
+        fsGroup: 1000
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      containers:
+      - name: sca-dm
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/sca-datamanager:ac3e1c01f6700286f4eda7b572a641e6b54745f2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: app-port
+          containerPort: 7979
+        env:
+          - name: MY_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: SERVICE_NAME
+            value: utralsca-dm-service
+          - name: EUREKA_SERVER
+            value: "http://eureka-0.eureka:9000/eureka, http://eureka-1.eureka:9000/eureka"
+          - name: APP_ENV
+            value: prod
+          - name: PACKAGE_VERSION
+            value: 1.0-SNAPSHOT
+          - name: MAX_HEAP_MEM
+            value: 3072m
+          - name: INIT_HEAP_MEM
+            value: 1024m
+          - name: CMS_IOF
+            value: "75"
+          - name: majun.access.token
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: majun_access_token
+          - name: rootSalt
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: rootSalt
+        resources:
+          requests:
+            cpu: 2000m
+            memory: 6G
+          limits:
+            cpu: 2000m
+            memory: 6G
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /dm/health-check
+            port: 7979
+          timeoutSeconds: 10
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /dm/health-check
+            port: 7979
+          timeoutSeconds: 10
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          runAsGroup: 1000
+          capabilities:
+            drop:
+              - ALL
+        volumeMounts:
+        - mountPath: /work/work.ks
+          name: secret-volume
+          subPath: work_ks
+        - mountPath: /primary/primary.ks
+          name: secret-volume
+          subPath: primary_ks
+        - mountPath: /standby/standby.ks
+          name: secret-volume
+          subPath: standby_ks
+        - mountPath: /opt/app/sca/log/sca-utralsca-dm-service-gc/dump
+          name: log-volume
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: sca-secret
+      - name: log-volume
+        persistentVolumeClaim:
+          claimName: pvc-dm
+
+
+
+

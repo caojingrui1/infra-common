@@ -1,0 +1,34 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/custom-http-errors: "400, 500"
+    nginx.ingress.kubernetes.io/proxy-body-size: 100M
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+  name: cloudsca
+  namespace: sca
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - sca.test.osinfra.cn
+      secretName: sca-secret-new-lts
+  rules:
+    - host: sca.test.osinfra.cn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sca-web
+                port:
+                  number: 8528
+          - path: /gateway/
+            pathType: Prefix
+            backend:
+              service:
+                name: sca-gateway
+                port:
+                  number: 8080

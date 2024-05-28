@@ -1,0 +1,66 @@
+# Deployment 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sca-web
+  namespace: sca
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sca-web
+  template:
+    metadata:
+      labels:
+        app: sca-web
+    spec:
+      imagePullSecrets:
+        - name: huawei-swr-image-pull-secret
+      securityContext:
+        fsGroup: 1000
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      containers:
+      - name: sca-web
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/sca-web:9124cc61c05476a4362fba9ce9668d6b6d7df1d2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: app-port
+          containerPort: 9000
+        env:
+          - name: SERVICE_NAME
+            value: sca-web
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: 9000
+          timeoutSeconds: 10
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: 9000
+          timeoutSeconds: 10
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1000Mi
+          limits:
+            cpu: 500m
+            memory: 1000Mi
+
+
