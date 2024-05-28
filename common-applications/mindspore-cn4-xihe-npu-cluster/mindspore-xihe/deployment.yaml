@@ -24,7 +24,7 @@ metadata:
   name: oauth2-proxy
   namespace: mindspore-xihe
 spec:
-  replicas: 2
+  replicas: 0
   selector:
     matchLabels:
       k8s-app: oauth2-proxy
