@@ -1,0 +1,104 @@
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka
+  namespace: sca
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eureka
+  template:
+    metadata:
+      labels:
+        app: eureka
+    spec:
+      imagePullSecrets:
+        - name: huawei-swr-image-pull-secret
+      securityContext:
+        fsGroup: 1000
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      containers:
+      - name: eureka
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/sca-eureka:5c413af9c086cb18b86a8e49b70160caa2da2a29
+        ports:
+        - containerPort: 9000
+        env:
+        - name: MY_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: EUREKA_SERVER
+          value: "http://eureka.sca:9000/eureka"
+        - name: EUREKA_INSTANCE_HOSTNAME
+          value: ${MY_POD_NAME}.eureka
+        - name: SERVICE_NAME
+          value: utralsca-eureka
+        - name: APP_ENV
+          value: prod
+        - name: PACKAGE_VERSION
+          value: 1.0-SNAPSHOT
+        - name: MAX_HEAP_MEM
+          value: 512m
+        - name: INIT_HEAP_MEM
+          value: 256m
+        - name: CMS_IOF
+          value: "75"
+        - name: majun.access.token
+          valueFrom:
+            secretKeyRef:
+              name: sca-secret
+              key: majun_access_token
+        resources:
+          requests:
+            cpu: 200m
+            memory: 500Mi
+          limits:
+            cpu: 500m
+            memory: 600Mi
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /health-check
+            port: 9000
+          timeoutSeconds: 10
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /health-check
+            port: 9000
+          timeoutSeconds: 10
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          runAsGroup: 1000
+          capabilities:
+            drop:
+              - ALL
+        volumeMounts:
+        - mountPath: /work.ks
+          name: secret-volume
+          subPath: work_ks
+        - mountPath: /primary.ks
+          name: secret-volume
+          subPath: primary_ks
+        - mountPath: /standby.ks
+          name: secret-volume
+          subPath: standby_ks
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: sca-secret
