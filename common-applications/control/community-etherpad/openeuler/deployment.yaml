@@ -201,7 +201,7 @@ spec:
         - name: ISSUER_JWKS_URI
           value: "https://id.openeuler.org"
         - name: ISSUER_BASE_URL
-          value: "https://etherpad.openeuler.org
+          value: "https://etherpad.openeuler.org"
         - name: REQUIRE_AUTHENTICATION
           value: "true"
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/etherpad:dev-1.8.18-238541
