@@ -180,6 +180,30 @@ spec:
             secretKeyRef:
               key: admin_password
               name: ether-secret-v2
+        - name: ISSUER_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: ether-secret-v2
+              key: issuer_client_id
+        - name: ISSUER_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: ether-secret-v2
+              key: issuer_client_secret
+        - name: ISSUER_AUTHORIZATION_ENDPOINT
+          value: "https://id.openeuler.org/oneid/oidc/authorize"
+        - name: ISSUER_TOKEN_ENDPOINT
+          value: "https://id.openeuler.org/oneid/oidc/token"
+        - name: ISSUER_USERINFO_ENDPOINT
+          value: "https://id.openeuler.org/oneid/oidc/user"
+        - name: ISSUER_ENDPOINT
+          value: "https://openeuler-common.authing.cn/oidc"
+        - name: ISSUER_JWKS_URI
+          value: "https://id.openeuler.org"
+        - name: ISSUER_BASE_URL
+          value: "https://etherpad.openeuler.org
+        - name: REQUIRE_AUTHENTICATION
+          value: "true"
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/etherpad:dev-1.8.18-238541
         imagePullPolicy: IfNotPresent
         name: etherpad-lite
