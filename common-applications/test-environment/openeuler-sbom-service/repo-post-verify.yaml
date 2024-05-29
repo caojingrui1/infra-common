@@ -51,6 +51,16 @@ spec:
             secretKeyRef:
               key: access_token
               name: openeuler-repo-post-secrets
+        - name: rootSalt
+          valueFrom:
+            secretKeyRef:
+              key: rootSalt
+              name: openeuler-repo-post-secrets
+        - name: secretKey
+          valueFrom:
+            secretKeyRef:
+              key: secretKey
+              name: openeuler-repo-post-secrets
         resources:
           requests:
             cpu: 1000m
@@ -61,10 +71,22 @@ spec:
         volumeMounts:
         - mountPath: /var/log
           name: log-data-volume
+        - mountPath: /usr/local/primary.ks
+          name: secret
+          subPath: primary-ks
+        - mountPath: /usr/local/standby.ks
+          name: secret
+          subPath: standby-ks
+        - mountPath: /usr/local/work.ks
+          name: secret
+          subPath: work-ks
       volumes:
       - name: log-data-volume
         persistentVolumeClaim:
           claimName: openeuler-data-volume
+      - name: secret
+        secret:
+          secretName: openeuler-repo-post-secrets
 
 ---
 apiVersion: v1
