@@ -29,7 +29,7 @@ spec:
           {{- with secret "internal/data/infra-test/quickissue" -}}
           {{ .Data.data.ServerKey }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-secret-abc.txt: "internal/data/infra-test/quickissue
+        vault.hashicorp.com/agent-inject-secret-abc.txt: "internal/data/infra-test/quickissue"
         vault.hashicorp.com/agent-inject-template-abc.txt: |
           {{- with secret "internal/data/infra-test/quickissue" -}}
           {{ .Data.data.certificatePassword }}
