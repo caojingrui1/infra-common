@@ -9,5 +9,6 @@ commonAnnotations:
   kubernetes.ops.os.base: Alpine
   kubernetes.ops.owner: gouzhonglin
   kubernetes.ops.region: bj
+namespace: mindspore-xihe
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
