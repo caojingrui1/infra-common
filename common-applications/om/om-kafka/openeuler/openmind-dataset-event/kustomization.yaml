@@ -13,4 +13,4 @@ images:
   - name: swr.cn-north-4.myhuaweicloud.com/om/om-collect
     newName: swr.cn-north-4.myhuaweicloud.com/om/om-kafka
     newTag: 0.0.46
-namePrefix: openmind-model-event-
+namePrefix: openmind-dataset-event-
