@@ -13,4 +13,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/playground/codeserver-controller
-  newTag: master-f7b716-arm
+  newTag: npu-cce-3df357-arm
