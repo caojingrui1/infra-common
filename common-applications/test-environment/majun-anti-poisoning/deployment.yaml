@@ -50,10 +50,10 @@ spec:
             secretKeyRef:
               key: spring_data_mongodb_env
               name: anti-poisoning-secrets
-        - name: poisonSalt
+        - name: rootSalt
           valueFrom:
             secretKeyRef:
-              key: poisonSalt
+              key: rootSalt
               name: anti-poisoning-secrets
         - name: forwarding.call.anti.key
           valueFrom:
