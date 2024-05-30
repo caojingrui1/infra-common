@@ -5,6 +5,7 @@ metadata:
   name: quickissue-website
   namespace: openeuler-quickissue
 spec:
+  replicas: 2
   selector:
     matchLabels:
       app: quickissue-website
