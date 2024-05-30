@@ -14,4 +14,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/euler-copilot/euler-copilot-web-test
-  newTag: 330-feature-7a7a39
+  newTag: 330-feature-595c1b
