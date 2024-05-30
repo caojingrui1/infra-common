@@ -51,6 +51,8 @@ spec:
       serviceAccount: radiatest-beta
       imagePullSecrets:
       - name: huawei-swr-image-pull-secret
+      nodeSelector:
+        radiatest: "true"
       automountServiceAccountToken: false
       containers:
       - name: root-resolver
