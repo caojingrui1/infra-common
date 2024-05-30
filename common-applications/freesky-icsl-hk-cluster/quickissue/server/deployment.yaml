@@ -34,6 +34,8 @@ spec:
         seccompProfile:
           type: Localhost
           localhostProfile: infra-seccomp.json
+      nodeSelector:
+        quickissue: "true"
       automountServiceAccountToken: false
       containers:
       - name: openeuler-ipb
