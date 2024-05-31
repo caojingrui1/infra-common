@@ -71,13 +71,13 @@ spec:
         volumeMounts:
         - mountPath: /var/log
           name: log-data-volume
-        - mountPath: /usr/local/primary.ks
+        - mountPath: /usr/local/primary/ocpFile.ks
           name: secret
           subPath: primary-ks
-        - mountPath: /usr/local/standby.ks
+        - mountPath: /usr/local/standby/tcsFile.ks
           name: secret
           subPath: standby-ks
-        - mountPath: /usr/local/work.ks
+        - mountPath: /usr/local/work/tcwFile.ks
           name: secret
           subPath: work-ks
       volumes:
