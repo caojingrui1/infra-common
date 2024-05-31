@@ -28,7 +28,7 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - name: app-port
-          containerPort: 9000
+          containerPort: 8077
         env:
           - name: SERVICE_NAME
             value: sca-web
@@ -40,7 +40,7 @@ spec:
           httpGet:
             scheme: HTTP
             path: /
-            port: 9000
+            port: 8077
           timeoutSeconds: 10
         livenessProbe:
           failureThreshold: 3
@@ -50,7 +50,7 @@ spec:
           httpGet:
             scheme: HTTP
             path: /
-            port: 9000
+            port: 8077
           timeoutSeconds: 10
         securityContext:
           allowPrivilegeEscalation: false

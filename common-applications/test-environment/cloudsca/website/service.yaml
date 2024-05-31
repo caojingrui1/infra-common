@@ -10,9 +10,9 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 8528
+    - port: 8077
       name: web-app
       protocol: TCP
-      targetPort: 80
+      targetPort: 8077
   selector:
     app: sca-web

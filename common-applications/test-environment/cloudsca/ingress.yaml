@@ -24,7 +24,7 @@ spec:
               service:
                 name: sca-web
                 port:
-                  number: 8528
+                  number: 8077
           - path: /gateway/
             pathType: Prefix
             backend:
