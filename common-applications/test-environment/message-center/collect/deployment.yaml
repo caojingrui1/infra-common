@@ -43,12 +43,7 @@ spec:
       containers:
       - name: server
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/message-center/message-collect-test:ssp_dev-ad1f82
-        imagePullPolicy: IfNotPresent        
-        # args:
-        # - --enable_debug=true
-        # - --rm-cfg=false
-        # - --cert=/vault/secrets/server.crt
-        # - --key=/vault/secrets/server.key
+        imagePullPolicy: IfNotPresent
         resources:
           limits:
             cpu: 2
