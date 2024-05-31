@@ -63,7 +63,9 @@ spec:
           name: http
           protocol: TCP
         readinessProbe:
-          tcpSocket:
+          httpGet:
+            scheme: HTTPS
+            path: /zh/issues/
             port: 8080
           initialDelaySeconds: 10
           failureThreshold: 3
@@ -71,7 +73,9 @@ spec:
           periodSeconds: 10
           timeoutSeconds: 5
         livenessProbe:
-          tcpSocket:
+          httpGet:
+            scheme: HTTPS
+            path: /zh/issues/
             port: 8080
           initialDelaySeconds: 20
           periodSeconds: 20
