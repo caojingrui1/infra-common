@@ -35,7 +35,7 @@ spec:
           - name: EUREKA_SERVER
             value: "http://eureka.sca:9000/eureka"
           - name: APP_ENV
-            value: prod
+            value: beta
           - name: PACKAGE_VERSION
             value: 1.0-SNAPSHOT
           - name: MAX_HEAP_MEM
