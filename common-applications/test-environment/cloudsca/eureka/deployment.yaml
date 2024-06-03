@@ -40,7 +40,7 @@ spec:
         - name: SERVICE_NAME
           value: utralsca-eureka
         - name: APP_ENV
-          value: prod
+          value: beta
         - name: PACKAGE_VERSION
           value: 1.0-SNAPSHOT
         - name: MAX_HEAP_MEM
