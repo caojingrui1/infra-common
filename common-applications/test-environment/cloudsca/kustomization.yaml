@@ -8,6 +8,7 @@ resources:
 - ingress.yaml
 - namespace.yaml
 - secrets.yaml
+- sa.yaml
 namespace: sca
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
