@@ -52,6 +52,8 @@ spec:
           type: Localhost
           localhostProfile: infra-seccomp.json
       automountServiceAccountToken: false
+      nodeSelector:
+        euler-copilot: "true"
       containers:
       - name: vectorize-agent
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/euler-copilot/euler-copilot-vectorize-agent-test:330-release-24cac6
