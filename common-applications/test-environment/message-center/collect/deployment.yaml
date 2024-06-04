@@ -47,6 +47,9 @@ spec:
         - --eur-build-config-file=/vault/secrets/eur_build_conf.yaml
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/message-center/message-collect-test:ssp_dev-ad1f82
         imagePullPolicy: IfNotPresent
+        args:
+        - --config-file=/vault/secrets/conf.yaml
+        - --eur-build-config-file=/vault/secrets/eur_build_conf.yaml
         resources:
           limits:
             cpu: 2
