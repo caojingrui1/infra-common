@@ -1,0 +1,15 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: website-02-deployment-autoscaler
+  namespace: opengpts
+spec:
+  scaleTargetRef:
+    name: website-02-deployment
+  triggers:
+  - type: cron
+    metadata:
+      timezone: Asia/Shanghai
+      start: 35 8 * * *
+      end: 55 23 * * *
+      desiredReplicas: "1"
