@@ -68,7 +68,7 @@ spec:
           periodSeconds: 3
           successThreshold: 1
           httpGet:
-            scheme: HTTP
+            scheme: HTTPS
             path: /
             port: 8080
           timeoutSeconds: 5
@@ -79,7 +79,7 @@ spec:
           periodSeconds: 3
           successThreshold: 1
           httpGet:
-            scheme: HTTP
+            scheme: HTTPS
             path: /
             port: 8080
           timeoutSeconds: 5
