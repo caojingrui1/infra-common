@@ -3,14 +3,11 @@ commonAnnotations:
   kubernetes.ops.cluster: test
   kubernetes.ops.email: ""
   kubernetes.ops.os.base: openeuler
-  kubernetes.ops.owner: fuxinji
-  kubernetes.ops.region: shanghai
+  kubernetes.ops.owner: chenqi
+  kubernetes.ops.region: hk
 kind: Kustomization
 namespace: opengpts
 resources:
-- server
-- website
-- namespace.yaml
-- sa.yaml
-- networkpolicy.yaml
-- website-02
+- service.yaml
+- deployment.yaml
+- autoscaler.yaml
