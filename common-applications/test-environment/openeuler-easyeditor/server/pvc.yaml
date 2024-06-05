@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: easyeditor-data
   namespace: openeuler-easyeditor
+  annotations:
+    everest.io/disk-volume-type: SSD
 spec:
   accessModes:
     - ReadWriteOnce
