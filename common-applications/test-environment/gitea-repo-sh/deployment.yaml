@@ -92,9 +92,9 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1000
-          capabilities:
-            drop:
-              - ALL
+          # capabilities:
+          #   drop:
+          #     - ALL
         volumeMounts:
         - mountPath: /var/lib/gitea/
           name: data-volume
