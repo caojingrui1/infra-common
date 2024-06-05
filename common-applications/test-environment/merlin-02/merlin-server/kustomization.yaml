@@ -7,7 +7,7 @@ commonAnnotations:
   kubernetes.ops.region: shanghai
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
-  newTag: lyh_dev-db211f
+  newTag: main-13ead5
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/server-cronjob
   newTag: new-6f991b
 kind: Kustomization
