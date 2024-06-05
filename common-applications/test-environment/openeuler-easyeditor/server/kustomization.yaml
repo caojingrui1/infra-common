@@ -4,9 +4,10 @@ resources:
 - secret.yaml
 - ingress.yaml
 - autoscaler.yaml
+- pvc.yaml
 commonAnnotations:
   kubernetes.ops.cluster: test
-  kubernetes.ops.email: jun.zhongjun2@gmail.com
+  kubernetes.ops.email: ""
   kubernetes.ops.os.base: ubuntu
   kubernetes.ops.owner: zhongjun
   kubernetes.ops.region: hk

@@ -49,10 +49,15 @@ spec:
         - mountPath: /var/lib/easyedit/application.yaml
           name: easyeditor-secret
           subPath: application.yaml
+        - mountPath: /opt/data/
+          name: data
       volumes:
       - name: easyeditor-secret
         secret:
-            secretName: easyeditor-secret
+          secretName: easyeditor-secret
+      - name: data
+        persistentVolumeClaim:
+          claimName: easyeditor-data
 
         
       
