@@ -13,4 +13,4 @@ resources:
 - autoscaler.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-space-monitor-test
-  newTag: loops_dev-d5c6b5
+  newTag: loops_dev-aafe31
