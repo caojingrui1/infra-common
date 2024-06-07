@@ -14,3 +14,5 @@ resources:
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-space-monitor-test
   newTag: jq_dev-8ddf32
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-space-test
+  newTag: jq_dev
