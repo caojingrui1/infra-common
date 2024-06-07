@@ -135,7 +135,7 @@ spec:
             properties:
               automountServiceAccountToken:
                 description: Specifies AutomountServiceAccountToken for code server
-                type: bool
+                type: boolean
               args:
                 description: Specifies the args, will be ignored if command specified
                 items:
