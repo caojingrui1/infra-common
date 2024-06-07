@@ -9,6 +9,7 @@ resources:
 - message-server
 - git-access
 - space
+- space-monitor
 - clam
 - vault
 - search
