@@ -7,7 +7,7 @@ commonAnnotations:
   kubernetes.ops.region: shanghai
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
-  newTag: avatar-0bc0c6
+  newTag: avatar-org-22f967
 kind: Kustomization
 namespace: merlin
 resources:
