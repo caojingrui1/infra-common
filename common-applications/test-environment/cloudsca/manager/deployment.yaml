@@ -82,6 +82,16 @@ spec:
               secretKeyRef:
                 name: sca-secret
                 key: rootSalt
+          - name: encrypt.key
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: encryptkey
+          - name: appId
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: appId
         resources:
           requests:
             cpu: 200m
