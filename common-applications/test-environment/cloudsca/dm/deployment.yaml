@@ -67,7 +67,7 @@ spec:
           - name: SERVICE_NAME
             value: utralsca-dm-service
           - name: EUREKA_SERVER
-            value: "http://eureka-0.eureka:9000/eureka, http://eureka-1.eureka:9000/eureka"
+            value: "http://eureka.sca:9000/eureka"
           - name: APP_ENV
             value: beta
           - name: PACKAGE_VERSION

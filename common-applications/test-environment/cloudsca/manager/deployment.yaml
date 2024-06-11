@@ -106,7 +106,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: /gateway/health-check
+            path: /manager/health-check
             port: 7978
           timeoutSeconds: 10
         livenessProbe:
@@ -116,7 +116,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: /gateway/health-check
+            path: /manager/health-check
             port: 7978
           timeoutSeconds: 10
         securityContext:
