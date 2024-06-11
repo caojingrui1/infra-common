@@ -1,6 +1,7 @@
 resources:
 - install-code-server-operator.yaml
 - role.yaml
+- crd.yaml
 commonLabels:
   common-app: code-server-x86-hk
 commonAnnotations:
