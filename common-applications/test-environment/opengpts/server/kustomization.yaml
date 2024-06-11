@@ -14,4 +14,4 @@ resources:
 - secrets.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/opengpts-server-test
-  newTag: main-19aa15
+  newTag: main-a4e694
