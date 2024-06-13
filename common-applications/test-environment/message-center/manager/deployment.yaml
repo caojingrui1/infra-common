@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: collect-deployment
+  name: manager-deployment
   namespace: message-center
 spec:
   selector:
     matchLabels:
-      app: collect
+      app: manager
   strategy:
     rollingUpdate:
       maxUnavailable: 1
@@ -21,20 +21,15 @@ spec:
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/role: 'message-center'
+        vault.hashicorp.com/secret-volume-path: "/config"
         vault.hashicorp.com/agent-inject-perms-conf.yaml: "0400"
         vault.hashicorp.com/agent-inject-secret-conf.yaml: 'internal/data/infra-test/message-center'
         vault.hashicorp.com/agent-inject-template-conf.yaml: |  
           {{- with secret "internal/data/infra-test/message-center" -}}  
-          {{ .Data.data.collectConf }}
-          {{- end }}
-        vault.hashicorp.com/agent-inject-perms-eur_build_conf.yaml: "0400"
-        vault.hashicorp.com/agent-inject-secret-eur_build_conf.yaml: 'internal/data/infra-test/message-center'
-        vault.hashicorp.com/agent-inject-template-eur_build_conf.yaml: |  
-          {{- with secret "internal/data/infra-test/message-center" -}}  
-          {{ .Data.data.collectEurBuildConf }}
+          {{ .Data.data.managerConf }}
           {{- end }}
       labels:
-        app: collect
+        app: manager
     spec:
       serviceAccount: message-center
       imagePullSecrets:
@@ -42,11 +37,26 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: server
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/message-center/message-manager-test:hrz_dev-f81a49
+        imagePullPolicy: IfNotPresent
         args:
         - --config-file=/vault/secrets/conf.yaml
-        - --eur-build-config-file=/vault/secrets/eur_build_conf.yaml
-        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/message-center/message-collect-test:ssp_dev-ad1f82
-        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 8082
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 8082
+          timeoutSeconds: 5
         resources:
           limits:
             cpu: 2
