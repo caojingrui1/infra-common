@@ -968,7 +968,7 @@ data:
 
     begin authenticators
     
-    CLIENT_ALLOW_IP_HOSTS = 172.20.0.0/16 : 127.0.0.1 : ::::1 : 192.168.1.0/24 : 202.170.89.0/24 : 49.0.247.0/24
+    CLIENT_ALLOW_IP_HOSTS = 172.20.0.0/16 : 127.0.0.1 : ::::1 : 192.168.1.0/24 : 202.170.89.0/24 : 49.0.247.0/24 : 119.8.52.77
 
     plain_server:
       driver = plaintext
