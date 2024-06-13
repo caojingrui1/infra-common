@@ -38,7 +38,7 @@ data:
       }
 
       location /query/ {
-        proxy_pass https://dsapi.osinfra.cn ;
+        proxy_pass https://dsapi.test.osinfra.cn ;
       }
 
       location /ip-api/ {
