@@ -13,4 +13,4 @@ resources:
 - autoscaler.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/opengpts-easytoolui-test
-  newTag: main-3c8ae1
+  newTag: main-a22105
