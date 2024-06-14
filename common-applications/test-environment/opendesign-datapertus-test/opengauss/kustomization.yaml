@@ -18,4 +18,4 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/datastat/openeuler-test
   newTag: 2aa2f79321f318912043b3949920e96bd43f2a80
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/datastat/opengauss-test
-  newTag: 1db3fdf6964b2cc2c84bb31101559b2678c08c0d
+  newTag: 692e6e4d17dd0c7b6e741369c0e3654ae108c29d
