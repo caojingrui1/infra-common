@@ -5,10 +5,14 @@ kind: Service
 metadata:
   name: sca-web
   namespace: sca
+  annotations:
+    kubernetes.io/elb.id: 84d6821a-14c5-4de9-acbf-93c7dd2c4aa9
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
   labels:
     app: sca-web
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - port: 8077
       name: web-app
