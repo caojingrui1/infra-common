@@ -15,4 +15,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/cla-website-test
-  newTag: fc6bf5a0178855608db3e786b914174fc18623e3
+  newTag: 29686e639e3445751550f94de13b46de98767f66
