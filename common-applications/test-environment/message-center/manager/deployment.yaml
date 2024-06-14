@@ -21,7 +21,6 @@ spec:
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/role: 'message-center'
-        vault.hashicorp.com/secret-volume-path: "/config"
         vault.hashicorp.com/agent-inject-perms-conf.yaml: "0400"
         vault.hashicorp.com/agent-inject-secret-conf.yaml: 'internal/data/infra-test/message-center'
         vault.hashicorp.com/agent-inject-template-conf.yaml: |  
