@@ -14,4 +14,4 @@ resources:
 - pvc.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-space-test
-  newTag: coroutine_interrupt-d7c76a
+  newTag: coroutine_interrupt-17622c
