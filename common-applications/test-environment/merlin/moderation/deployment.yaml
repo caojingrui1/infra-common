@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moderation-deployment
+  namespace: merlin
+spec:
+  selector:
+    matchLabels:
+      app: moderation
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/role: 'merlin'
+        vault.hashicorp.com/agent-inject-secret-config.yml: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-perms-config.yml: "0400"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/agent-inject-template-config.yml: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.moderationConf }}
+          {{- end }}
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+      labels:
+        app: moderation
+    spec:
+      serviceAccount: merlin
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      securityContext:
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      containers:
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-moderation-test:main-68bed3
+        imagePullPolicy: IfNotPresent        
+        args:
+        - --config-file=/vault/secrets/config.yml
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 3
+          successThreshold: 1
+          httpGet:
+            scheme: HTTPS
+            path: /
+            port: 8080
+          timeoutSeconds: 5
+        name: moderation
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 3
+          successThreshold: 1
+          httpGet:
+            scheme: HTTPS
+            path: /
+            port: 8080
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 1
+            memory: 1Gi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token
