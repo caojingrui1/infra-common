@@ -13,6 +13,6 @@ resources:
 - autoscaler.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-space-monitor-test
-  newTag: sleep-debugv9
+  newTag: sleep-debugv10
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-space-test
   newTag: test-06141036
