@@ -6,7 +6,7 @@ metadata:
   name: oauth2-proxy
   namespace: infra-monitor
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       k8s-app: oauth2-proxy
@@ -77,7 +77,7 @@ metadata:
   name: uptime-status-oauth2
   namespace: infra-monitor
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: uptime-status-oauth2
@@ -146,7 +146,7 @@ metadata:
   name: grafana-oauth2
   namespace: infra-monitor
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: grafana-oauth2
