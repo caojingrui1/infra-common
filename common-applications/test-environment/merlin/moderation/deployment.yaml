@@ -50,7 +50,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTPS
-            path: /
+            path: /internal/heartbeat
             port: 8080
           timeoutSeconds: 5
         name: moderation
@@ -61,7 +61,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTPS
-            path: /
+            path: /internal/heartbeat
             port: 8080
           timeoutSeconds: 5
         resources:
