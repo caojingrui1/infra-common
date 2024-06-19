@@ -14,4 +14,4 @@ resources:
 - pvc.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-space-test
-  newTag: zxy_save_log-6ca2fb
+  newTag: zxy_save_log-b7fdf2
