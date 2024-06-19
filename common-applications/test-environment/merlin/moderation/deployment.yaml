@@ -26,6 +26,18 @@ spec:
           {{- with secret "internal/data/infra-test/merlin" -}}  
           {{ .Data.data.moderationConf }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
+        vault.hashicorp.com/agent-inject-template-server.crt: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.ServerCrt }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-perms-server.key: "0400"
+        vault.hashicorp.com/agent-inject-template-server.key: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.ServerKey }}
+          {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
       labels:
         app: moderation
@@ -43,6 +55,11 @@ spec:
         imagePullPolicy: IfNotPresent        
         args:
         - --config-file=/vault/secrets/config.yml
+        - --port=8080
+        - --enable_debug=true
+        - --rm-cfg=false
+        - --cert=/vault/secrets/server.crt
+        - --key=/vault/secrets/server.key
         livenessProbe:
           failureThreshold: 3
           initialDelaySeconds: 5
