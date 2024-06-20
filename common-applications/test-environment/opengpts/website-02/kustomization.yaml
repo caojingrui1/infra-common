@@ -10,7 +10,7 @@ namespace: opengpts
 resources:
 - service.yaml
 - deployment.yaml
-- autoscaler.yaml
+#- autoscaler.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/opengpts-easytoolui-test
   newTag: main-fd5ae1

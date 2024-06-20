@@ -10,7 +10,7 @@ namespace: opengpts
 resources:
 - service.yaml
 - deployment.yaml
-- autoscaler.yaml
+#- autoscaler.yaml
 - secrets.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/opengpts-server-test
