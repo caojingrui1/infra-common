@@ -43,7 +43,7 @@ resources:
   - company-location
   - github_pr_issue
   - iso_download
-  - qinghua-down
+  - swr
   - city-location
   - gitee-repo
   - gitee-pr-version
