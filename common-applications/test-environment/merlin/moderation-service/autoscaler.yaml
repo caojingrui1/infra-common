@@ -1,11 +1,11 @@
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: moderation-deployment-autoscaler
+  name: moderation-service-deployment-autoscaler
   namespace: merlin
 spec:
   scaleTargetRef:
-    name: moderation-deployment
+    name: moderation-service-deployment
   triggers:
   - type: cron
     metadata:
