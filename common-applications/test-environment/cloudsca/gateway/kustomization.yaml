@@ -1,0 +1,9 @@
+resources:
+- deployment.yaml
+- service.yaml
+namespace: sca
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/sca-gateway
+  newTag: 7d94bb3e82970e67efbfe2352ee89301e7f77478

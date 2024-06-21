@@ -5,6 +5,7 @@ metadata:
   name: quickissue-website
   namespace: openeuler-quickissue
 spec:
+  replicas: 2
   selector:
     matchLabels:
       app: quickissue-website
@@ -53,6 +54,8 @@ spec:
         seccompProfile:
           type: Localhost
           localhostProfile: infra-seccomp.json
+      nodeSelector:
+        quickissue: "true"
       automountServiceAccountToken: false
       containers:
       - name: websitepod
@@ -93,11 +96,11 @@ spec:
           timeoutSeconds: 10
         resources:
           requests:
-            cpu: 500m
-            memory: 500Mi
+            cpu: 1000m
+            memory: 1000Mi
           limits:
-            cpu: 500m
-            memory: 500Mi
+            cpu: 1000m
+            memory: 1000Mi
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1000

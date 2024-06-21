@@ -1,0 +1,154 @@
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sca-analysis
+  namespace: sca
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sca-analysis
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: 'sca'
+        vault.hashicorp.com/agent-inject-secret-mongo.crt: 'internal/data/infra-test/sca'
+        vault.hashicorp.com/agent-inject-secret-redis.crt: 'internal/data/infra-test/sca'
+        vault.hashicorp.com/agent-inject-secret-mysql.crt: 'internal/data/infra-test/sca'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/agent-inject-perms-mongo.crt: "0400"
+        vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
+        vault.hashicorp.com/agent-inject-perms-mysql.crt: "0400"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/secret-volume-path: "/opt/app/sca/cert"
+        vault.hashicorp.com/agent-inject-template-mongo.crt: |  
+          {{- with secret "internal/data/infra-test/sca" -}}  
+          {{ .Data.data.mongoCA }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-redis.crt: |  
+          {{- with secret "internal/data/infra-test/sca" -}}  
+          {{ .Data.data.redisCA }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-mysql.crt: |  
+          {{- with secret "internal/data/infra-test/sca" -}}  
+          {{ .Data.data.mysqlCA }}
+          {{- end }}
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/tls-skip-verify: "true"
+      labels:
+        app: sca-analysis
+    spec:
+      imagePullSecrets:
+        - name: huawei-swr-image-pull-secret
+      serviceAccount: sca
+      securityContext:
+        fsGroup: 1000
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      containers:
+      - name: sca-analysis
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/sca-analysis:ce65f77a947d3ed515f02a0e2258b1b7b594a2b0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: app-port
+          containerPort: 8015
+        env:
+          - name: MY_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: SERVICE_NAME
+            value: utralsca-analysis-service
+          - name: EUREKA_SERVER
+            value: "http://eureka.sca:9000/eureka"
+          - name: APP_ENV
+            value: beta
+          - name: PACKAGE_VERSION
+            value: 1.0-SNAPSHOT
+          - name: MAX_HEAP_MEM
+            value: 3072m
+          - name: INIT_HEAP_MEM
+            value: 1024m
+          - name: CMS_IOF
+            value: "75"
+          - name: majun.access.token
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: majun_access_token
+          - name: rootSalt
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: rootSalt
+          - name: encrypt.key
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: encryptkey
+          - name: appId
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: appId
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 2G
+          limits:
+            cpu: 1000m
+            memory: 2G
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /analysis/health-check
+            port: 8015
+          timeoutSeconds: 10
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /analysis/health-check
+            port: 8015
+          timeoutSeconds: 10
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          runAsGroup: 1000
+          capabilities:
+            drop:
+              - ALL
+        volumeMounts:
+        - mountPath: /work/work.ks
+          name: secret-volume
+          subPath: work_ks
+        - mountPath: /primary/primary.ks
+          name: secret-volume
+          subPath: primary_ks
+        - mountPath: /standby/standby.ks
+          name: secret-volume
+          subPath: standby_ks
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: sca-secret
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token
+

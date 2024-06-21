@@ -2,6 +2,7 @@ resources:
 - crd.yaml
 - secrets-manager.yaml
 - namespace.yaml
+- networkpolicy.yaml
 commonAnnotations:
   kubernetes.ops.cluster: openmind-guiyang-prod-cluster
   kubernetes.ops.email: ""

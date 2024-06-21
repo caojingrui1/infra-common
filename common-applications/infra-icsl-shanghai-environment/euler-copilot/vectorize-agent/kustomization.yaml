@@ -14,4 +14,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/euler-copilot/euler-copilot-vectorize-agent-test
-  newTag: 330-feature-54d54b
+  newTag: 330-feature-1fb5b9

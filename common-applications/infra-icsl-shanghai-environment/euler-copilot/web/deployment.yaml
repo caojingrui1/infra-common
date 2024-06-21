@@ -70,6 +70,8 @@ spec:
           type: Localhost
           localhostProfile: infra-seccomp.json
       automountServiceAccountToken: false
+      nodeSelector:
+        euler-copilot: "true"
       containers:
       - name: web
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/euler-copilot/euler-copilot-web-test:330-feature-1888aa

@@ -7,7 +7,7 @@ commonAnnotations:
   kubernetes.ops.region: shanghai
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-devops/user_management
-  newTag: v1.0.20240311140610
+  newTag: master-cc25c3
 kind: Kustomization
 namespace: openeuler-devops
 resources:

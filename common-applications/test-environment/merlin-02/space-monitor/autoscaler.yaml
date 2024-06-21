@@ -1,0 +1,15 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: space-monitor-deployment-autoscaler
+  namespace: merlin-02
+spec:
+  scaleTargetRef:
+    name: space-monitor-deployment
+  triggers:
+  - type: cron
+    metadata:
+      timezone: Asia/Shanghai
+      start: 35 8 * * *
+      end: 55 23 * * *
+      desiredReplicas: "1"

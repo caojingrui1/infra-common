@@ -1,18 +1,18 @@
 resources:
 - namespace.yaml
-- ingress.yaml
 - service.yaml
 - deployment.yaml
 - autoscaler.yaml
+- sa.yaml
 namespace: openeuler-new-feature
 commonAnnotations:
   kubernetes.ops.cluster: test
-  kubernetes.ops.email: 845831435@qq.com
-  kubernetes.ops.os.base: debian
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: openeuler
   kubernetes.ops.owner: wangxing
   kubernetes.ops.region: hk
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-quickissue-test
-  newTag: 92835587f83ec1a0132d17b54fe5bf7a6383b0f6
+  newTag: 49838a65aa929d9236be35ca7189d41ab1feda9e

@@ -1,0 +1,10 @@
+resources:
+- v1.8.2-deployment.yaml
+commonAnnotations:
+  kubernetes.ops.cluster: mindspore-cn4-xihe-npu-test-cluster
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: "Alpine"
+  kubernetes.ops.owner: liuyang
+  kubernetes.ops.region: bj
+namespace: ingress-nginx
+

@@ -1,0 +1,18 @@
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: sca-gateway
+  namespace: sca
+  labels:
+    app: sca-gateway
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      name: gateway-app
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: sca-gateway

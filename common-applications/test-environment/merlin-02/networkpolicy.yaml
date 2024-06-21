@@ -212,6 +212,27 @@ apiVersion: networking.k8s.io/v1
 ---
 kind: NetworkPolicy
 metadata:
+  name: merlin-server-sh-policy-05
+  namespace: merlin-02
+spec:
+  podSelector:
+    matchLabels:
+      app: server
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: space-monitor
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
   name: merlin-space-sh-policy-02
   namespace: merlin-02
 spec:
@@ -226,6 +247,27 @@ spec:
         - podSelector:
             matchLabels:
               app: server
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: merlin-space-sh-policy-03
+  namespace: merlin-02
+spec:
+  podSelector:
+    matchLabels:
+      app: space
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8123
+      from:
+        - podSelector:
+            matchLabels:
+              app: space-monitor
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
@@ -293,5 +335,24 @@ spec:
     - Ingress
 apiVersion: networking.k8s.io/v1
 
-
+---
+kind: NetworkPolicy
+metadata:
+  name: merlin-space-monitor-sh-policy-01
+  namespace: merlin-02
+spec:
+  podSelector:
+    matchLabels:
+      app: space-monitor
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8124
+      from:
+        - podSelector:
+            matchLabels:
+              app: space
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
 

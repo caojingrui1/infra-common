@@ -22,6 +22,9 @@ spec:
       containers:
       - name: server
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/easyeditor/server-test:v1.0.20230303154202
+        env:
+        - name: APPLICATION_PATH
+          value: /var/lib/easyedit/application.yaml
         resources:
           requests:
             cpu: 1000m
@@ -49,10 +52,15 @@ spec:
         - mountPath: /var/lib/easyedit/application.yaml
           name: easyeditor-secret
           subPath: application.yaml
+        - mountPath: /opt/data/
+          name: data
       volumes:
       - name: easyeditor-secret
         secret:
-            secretName: easyeditor-secret
+          secretName: easyeditor-secret
+      - name: data
+        persistentVolumeClaim:
+          claimName: easyeditor-data
 
         
       

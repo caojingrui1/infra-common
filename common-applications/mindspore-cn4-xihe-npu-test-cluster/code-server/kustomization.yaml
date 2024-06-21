@@ -1,0 +1,17 @@
+resources:
+- install-code-server-operator.yaml
+- role.yaml
+- crd.yaml
+commonLabels:
+  common-app: code-server-x86-hk
+commonAnnotations:
+  kubernetes.ops.cluster: mindspore-cn4-xihe-npu-test-cluster
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: Alpine
+  kubernetes.ops.owner: tommylike
+  kubernetes.ops.region: bj
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/playground/codeserver-controller
+  newTag: security-4e3929-arm
