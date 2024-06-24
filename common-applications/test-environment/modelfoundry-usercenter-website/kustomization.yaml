@@ -17,4 +17,4 @@ resources:
 - networkpolicy.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/modelfoundry-usercenter-website
-  newTag: test-b0770d-test
+  newTag: test-113d76-test
