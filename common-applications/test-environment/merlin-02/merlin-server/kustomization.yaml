@@ -9,7 +9,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
   newTag: license-915554
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/server-cronjob
-  newTag: main-8389c0
+  newTag: v0.9.0-0afa26
 kind: Kustomization
 namespace: merlin-02
 resources:
