@@ -1,0 +1,6 @@
+resources:
+- autoscaler.yaml
+- deployment.yaml
+namespace: message-center
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
