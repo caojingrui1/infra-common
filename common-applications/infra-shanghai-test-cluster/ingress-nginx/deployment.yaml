@@ -2,6 +2,10 @@
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.id: f95d7f2a-87a7-466f-8788-0107faf7efa1
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
   name: ingress-nginx-controller
   namespace: ingress-nginx
 spec:
