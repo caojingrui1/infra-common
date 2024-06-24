@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transfer-deployment
+  namespace: message-center
+spec:
+  selector:
+    matchLabels:
+      app: transfer
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/role: 'message-center'
+        vault.hashicorp.com/agent-inject-perms-conf.yaml: "0400"
+        vault.hashicorp.com/agent-inject-secret-conf.yaml: 'internal/data/infra-test/message-center'
+        vault.hashicorp.com/agent-inject-template-conf.yaml: |  
+          {{- with secret "internal/data/infra-test/message-center" -}}  
+          {{ .Data.data.transferConf }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-perms-eur_build.yaml: "0400"
+        vault.hashicorp.com/agent-inject-secret-eur_build.yaml: 'internal/data/infra-test/message-center'
+        vault.hashicorp.com/agent-inject-template-eur_build.yaml: |  
+          {{- with secret "internal/data/infra-test/message-center" -}}  
+          {{ .Data.data.transferEurBuildConf }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-perms-gitee_conf.yaml: "0400"
+        vault.hashicorp.com/agent-inject-secret-gitee_conf.yaml: 'internal/data/infra-test/message-center'
+        vault.hashicorp.com/agent-inject-template-gitee_conf.yaml: |  
+          {{- with secret "internal/data/infra-test/message-center" -}}  
+          {{ .Data.data.transferGiteeConf }}
+          {{- end }}
+      labels:
+        app: transfer
+    spec:
+      serviceAccount: message-center
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      automountServiceAccountToken: false
+      containers:
+      - name: transfer
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/message-center/message-transfer-test:ssp_dev-a7f52b
+        imagePullPolicy: IfNotPresent
+        args:
+        - --config-file=/vault/secrets/conf.yaml
+        - --eur-build-config-file=/vault/secrets/eur_build.yaml
+        - --gitee-config-file=/vault/secrets/gitee_conf.yaml
+        resources:
+          limits:
+            cpu: 2
+            memory: 8Gi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token
