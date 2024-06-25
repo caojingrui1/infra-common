@@ -52,7 +52,7 @@ spec:
             secretKeyRef:
               key: jenkins-admin-user
               name: osinfra-jenkins
-        image: swr.cn-north-4.myhuaweicloud.com/openeuler/jenkins:2.395-jdk11
+        image: swr.cn-north-4.myhuaweicloud.com/openeuler/jenkins:2.429-jdk11
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 5
