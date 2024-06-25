@@ -17,4 +17,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/openeuler/meetingserver
-  newTag: dev_mindspore-f26739
+  newTag: dev_mindspore-927daf
