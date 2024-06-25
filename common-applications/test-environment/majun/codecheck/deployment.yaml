@@ -124,7 +124,7 @@ spec:
           subPath: tcsFile2-ks
         livenessProbe:
           failureThreshold: 3
-          initialDelaySeconds: 10
+          initialDelaySeconds: 30
           periodSeconds: 3
           successThreshold: 1
           httpGet:
@@ -135,7 +135,7 @@ spec:
         name: codecheck
         readinessProbe:
           failureThreshold: 3
-          initialDelaySeconds: 10
+          initialDelaySeconds: 30
           periodSeconds: 3
           successThreshold: 1
           httpGet:
