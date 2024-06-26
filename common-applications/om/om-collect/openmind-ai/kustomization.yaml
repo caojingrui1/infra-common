@@ -2,6 +2,8 @@ resources:
   - namespace.yaml
   - git-commit-log
   - gitee
+  - swr
+  - export-task
 
 commonAnnotations:
   owner: zhongjun
