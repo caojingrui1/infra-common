@@ -5,6 +5,7 @@ resources:
   - swr
   - export-task
   - openmind-owner-project
+  - authing-user
 
 commonAnnotations:
   owner: zhongjun
