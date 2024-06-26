@@ -1,0 +1,42 @@
+kind: NetworkPolicy
+metadata:
+  name: vault-agent-injector-policy-01
+  namespace: vault
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: vault-agent-injector
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - namespaceSelector:
+            matchLabels:
+              project: secrets-manager
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: vault-policy-01
+  namespace: vault
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: vault
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8200
+        - protocol: TCP
+          port: 8201
+      from:
+        - namespaceSelector:
+            matchLabels:
+              project: secrets-manager
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1

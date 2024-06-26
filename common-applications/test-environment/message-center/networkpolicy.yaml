@@ -1,0 +1,20 @@
+kind: NetworkPolicy
+metadata:
+  name: message-center-website-policy-01
+  namespace: message-center
+spec:
+  podSelector:
+    matchLabels:
+      app: manager-website
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: manager
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+

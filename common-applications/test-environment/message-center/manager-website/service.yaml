@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: manager-website
+  namespace: message-center
+  annotations:
+    kubernetes.io/elb.id: d3f8a71c-9738-4a11-a0ce-42fae364833e
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
+spec:
+  ports:
+  - name: httpport
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: manager-website
+  type: LoadBalancer

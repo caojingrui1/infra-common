@@ -12,4 +12,4 @@ kind: Kustomization
 namespace: openeuler-devops
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-devops/api-gateway
-  newTag: master-5bf957
+  newTag: master-366dfb

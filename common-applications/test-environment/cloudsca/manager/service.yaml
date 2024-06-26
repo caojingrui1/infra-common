@@ -1,0 +1,16 @@
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: sca-manager
+  namespace: sca
+spec:
+  type: ClusterIP
+  ports:
+    - port: 7978
+      name: http
+      protocol: TCP
+      targetPort: 7978
+  selector:
+    app: manager

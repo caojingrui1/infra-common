@@ -50,6 +50,7 @@ data:
     .endif
 
     UPEX4CmacrosUPEX4C = 1
+    smtp_accept_max=1024
     smtp_accept_queue_per_connection=0
     ##############################################
     # the following macro definitions were created
@@ -967,7 +968,7 @@ data:
 
     begin authenticators
     
-    CLIENT_ALLOW_IP_HOSTS = 172.20.0.0/16 : 127.0.0.1 : ::::1 : 192.168.1.0/24 : 202.170.89.0/24 : 49.0.247.0/24
+    CLIENT_ALLOW_IP_HOSTS = 172.20.0.0/16 : 127.0.0.1 : ::::1 : 192.168.1.0/24 : 202.170.89.0/24 : 49.0.247.0/24 : 119.8.52.77 : 94.74.110.230
 
     plain_server:
       driver = plaintext

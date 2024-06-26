@@ -6,8 +6,10 @@ commonAnnotations:
   kubernetes.ops.owner: lichaoran
   kubernetes.ops.region: shanghai
 images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test
+  newTag: hrz-dev-a9819a
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
-  newTag: activity_status-c1dadf
+  newTag: test620-685974
 kind: Kustomization
 namespace: merlin
 resources:

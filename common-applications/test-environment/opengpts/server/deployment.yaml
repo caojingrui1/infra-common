@@ -1,0 +1,157 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+  namespace: opengpts
+spec:
+  selector:
+    matchLabels:
+      app: server
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      serviceAccount: opengpts
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      # securityContext:
+      #   seccompProfile:
+      #     type: Localhost
+      #     localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      containers:
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/opengpts-server-test:main-0e4ec8
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: DATASTAT_BASE_URL
+          value: https://datastat-opengauss.osinfra.cn/query/sig/
+        - name: TC_REPO_PATH
+          value: /backend/
+        - name: ISSUES_BASE_URL
+          value: https://dsapi.test.osinfra.cn/query/issue/
+        - name: MEET_BASE_URL
+          value: https://opengauss.org/api-meeting/
+        - name: PULL_BASE_URL
+          value: https://dsapi.test.osinfra.cn/query/pulls/
+        - name: REPO_BASE_URL
+          value: https://quickissue.openeuler.org/api-issues/repos/
+        - name: COMMUNITY
+          value: opengauss
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              key: OPENAI_API_KEY
+              name: opengpts-secret
+        - name: TAVILY_API_KEY
+          valueFrom:
+            secretKeyRef:
+              key: TAVILY_API_KEY
+              name: opengpts-secret
+        - name: SERPAPI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              key: SERPAPI_API_KEY
+              name: opengpts-secret
+        - name: POSTGRES_HOST
+          valueFrom:
+            secretKeyRef:
+              key: POSTGRES_HOST
+              name: opengpts-secret
+        - name: POSTGRES_PORT
+          valueFrom:
+            secretKeyRef:
+              key: POSTGRES_PORT
+              name: opengpts-secret
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              key: POSTGRES_DB
+              name: opengpts-secret
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              key: POSTGRES_USER
+              name: opengpts-secret
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: POSTGRES_PASSWORD
+              name: opengpts-secret
+        - name: EMAIL_SENDER
+          valueFrom:
+            secretKeyRef:
+              key: EMAIL_SENDER
+              name: opengpts-secret
+        - name: EMAIL_SERVICE_IP
+          valueFrom:
+            secretKeyRef:
+              key: EMAIL_SERVICE_IP
+              name: opengpts-secret                                         
+        - name: EMAIL_PORT
+          valueFrom:
+            secretKeyRef:
+              key: EMAIL_PORT
+              name: opengpts-secret                                         
+        - name: EMAIL_SSL_PORT
+          valueFrom:
+            secretKeyRef:
+              key: EMAIL_SSL_PORT
+              name: opengpts-secret                                         
+        - name: EMAIL_USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: EMAIL_USERNAME
+              name: opengpts-secret                                         
+        - name: EMAIL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: EMAIL_PASSWORD
+              name: opengpts-secret                                                                                   
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 60
+          periodSeconds: 3
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /health
+            port: 8000
+          timeoutSeconds: 5
+        name: server
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 60
+          periodSeconds: 3
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /health
+            port: 8000
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+          requests:
+            cpu: 2000m
+            memory: 4Gi
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 8000
+          # readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token

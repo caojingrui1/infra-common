@@ -4,9 +4,10 @@ resources:
 - secret.yaml
 - ingress.yaml
 - autoscaler.yaml
+- pvc.yaml
 commonAnnotations:
   kubernetes.ops.cluster: test
-  kubernetes.ops.email: jun.zhongjun2@gmail.com
+  kubernetes.ops.email: ""
   kubernetes.ops.os.base: ubuntu
   kubernetes.ops.owner: zhongjun
   kubernetes.ops.region: hk
@@ -15,4 +16,4 @@ kind: Kustomization
 namespace: openeuler-easyeditor
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easyeditor/server-test
-  newTag: v1.0.20231120172455
+  newTag: v1.0.20240617161408

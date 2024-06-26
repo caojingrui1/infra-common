@@ -1,0 +1,18 @@
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: sca-dm
+  namespace: sca
+  labels:
+    app: sca-dm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 7979
+      protocol: TCP
+      name: dm-app
+      targetPort: 7979
+  selector:
+    app: sca-dm

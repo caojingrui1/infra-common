@@ -1,0 +1,10 @@
+resources:
+- deployment.yaml
+- service.yaml
+- pvc.yaml
+namespace: sca
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/sca-datamanager
+  newTag: 033da6372edf9081697b6684a6c7cd0671a30df2

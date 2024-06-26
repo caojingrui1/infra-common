@@ -1,0 +1,9 @@
+resources:
+- deployment.yaml
+- service.yaml
+namespace: sca
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/sca-eureka
+  newTag: 79c6f9f9a85789e3657333176ff440d35edb3f71

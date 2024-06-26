@@ -8,3 +8,4 @@ commonAnnotations:
 kind: Kustomization
 resources:
 - deployment.yaml
+- networkpolicy.yaml
