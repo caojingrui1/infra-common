@@ -4,6 +4,7 @@ resources:
   - gitee
   - swr
   - export-task
+  - openmind-owner-project
 
 commonAnnotations:
   owner: zhongjun
