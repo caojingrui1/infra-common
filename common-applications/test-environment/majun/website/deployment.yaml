@@ -10,11 +10,45 @@ spec:
       app: majun-website
   template:
     metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
+        vault.hashicorp.com/agent-inject-perms-server.key: "0400"
+        vault.hashicorp.com/agent-inject-perms-abc.txt: "0400"
+        vault.hashicorp.com/agent-inject-perms-dhparam.pem: "0400"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/secret-volume-path: "/etc/nginx/cert/"
+        vault.hashicorp.com/agent-inject-secret-server.crt: "internal/data/infra-test/majun"
+        vault.hashicorp.com/agent-inject-template-server.crt: |
+          {{- with secret "internal/data/infra-test/majun" -}}
+          {{ .Data.data.ServerCrt }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-server.key: "internal/data/infra-test/majun"
+        vault.hashicorp.com/agent-inject-template-server.key: |
+          {{- with secret "internal/data/infra-test/majun" -}}
+          {{ .Data.data.ServerKey }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-abc.txt: "internal/data/infra-test/majun"
+        vault.hashicorp.com/agent-inject-template-abc.txt: |
+          {{- with secret "internal/data/infra-test/majun" -}}
+          {{ .Data.data.certificatePassword }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-dhparam.pem: "internal/data/infra-test/majun"
+        vault.hashicorp.com/agent-inject-template-dhparam.pem: |
+          {{- with secret "internal/data/infra-test/majun" -}}
+          {{ .Data.data.dhparamPem }}
+          {{- end }}
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/role: majun
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/tls-skip-verify: "true"
       labels:
         app: majun-website
     spec:
       imagePullSecrets:
       - name: huawei-swr-image-pull-secret
+      serviceAccount: majun
       securityContext:
         seccompProfile:
           type: Localhost
@@ -24,6 +58,9 @@ spec:
       - name: websitepod
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/majun/website-beta:icsl_beta-866e61
         imagePullPolicy: IfNotPresent
+        env:
+        - name: DET_URL
+          value: https://majun-beta-01.test.osinfra.cn
         ports:
         - containerPort: 8079
           name: http
@@ -34,8 +71,12 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           httpGet:
+            scheme: HTTPS
             path: /
-            port: 8079
+            port: 8080
+            httpHeaders:
+            - name: "Host"
+              value: "majun-beta-01.test.osinfra.cn"
           timeoutSeconds: 10
         livenessProbe:
           failureThreshold: 3
@@ -43,8 +84,12 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           httpGet:
+            scheme: HTTPS
             path: /
-            port: 8079
+            port: 8080
+            httpHeaders:
+            - name: "Host"
+              value: "majun-beta-01.test.osinfra.cn"
           timeoutSeconds: 10
         resources:
           requests:
@@ -56,3 +101,14 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1000
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+        - name: token-vol
+          projected:
+            sources:
+            - serviceAccountToken:
+                audience: api
+                expirationSeconds: 600
+                path: token
