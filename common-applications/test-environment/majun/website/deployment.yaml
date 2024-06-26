@@ -73,7 +73,7 @@ spec:
           httpGet:
             scheme: HTTPS
             path: /
-            port: 8080
+            port: 8079
             httpHeaders:
             - name: "Host"
               value: "majun-beta-01.test.osinfra.cn"
@@ -86,7 +86,7 @@ spec:
           httpGet:
             scheme: HTTPS
             path: /
-            port: 8080
+            port: 8079
             httpHeaders:
             - name: "Host"
               value: "majun-beta-01.test.osinfra.cn"
