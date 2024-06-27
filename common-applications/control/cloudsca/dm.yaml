@@ -54,6 +54,41 @@ spec:
               secretKeyRef:
                 name: sca-secret
                 key: rootSalt
+          - name: X_ARMOR_SECURITY_ENABLE
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: X_ARMOR_SECURITY_ENABLE
+          - name: X_ARMOR_SECURITY_ROOT_PASSWORD_0
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: X_ARMOR_SECURITY_ROOT_PASSWORD_0
+          - name: X_ARMOR_SECURITY_WORK_PASSWORD_0
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: X_ARMOR_SECURITY_WORK_PASSWORD_0
+          - name: X_ARMOR_BACKEND_APP_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: X_ARMOR_BACKEND_APP_TOKEN
+          - name: X_ARMOR_BACKEND_APP_ID
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: X_ARMOR_BACKEND_APP_ID
+          - name: X_ARMOR_BACKEND_BACKEND_URL
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: X_ARMOR_BACKEND_BACKEND_URL
+          - name: X_ARMOR_BACKEND_TENANT_ID
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: X_ARMOR_BACKEND_TENANT_ID
         resources:
           requests:
             cpu: 6000m
@@ -61,6 +96,26 @@ spec:
           limits:
             cpu: 6000m
             memory: 18G
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /dm/health-check
+            port: 7979
+          timeoutSeconds: 10
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /dm/health-check
+            port: 7979
+          timeoutSeconds: 10
         volumeMounts:
         - mountPath: /work/work.ks
           name: secret-volume
