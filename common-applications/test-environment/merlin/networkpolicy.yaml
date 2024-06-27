@@ -170,7 +170,7 @@ apiVersion: networking.k8s.io/v1
 ---
 kind: NetworkPolicy
 metadata:
-  name: merlin-access-policy-01
+  name: merlin-access-policy-05
   namespace: merlin
 spec:
   podSelector:
