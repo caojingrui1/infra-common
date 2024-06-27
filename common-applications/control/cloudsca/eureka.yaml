@@ -106,26 +106,6 @@ spec:
           limits:
             cpu: 500m
             memory: 600Mi
-        readinessProbe:
-          failureThreshold: 3
-          initialDelaySeconds: 15
-          periodSeconds: 10
-          successThreshold: 1
-          httpGet:
-            scheme: HTTP
-            path: /health-check
-            port: 9000
-          timeoutSeconds: 10
-        livenessProbe:
-          failureThreshold: 3
-          initialDelaySeconds: 15
-          periodSeconds: 10
-          successThreshold: 1
-          httpGet:
-            scheme: HTTP
-            path: /health-check
-            port: 9000
-          timeoutSeconds: 10
         volumeMounts:
         - mountPath: /work.ks
           name: secret-volume
