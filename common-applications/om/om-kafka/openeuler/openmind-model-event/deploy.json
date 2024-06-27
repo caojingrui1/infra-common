@@ -15,6 +15,13 @@
     ]
   },
   {
+    "op": "add",
+    "path": "/spec/template/spec/nodeSelector",
+    "value": {
+      "kubernetes.io/hostname": "10.0.1.146"
+    }
+  },
+  {
     "op": "replace",
     "path": "/spec/template/spec/volumes/0/secret/secretName",
     "value": "openmind-model-event-secrets"
