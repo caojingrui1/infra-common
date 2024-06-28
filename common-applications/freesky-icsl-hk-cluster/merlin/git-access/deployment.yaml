@@ -4,6 +4,7 @@ metadata:
   name: git-access-deployment
   namespace: merlin-icsl
 spec:
+  replicas: 0
   selector:
     matchLabels:
       app: git-access

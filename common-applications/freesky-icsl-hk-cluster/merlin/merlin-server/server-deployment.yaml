@@ -4,6 +4,7 @@ metadata:
   name: server-deployment
   namespace: merlin-icsl
 spec:
+  replicas: 0
   selector:
     matchLabels:
       app: server
