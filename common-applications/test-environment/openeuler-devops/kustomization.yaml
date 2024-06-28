@@ -17,6 +17,8 @@ resources:
 - etcd-own
 - kibana
 - pods-monitor
+- bisect-manager
+- bisect-runner
 namespace: openeuler-devops
 commonAnnotations:
   kubernetes.ops.cluster: shanghai-test-cluster
