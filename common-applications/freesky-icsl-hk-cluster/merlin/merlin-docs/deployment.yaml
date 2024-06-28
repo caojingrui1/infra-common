@@ -5,6 +5,7 @@ metadata:
   name: merlin-docs
   namespace: merlin-icsl
 spec:
+  replicas: 0
   selector:
     matchLabels:
       app: merlin-docs
