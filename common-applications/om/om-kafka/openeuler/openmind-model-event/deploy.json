@@ -18,7 +18,7 @@
     "op": "add",
     "path": "/spec/template/spec/nodeSelector",
     "value": {
-      "kubernetes.io/hostname": "10.0.1.146"
+      "debug": "true"
     }
   },
   {
