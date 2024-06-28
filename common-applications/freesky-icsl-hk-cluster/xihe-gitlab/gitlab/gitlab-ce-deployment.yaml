@@ -38,7 +38,7 @@ metadata:
   name: xihe-gitlab-ce-deployment
   namespace: source
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: xihe-gitlab-ce
