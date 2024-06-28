@@ -4,7 +4,7 @@ metadata:
   name: website-deployment
   namespace: modelfoundry-usercenter-website-icsl
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: website
