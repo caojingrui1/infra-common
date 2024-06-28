@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bisect-runner-deployment
+  namespace: openeuler-devops
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: bisect-runner
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/role: 'openeuler-devops'
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/secret-volume-path: "/etc/ods/"
+        vault.hashicorp.com/agent-inject-secret-secrets.yaml: 'internal/data/infra-test/openeuler-devops'
+        vault.hashicorp.com/agent-inject-perms-secrets.yaml: "0400"        
+        vault.hashicorp.com/agent-inject-template-secrets.yaml: |  
+          {{- with secret "internal/data/infra-test/openeuler-devops" -}}  
+          {{ .Data.data.config }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-esca: 'internal/data/infra-test/openeuler-devops'
+        vault.hashicorp.com/agent-inject-perms-esca: "0400"        
+        vault.hashicorp.com/agent-inject-template-esca: |  
+          {{- with secret "internal/data/infra-test/openeuler-devops" -}}  
+          {{ .Data.data.esCA }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-etcd_client.crt: 'internal/data/infra-test/openeuler-devops'
+        vault.hashicorp.com/agent-inject-perms-etcd_client.crt: "0400"
+        vault.hashicorp.com/agent-inject-template-etcd_client.crt: |  
+          {{- with secret "internal/data/infra-test/openeuler-devops" -}}  
+          {{ .Data.data.etcdBisectRunnerCrt }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-etcd_client.key: 'internal/data/infra-test/openeuler-devops'
+        vault.hashicorp.com/agent-inject-perms-etcd_client.key: "0400"
+        vault.hashicorp.com/agent-inject-template-etcd_client.key: |  
+          {{- with secret "internal/data/infra-test/openeuler-devops" -}}  
+          {{ .Data.data.etcdBisectRunnerKey }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-etcd_ca.crt: 'internal/data/infra-test/openeuler-devops'
+        vault.hashicorp.com/agent-inject-perms-etcd_ca.crt: "0400"
+        vault.hashicorp.com/agent-inject-template-etcd_ca.crt: |  
+          {{- with secret "internal/data/infra-test/openeuler-devops" -}}  
+          {{ .Data.data.etcdCA }}
+          {{- end }}
+      labels:
+        app: bisect-runner
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - bisect-runner
+            topologyKey: kubernetes.io/hostname
+      serviceAccount: openeuler-devops
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      containers:
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-devops/bisect_runner:master-54a6fc
+        imagePullPolicy: IfNotPresent 
+        args:
+        - --enable_debug=true        
+        volumeMounts:
+        - mountPath: /srv/log
+          name: bisect-runner-data-volume
+        env:
+        - name: LOG_ROOT_DIR
+          value: "/srv/log"
+        - name: DEFAULT_ODS
+          value: "/opt/ods"
+        - name: BISECT_RUNNER_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        name: bisect-runner
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1Gi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+      volumes:
+        - name: bisect-runner-data-volume
+          persistentVolumeClaim:
+            claimName: bisect-runner-data-volume
