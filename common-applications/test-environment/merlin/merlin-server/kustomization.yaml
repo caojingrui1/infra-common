@@ -9,7 +9,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test
   newTag: audit_cancel-c7c99d
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
-  newTag: audit_cancel-b51f3a
+  newTag: audit_cancel-20bce0
 kind: Kustomization
 namespace: merlin
 resources:
