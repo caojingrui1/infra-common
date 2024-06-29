@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: git-commit-log-foundation
-          image: swr.cn-north-4.myhuaweicloud.com/om/om-collection:0.5.73
+          image: swr.cn-north-4.myhuaweicloud.com/om/om-collection:0.5.80
           volumeMounts:
             - mountPath: /var/lib/om/config.ini
               subPath: credentials_cfg
