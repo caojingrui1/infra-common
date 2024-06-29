@@ -12,5 +12,5 @@ patchesStrategicMerge:
 images:
   - name: swr.cn-north-4.myhuaweicloud.com/om/om-collect
     newName: swr.cn-north-4.myhuaweicloud.com/om/om-kafka
-    newTag: 0.0.47
+    newTag: 0.0.49
 namePrefix: openmind-dataset-event-
