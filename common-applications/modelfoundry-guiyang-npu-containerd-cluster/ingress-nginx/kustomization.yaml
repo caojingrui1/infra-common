@@ -7,5 +7,5 @@ commonAnnotations:
   kubernetes.ops.owner: liuyang
   kubernetes.ops.region: guiyang
   common: "true"
-namespace: modelfoundry-operator-system
+namespace: ingress-nginx
 
