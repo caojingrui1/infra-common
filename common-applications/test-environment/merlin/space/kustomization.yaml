@@ -14,4 +14,4 @@ resources:
 - pvc.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-space-test
-  newTag: clean_invalid_pod-544381
+  newTag: clean_invalid_pod-3fa4d2
