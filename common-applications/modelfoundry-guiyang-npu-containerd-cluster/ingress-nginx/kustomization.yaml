@@ -6,5 +6,6 @@ commonAnnotations:
   kubernetes.ops.os.base: "Alpine"
   kubernetes.ops.owner: liuyang
   kubernetes.ops.region: guiyang
+  common: "true"
 namespace: modelfoundry-operator-system
 
