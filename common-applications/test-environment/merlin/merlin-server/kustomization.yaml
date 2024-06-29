@@ -17,3 +17,6 @@ resources:
 - server-deployment.yaml
 - autoscaler.yaml
 - cronjob.yaml
+- server-check-user-revoke.yaml
+- server-udpate-visit-data.yaml
+- server-update-download-data.yaml
