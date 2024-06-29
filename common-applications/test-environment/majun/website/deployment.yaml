@@ -54,6 +54,11 @@ spec:
           type: Localhost
           localhostProfile: infra-seccomp.json
       automountServiceAccountToken: false
+      tolerations:
+      - key: "majun-icsl"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
       containers:
       - name: websitepod
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/majun/website-beta:icsl_beta-866e61
