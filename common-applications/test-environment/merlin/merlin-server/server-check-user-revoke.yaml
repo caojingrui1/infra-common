@@ -2,10 +2,10 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: server-update-data
+  name: server-check-user-revoke
   namespace: merlin
   labels:
-    app: update-data
+    app: check-user-revoke
 spec:
   schedule: "0 * * * *"
   concurrencyPolicy: Forbid
@@ -59,7 +59,7 @@ spec:
             vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
             vault.hashicorp.com/tls-skip-verify: "true"
           labels:
-            app: update-data
+            app: check-user-revoke
         spec:
           serviceAccount: merlin
           restartPolicy: OnFailure
@@ -71,11 +71,12 @@ spec:
               localhostProfile: infra-seccomp.json
           automountServiceAccountToken: false
           containers:
-          - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test:new-d42a96
+          - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test:audit_cancel-0cf121
             imagePullPolicy: IfNotPresent 
             args:
             - --config-file=/vault/secrets/compose-config.yml   
-            name: server-update-data
+            - --job-type=check-user-revoke
+            name: server-check-user-revoke
             resources:
               limits:
                 cpu: 500m
