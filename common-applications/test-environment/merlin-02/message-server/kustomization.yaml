@@ -12,4 +12,4 @@ resources:
 - autoscaler.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-label-test
-  newTag: v0.9.2-15b7ab
+  newTag: moderation_0607-2f517e
