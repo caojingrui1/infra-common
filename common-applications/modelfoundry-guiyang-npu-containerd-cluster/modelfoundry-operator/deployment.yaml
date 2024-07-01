@@ -115,7 +115,7 @@ spec:
                     type: object
                 type: object
               computeResourcesNginx:
-                 description: |-
+                description: |-
                   ComputeResourcesNginx specifies the amount of compute resources allowed for the Nginx container.
                   This can include CPU and memory. Refer to Kubernetes documentation on managing compute resources for more details.
                 properties:
