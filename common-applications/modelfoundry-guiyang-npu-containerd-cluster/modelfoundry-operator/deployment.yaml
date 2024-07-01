@@ -58,7 +58,8 @@ spec:
             properties:
               computeResources:
                 description: |-
-                  ComputeResources required by this App.
+                  ComputeResources specifies the compute resources required by the App container.
+                  This includes configurations such as CPU and memory limits.
                   See also: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
                 properties:
                   claims:
@@ -82,17 +83,17 @@ spec:
                             inside a container.
                           type: string
                       required:
-                        - name
+                      - name
                       type: object
                     type: array
                     x-kubernetes-list-map-keys:
-                      - name
+                    - name
                     x-kubernetes-list-type: map
                   limits:
                     additionalProperties:
                       anyOf:
-                        - type: integer
-                        - type: string
+                      - type: integer
+                      - type: string
                       pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                       x-kubernetes-int-or-string: true
                     description: |-
@@ -102,8 +103,8 @@ spec:
                   requests:
                     additionalProperties:
                       anyOf:
-                        - type: integer
-                        - type: string
+                      - type: integer
+                      - type: string
                       pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                       x-kubernetes-int-or-string: true
                     description: |-
@@ -114,7 +115,9 @@ spec:
                     type: object
                 type: object
               computeResourcesNginx:
-                description: ResourceRequirements describes the compute resource requirements.
+                description: |-
+                  ComputeResourcesNginx specifies the amount of compute resources allowed for the Nginx container.
+                  This can include CPU and memory. Refer to Kubernetes documentation on managing compute resources for more details.
                 properties:
                   claims:
                     description: |-
@@ -137,17 +140,17 @@ spec:
                             inside a container.
                           type: string
                       required:
-                        - name
+                      - name
                       type: object
                     type: array
                     x-kubernetes-list-map-keys:
-                      - name
+                    - name
                     x-kubernetes-list-type: map
                   limits:
                     additionalProperties:
                       anyOf:
-                        - type: integer
-                        - type: string
+                      - type: integer
+                      - type: string
                       pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                       x-kubernetes-int-or-string: true
                     description: |-
@@ -157,8 +160,8 @@ spec:
                   requests:
                     additionalProperties:
                       anyOf:
-                        - type: integer
-                        - type: string
+                      - type: integer
+                      - type: string
                       pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                       x-kubernetes-int-or-string: true
                     description: |-
@@ -169,7 +172,8 @@ spec:
                     type: object
                 type: object
               env:
-                description: The env for the app.
+                description: Env specifies the environment variables available to
+                  the App container.
                 items:
                   description: EnvVar represents an environment variable present in
                     a Container.
@@ -210,7 +214,7 @@ spec:
                                 must be defined
                               type: boolean
                           required:
-                            - key
+                          - key
                           type: object
                           x-kubernetes-map-type: atomic
                         fieldRef:
@@ -227,7 +231,7 @@ spec:
                                 API version.
                               type: string
                           required:
-                            - fieldPath
+                          - fieldPath
                           type: object
                           x-kubernetes-map-type: atomic
                         resourceFieldRef:
@@ -241,8 +245,8 @@ spec:
                               type: string
                             divisor:
                               anyOf:
-                                - type: integer
-                                - type: string
+                              - type: integer
+                              - type: string
                               description: Specifies the output format of the exposed
                                 resources, defaults to "1"
                               pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
@@ -251,7 +255,7 @@ spec:
                               description: 'Required: resource to select'
                               type: string
                           required:
-                            - resource
+                          - resource
                           type: object
                           x-kubernetes-map-type: atomic
                         secretKeyRef:
@@ -272,15 +276,17 @@ spec:
                                 be defined
                               type: boolean
                           required:
-                            - key
+                          - key
                           type: object
                           x-kubernetes-map-type: atomic
                       type: object
                   required:
-                    - name
+                  - name
                   type: object
                 type: array
               envNginx:
+                description: EnvNginx specifies the environment variables available
+                  to the Nginx container.
                 items:
                   description: EnvVar represents an environment variable present in
                     a Container.
@@ -321,7 +327,7 @@ spec:
                                 must be defined
                               type: boolean
                           required:
-                            - key
+                          - key
                           type: object
                           x-kubernetes-map-type: atomic
                         fieldRef:
@@ -338,7 +344,7 @@ spec:
                                 API version.
                               type: string
                           required:
-                            - fieldPath
+                          - fieldPath
                           type: object
                           x-kubernetes-map-type: atomic
                         resourceFieldRef:
@@ -352,8 +358,8 @@ spec:
                               type: string
                             divisor:
                               anyOf:
-                                - type: integer
-                                - type: string
+                              - type: integer
+                              - type: string
                               description: Specifies the output format of the exposed
                                 resources, defaults to "1"
                               pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
@@ -362,7 +368,7 @@ spec:
                               description: 'Required: resource to select'
                               type: string
                           required:
-                            - resource
+                          - resource
                           type: object
                           x-kubernetes-map-type: atomic
                         secretKeyRef:
@@ -383,33 +389,36 @@ spec:
                                 be defined
                               type: boolean
                           required:
-                            - key
+                          - key
                           type: object
                           x-kubernetes-map-type: atomic
                       type: object
                   required:
-                    - name
+                  - name
                   type: object
                 type: array
               image:
                 description: |-
-                  Image is the container image name for Space app
+                  Image is the container image name for the App.
                   See also: https://kubernetes.io/docs/concepts/containers/images
                 type: string
               imageNginx:
+                description: ImageNginx is the Docker image for the Nginx container.
                 type: string
               imagePullPolicy:
                 description: |-
-                  Image pull policy: One of Always, Never, IfNotPresent.
+                  ImagePullPolicy defines when to pull the container image for the App.
+                  Options are Always, Never, IfNotPresent.
                   See also: https://kubernetes.io/docs/concepts/containers/images#updating-images
                 type: string
               imagePullPolicyNginx:
-                description: PullPolicy describes a policy for if/when to pull a container
-                  image
+                description: |-
+                  ImagePullPolicyNginx defines when to pull the Nginx container image.
+                  The options are Always, Never, IfNotPresent.
                 type: string
               imagePullSecrets:
-                description: Image pull secrets is a reference to the secret to be
-                  used to pull the image.
+                description: ImagePullSecrets is a reference to the secret to be used
+                  to pull the container image for the App.
                 items:
                   description: |-
                     LocalObjectReference contains enough information to let you locate the
@@ -425,20 +434,22 @@ spec:
                   x-kubernetes-map-type: atomic
                 type: array
               ingressHost:
-                description: The ingress domain for the app.
+                description: IngressHost specifies the ingress domain for the App.
                 type: string
               ingressTLSSecret:
-                description: The ingress tls secret name for the app.
+                description: IngressTLSSecret specifies the TLS secret name for ingress
+                  security for the App.
                 type: string
               name:
-                description: Name of the Space App specified as a DNS_LABEL. Each
-                  App must have a unique name.
+                description: Name is the name of the App container specified as a
+                  DNS_LABEL. Each container in a Pod must have a unique name.
                 type: string
               nameNginx:
+                description: NameNginx is the name of the Nginx container.
                 type: string
             required:
-              - name
-              - nameNginx
+            - name
+            - nameNginx
             type: object
           status:
             description: AppStatus defines the observed state of App
@@ -587,6 +598,37 @@ kind: ClusterRole
 metadata:
   name: openmind-space-operator-manager-role
 rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - pods/exec
+  verbs:
+  - create
+- apiGroups:
+  - ""
+  resources:
+  - pods/log
+  verbs:
+  - get
+- apiGroups:
+  - ""
+  resources:
+  - pods/status
+  verbs:
+  - patch
+  - update
 - apiGroups:
   - apps
   resources:
