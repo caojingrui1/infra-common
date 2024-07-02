@@ -190,6 +190,51 @@ spec:
             secretKeyRef:
               name: ether-secret-v2
               key: client_secret
+        - name: ISSUER_AUTHORIZATION_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: ether-secret-v2
+              key: issuer_authorization_endpoint
+        - name: ISSUER_TOKEN_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: ether-secret-v2
+              key: issuer_token_endpoint
+        - name: ISSUER_USERINFO_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: ether-secret-v2
+              key: issuer_userinfo_endpoint
+        - name: ISSUER_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: ether-secret-v2
+              key: issuer_endpoint
+        - name: ISSUER_JWKS_URI
+          valueFrom:
+            secretKeyRef:
+              name: ether-secret-v2
+              key: issuer_jwks_uri
+        - name: ISSUER_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: ether-secret-v2
+              key: issuer_client_id
+        - name: ISSUER_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: ether-secret-v2
+              key: issuer_client_secret
+        - name: ISSUER_BASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: ether-secret-v2
+              key: issuer_base_url
+        - name: REQUIRE_AUTHENTICATION
+          valueFrom:
+            secretKeyRef:
+              name: ether-secret-v2
+              key: require_authentication
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/etherpad:dev-1.8.18-238541
         imagePullPolicy: IfNotPresent
         name: etherpad-lite
