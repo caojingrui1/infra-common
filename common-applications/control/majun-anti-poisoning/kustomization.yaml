@@ -10,4 +10,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/majun/anti-poisoning
-  newTag: 39f88c52c1f61513f2e0e0ec12f50ed4a8e4a169
+  newTag: 7484ad03c56aeb76c9b47a0d89c27f0270e1c10d
