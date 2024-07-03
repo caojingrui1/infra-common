@@ -29,7 +29,7 @@ spec:
         imagePullPolicy: IfNotPresent
         env:
         - name: VITE_BACKEND_URL
-          value: "http://server-service.opengpts:8000"
+          value: "http://server-service.opengpts-02:8000"
         livenessProbe:
           failureThreshold: 3
           initialDelaySeconds: 5
