@@ -48,6 +48,10 @@ spec:
         env:
         - name: CONFIG_PATH
           value: /vault/secrets/secrets.yaml
+        - name: DST_PATH
+          value: /vault/secrets/
+        - name: HEAD_URL
+          value: "https://localhost:8080/issues/types"
         ports:
         - containerPort: 8080
           name: http
@@ -64,7 +68,9 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 3
           successThreshold: 1
-          tcpSocket:
+          httpGet:
+            scheme: HTTPS
+            path: /issues/types
             port: 8080
           timeoutSeconds: 5
         readinessProbe:
@@ -72,7 +78,9 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 3
           successThreshold: 1
-          tcpSocket:
+          httpGet:
+            scheme: HTTPS
+            path: /issues/types
             port: 8080
           timeoutSeconds: 5
         securityContext:
