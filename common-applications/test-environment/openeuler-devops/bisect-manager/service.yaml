@@ -6,9 +6,9 @@ metadata:
 spec:
   ports:
   - name: http-port
-    port: 8080
+    port: 20059
     protocol: TCP
-    targetPort: 8080
+    targetPort: 20059
   selector:
     app: bisect-manager
   type: ClusterIP
