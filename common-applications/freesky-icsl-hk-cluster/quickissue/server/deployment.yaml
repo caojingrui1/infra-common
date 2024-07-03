@@ -15,12 +15,24 @@ spec:
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/role: 'openeuler-quickissue'
         vault.hashicorp.com/agent-inject-perms-secrets.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
+        vault.hashicorp.com/agent-inject-perms-server.key: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-inject-secret-secrets.yaml: 'internal/data/icsl/openeuler-quickissue'
+        vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/domain-tls'
+        vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/domain-tls'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-template-secrets.yaml: |  
           {{- with secret "internal/data/icsl/openeuler-quickissue" -}}  
           {{ .Data.data.server }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-server.crt: |  
+          {{- with secret "internal/data/domain-tls" -}}  
+          {{ .Data.data.ServerCrt }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-server.key: |  
+          {{- with secret "internal/data/domain-tls" -}}  
+          {{ .Data.data.ServerKey }}
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
@@ -44,6 +56,10 @@ spec:
         env:
         - name: CONFIG_PATH
           value: /vault/secrets/secrets.yaml
+        - name: DST_PATH
+          value: /vault/secrets/
+        - name: HEAD_URL
+          value: "https://localhost:8080/issues/types"
         ports:
         - containerPort: 8080
           name: http
@@ -58,17 +74,21 @@ spec:
         livenessProbe:
           failureThreshold: 3
           initialDelaySeconds: 5
-          periodSeconds: 3
+          periodSeconds: 10
           successThreshold: 1
-          tcpSocket:
+          httpGet:
+            scheme: HTTPS
+            path: /issues/types
             port: 8080
           timeoutSeconds: 5
         readinessProbe:
           failureThreshold: 3
           initialDelaySeconds: 5
-          periodSeconds: 3
+          periodSeconds: 10
           successThreshold: 1
-          tcpSocket:
+          httpGet:
+            scheme: HTTPS
+            path: /issues/types
             port: 8080
           timeoutSeconds: 5
         securityContext:
