@@ -12,4 +12,4 @@ resources:
 - deployment.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-devops/bisect_manager
-  newTag: master-f12fb5
+  newTag: master-32d5e3
