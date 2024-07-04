@@ -2,10 +2,10 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: server-update-data
+  name: server-udpate-visit-data
   namespace: merlin-02
   labels:
-    app: update-data
+    app: update-visit-data
 spec:
   schedule: "0 * * * *"
   concurrencyPolicy: Forbid
@@ -59,7 +59,7 @@ spec:
             vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
             vault.hashicorp.com/tls-skip-verify: "true"
           labels:
-            app: update-data
+            app: update-visit-data
         spec:
           serviceAccount: merlin
           restartPolicy: OnFailure
@@ -71,11 +71,12 @@ spec:
               localhostProfile: infra-seccomp.json
           automountServiceAccountToken: false
           containers:
-          - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/server-cronjob:new
+          - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test:audit_cancel-0cf121
             imagePullPolicy: IfNotPresent 
             args:
             - --config-file=/vault/secrets/compose-config.yml   
-            name: server-update-data
+            - --job-type=visit-count
+            name: server-udpate-visit-data
             resources:
               limits:
                 cpu: 500m
