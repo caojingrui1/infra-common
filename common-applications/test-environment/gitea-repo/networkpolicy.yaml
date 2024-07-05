@@ -93,4 +93,26 @@ spec:
     - Ingress
 apiVersion: networking.k8s.io/v1
 
-
+---
+kind: NetworkPolicy
+metadata:
+  name: gitea-repo-sh-policy-04
+  namespace: gitea-repo-sh
+spec:
+  podSelector:
+    matchLabels:
+      app: gitea-repo-sh
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 3000
+      from:
+        - podSelector:
+            matchLabels:
+              app: space
+          namespaceSelector:
+            matchLabels:
+              project: merlin-02
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
