@@ -96,7 +96,7 @@ apiVersion: networking.k8s.io/v1
 ---
 kind: NetworkPolicy
 metadata:
-  name: gitea-repo-sh-policy-04
+  name: gitea-repo-sh-policy-05
   namespace: gitea-repo-sh
 spec:
   podSelector:
