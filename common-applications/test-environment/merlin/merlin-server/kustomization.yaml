@@ -19,3 +19,9 @@ resources:
 - server-check-user-revoke.yaml
 - server-udpate-visit-data.yaml
 - server-update-download-data.yaml
+- moderation-init.yaml
+- moderation-readme.yaml
+- moderation-auido.yaml
+- moderation-doc.yaml
+- moderation-pic.yaml
+- moderation-video.yaml
