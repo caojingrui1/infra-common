@@ -26,4 +26,4 @@ images:
   newTag: 205c9b19a5a53b57baa3caec757953dad18fee75
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/opengauss/opengauss-usercenter-test
   newName: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/opengauss/opengauss-usercenter-test
-  newTag: 35d7dcc9e4291b0462da9ee23abd9ed6b650ee44
+  newTag: 27db3ae3b0a77122a8cdf32fa9e20bfb550b8a5b
