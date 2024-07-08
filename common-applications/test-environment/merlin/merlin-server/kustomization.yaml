@@ -21,7 +21,7 @@ resources:
 - server-update-download-data.yaml
 - moderation-init.yaml
 - moderation-readme.yaml
-- moderation-auido.yaml
+- moderation-audio.yaml
 - moderation-doc.yaml
 - moderation-pic.yaml
 - moderation-video.yaml
