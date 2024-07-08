@@ -2,10 +2,10 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: moderation-auido
+  name: moderation-audio
   namespace: merlin
   labels:
-    app: moderation-auido
+    app: moderation-audio
 spec:
   schedule: "0 * * * *"
   concurrencyPolicy: Forbid
@@ -59,7 +59,7 @@ spec:
             vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
             vault.hashicorp.com/tls-skip-verify: "true"
           labels:
-            app: moderation-auido
+            app: moderation-audio
         spec:
           serviceAccount: merlin
           restartPolicy: OnFailure
@@ -75,8 +75,8 @@ spec:
             imagePullPolicy: IfNotPresent 
             args:
             - --config-file=/vault/secrets/compose-config.yml   
-            - --job-type=moderation-auido
-            name: moderation-auido
+            - --job-type=moderation-audio
+            name: moderation-audio
             resources:
               limits:
                 cpu: 500m
