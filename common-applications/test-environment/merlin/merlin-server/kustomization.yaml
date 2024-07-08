@@ -9,7 +9,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test
   newTag: yw_deploy-2adbc8
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
-  newTag: yxt-34ed69
+  newTag: template-d627db
 kind: Kustomization
 namespace: merlin
 resources:
