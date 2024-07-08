@@ -25,3 +25,4 @@ resources:
 - moderation-doc.yaml
 - moderation-pic.yaml
 - moderation-video.yaml
+- deploy-task.yaml
