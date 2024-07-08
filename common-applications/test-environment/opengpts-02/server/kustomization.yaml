@@ -7,11 +7,11 @@ commonAnnotations:
   kubernetes.ops.region: shanghai
 kind: Kustomization
 namespace: opengpts-02
+# - autoscaler.yaml
 resources:
 - service.yaml
 - deployment.yaml
-# - autoscaler.yaml
 - secrets.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/opengpts-server-test
-  newTag: main-e506e0
+  newTag: dev-2fd8c2
