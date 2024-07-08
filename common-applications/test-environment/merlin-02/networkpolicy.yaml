@@ -359,6 +359,131 @@ apiVersion: networking.k8s.io/v1
 ---
 kind: NetworkPolicy
 metadata:
+  name: merlin-access-policy-06
+  namespace: merlin-02
+spec:
+  podSelector:
+    matchLabels:
+      app: git-access
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: moderation-audio
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: merlin-access-policy-07
+  namespace: merlin-02
+spec:
+  podSelector:
+    matchLabels:
+      app: git-access
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: moderation-doc
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: merlin-access-policy-08
+  namespace: merlin-02
+spec:
+  podSelector:
+    matchLabels:
+      app: git-access
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: moderation-init
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: merlin-access-policy-09
+  namespace: merlin-02
+spec:
+  podSelector:
+    matchLabels:
+      app: git-access
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: moderation-pic
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: merlin-access-policy-10
+  namespace: merlin-02
+spec:
+  podSelector:
+    matchLabels:
+      app: git-access
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: moderation-readme
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: merlin-access-policy-11
+  namespace: merlin-02
+spec:
+  podSelector:
+    matchLabels:
+      app: git-access
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: moderation-video
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+---
+kind: NetworkPolicy
+metadata:
   name: merlin-space-monitor-sh-policy-01
   namespace: merlin-02
 spec:
