@@ -732,7 +732,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - space.openmind.cn
+  - ""
   resources:
   - persistentvolumeclaims
   verbs:
