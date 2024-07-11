@@ -8,7 +8,7 @@ metadata:
   labels:
     app: autoupgrade
 spec:
-  schedule: "0 * * * *"
+  schedule: "* * * * *"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 180
   jobTemplate:
@@ -58,7 +58,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               runAsUser: 1001
-              readOnlyRootFilesystem: true
+              # readOnlyRootFilesystem: true
               capabilities:
                 drop:
                   - ALL
