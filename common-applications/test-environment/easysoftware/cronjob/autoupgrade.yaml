@@ -1,0 +1,74 @@
+       
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: autoupgrade
+  namespace: easysoftware
+  labels:
+    app: autoupgrade
+spec:
+  schedule: "0 * * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 180
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            vault.hashicorp.com/agent-inject: 'true'
+            vault.hashicorp.com/agent-pre-populate-only: "true"
+            vault.hashicorp.com/tls-skip-verify: "true"
+            vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+            vault.hashicorp.com/role: 'easysoftware'
+            vault.hashicorp.com/agent-run-as-user: "1001"
+            vault.hashicorp.com/agent-run-as-group: "1001"
+            vault.hashicorp.com/agent-inject-perms-application.yaml: "0400"
+            vault.hashicorp.com/agent-inject-secret-application.yaml: 'internal/data/infra-test/easysoftware'
+            vault.hashicorp.com/agent-inject-template-application.yaml: |  
+              {{- with secret "internal/data/infra-test/easysoftware" -}}  
+              {{ .Data.data.autoupgradeConf }}
+              {{- end }}
+          labels:
+            app: autoupgrade
+        spec:
+          serviceAccount: easysoftware
+          restartPolicy: OnFailure
+          imagePullSecrets:
+          - name: huawei-swr-image-pull-secret
+          securityContext:
+            seccompProfile:
+              type: Localhost
+              localhostProfile: infra-seccomp.json
+          automountServiceAccountToken: false
+          containers:
+          - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-autoupgrade-test:main-888846
+            imagePullPolicy: IfNotPresent 
+            env:
+            - name: APPLICATION_PATH
+              value: /vault/secrets/application.yaml
+            name: autoupgrade
+            resources:
+              limits:
+                cpu: 2
+                memory: 2Gi
+              requests:
+                cpu: 1
+                memory: 1Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              runAsUser: 1001
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+          volumes:
+          - name: token-vol
+            projected:
+              sources:
+              - serviceAccountToken:
+                  audience: api
+                  expirationSeconds: 600
+                  path: token
+
+              

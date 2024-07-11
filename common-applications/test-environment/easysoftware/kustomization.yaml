@@ -5,6 +5,7 @@ resources:
 - pvc.yaml
 - server
 - website
+- cronjob
 namespace: easysoftware
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
