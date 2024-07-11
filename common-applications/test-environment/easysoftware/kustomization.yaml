@@ -12,4 +12,4 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-autoupgrade-test
   newTag: main-888846
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-test
-  newTag: test-d11ca1
+  newTag: test-6c06a9
