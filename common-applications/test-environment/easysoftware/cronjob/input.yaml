@@ -29,6 +29,12 @@ spec:
               {{- with secret "internal/data/infra-test/easysoftware" -}}  
               {{ .Data.data.inputConf }}
               {{- end }}
+            vault.hashicorp.com/agent-inject-perms-mysql.jks: "0400"
+            vault.hashicorp.com/agent-inject-secret-mysql.jks: 'internal/data/infra-test/easysoftware'
+            vault.hashicorp.com/agent-inject-template-mysql.jks: |  
+              {{- with secret "internal/data/infra-test/easysoftware" -}}  
+              {{ base64Decode .Data.data.mysqljks }}
+              {{- end }}
           labels:
             app: input
         spec:
