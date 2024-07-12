@@ -26,3 +26,4 @@ resources:
 - moderation-pic.yaml
 - moderation-video.yaml
 - deploy-task.yaml
+- virus-scan.yaml
