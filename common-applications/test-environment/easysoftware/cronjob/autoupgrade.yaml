@@ -8,7 +8,7 @@ metadata:
   labels:
     app: autoupgrade
 spec:
-  schedule: "* * * * *"
+  schedule: "0 1 * * *"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 180
   jobTemplate:
