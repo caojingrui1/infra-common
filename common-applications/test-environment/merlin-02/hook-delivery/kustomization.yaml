@@ -13,4 +13,4 @@ resources:
 - autoscaler.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/hook-delivery-test
-  newTag: v0.8.6-c2d053
+  newTag: template-a50256
