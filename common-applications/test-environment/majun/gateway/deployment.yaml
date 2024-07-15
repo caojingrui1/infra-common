@@ -22,6 +22,7 @@ spec:
         vault.hashicorp.com/agent-inject-secret-kafka.jks: 'internal/data/infra-test/majun'
         vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/domain-tls'
         vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/domain-tls'
+        vault.hashicorp.com/agent-inject-secret-tls.pfx: 'internal/data/infra-test/majun'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-mongo.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
@@ -29,6 +30,7 @@ spec:
         vault.hashicorp.com/agent-inject-perms-kafka.jks: "0400"
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-server.key: "0400"
+        vault.hashicorp.com/agent-inject-perms-tls.pfx: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/secret-volume-path: "/opt/app/majun/cert"
@@ -55,6 +57,10 @@ spec:
         vault.hashicorp.com/agent-inject-template-server.key: |  
           {{- with secret "internal/data/infra-test/domain-tls" -}}  
           {{ .Data.data.ServerKey }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-tls.pfx: |  
+          {{- with secret "internal/data/infra-test/majun" -}}  
+          {{ base64Decode .Data.data.TlsPfx }}
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
