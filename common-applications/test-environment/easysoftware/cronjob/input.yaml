@@ -54,7 +54,7 @@ spec:
             - name: APPLICATION_PATH
               value: /vault/secrets/application.yaml
             - name: ISERVICE
-              value: APP
+              value: APP,APPVER,RPMVER
             name: input
             resources:
               limits:
