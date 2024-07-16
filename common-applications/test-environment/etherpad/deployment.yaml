@@ -112,7 +112,7 @@ spec:
           value: "true"
         - name: OSSCHECKURL
           value: "https://omapi.test.osinfra.cn/oneid/user/permission?community=openeuler"
-        - name: OSOSSLOGOUTURL
+        - name: OSSLOGOUTURL
           value: "https://openeuler-usercenter.test.osinfra.cn/logout"
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/etherpad:1.8.18
         imagePullPolicy: IfNotPresent
