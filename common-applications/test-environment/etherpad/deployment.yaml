@@ -110,6 +110,10 @@ spec:
           value: "https://etherpad.test.osinfra.cn"
         - name: REQUIRE_AUTHENTICATION
           value: "true"
+        - name: OSSCHECKURL
+          value: "https://omapi.test.osinfra.cn/oneid/user/permission?community=openeuler"
+        - name: OSOSSLOGOUTURL
+          value: "https://openeuler-usercenter.test.osinfra.cn/logout"
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/etherpad:1.8.18
         imagePullPolicy: IfNotPresent
         name: etherpad
