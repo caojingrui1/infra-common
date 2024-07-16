@@ -9,7 +9,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test
   newTag: lyh_dev-f960f2
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
-  newTag: lyh-3d7e92
+  newTag: space_fix-e99caf
 kind: Kustomization
 namespace: merlin
 resources:
