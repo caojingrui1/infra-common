@@ -1,6 +1,10 @@
 resources:
 - input.yaml
 - autoupgrade.yaml
+- input-field-domain.yaml
+- input-archnum.yaml
+- input-externalos.yaml
+- input-operationconfig.yaml
 namespace: easysoftware
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
