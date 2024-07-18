@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cla-backend-service
+  namespace: cla
+spec:
+  ports:
+  - name: srv
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    component: cla-backend
+  type: ClusterIP
