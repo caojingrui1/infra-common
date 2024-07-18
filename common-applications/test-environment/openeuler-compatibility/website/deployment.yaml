@@ -1,0 +1,103 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: website
+  namespace: openeuler-compatibility
+  labels: 
+    app: website
+spec:
+  selector:
+    matchLabels:
+      app: website
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/role: "openeuler-compatibility"
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
+        vault.hashicorp.com/agent-inject-perms-server.key: "0400"
+        vault.hashicorp.com/agent-inject-perms-abc.txt: "0400"
+        vault.hashicorp.com/agent-inject-perms-dhparam.pem: "0400"
+        vault.hashicorp.com/agent-run-as-user: "1001"
+        vault.hashicorp.com/agent-run-as-group: "1001"
+        vault.hashicorp.com/secret-volume-path: "/etc/nginx/cert/"
+        vault.hashicorp.com/agent-inject-secret-server.crt: "internal/data/infra-test/test-osinfra-cn-tls-ssl"
+        vault.hashicorp.com/agent-inject-template-server.crt: |
+          {{- with secret "internal/data/infra-test/test-osinfra-cn-tls-ssl" -}}
+          {{ .Data.data.ServerCrt }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-server.key: "internal/data/infra-test/test-osinfra-cn-tls-ssl"
+        vault.hashicorp.com/agent-inject-template-server.key: |
+          {{- with secret "internal/data/infra-test/test-osinfra-cn-tls-ssl" -}}
+          {{ .Data.data.ServerKey }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-abc.txt: "internal/data/infra-test/test-osinfra-cn-tls-ssl"
+        vault.hashicorp.com/agent-inject-template-abc.txt: |
+          {{- with secret "internal/data/infra-test/test-osinfra-cn-tls-ssl" -}}
+          {{ .Data.data.certificatePassword }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-dhparam.pem: "internal/data/infra-test/test-osinfra-cn-tls-ssl"
+        vault.hashicorp.com/agent-inject-template-dhparam.pem: |
+          {{- with secret "internal/data/infra-test/test-osinfra-cn-tls-ssl" -}}
+          {{ .Data.data.dhparamPem }}
+          {{- end }}
+      labels:
+        app: website
+    spec:
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      serviceAccount: openeuler-compatibility
+      automountServiceAccountToken: false
+      containers:
+      - name: website
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler-compatibility-website-test:main-7e808d
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          successThreshold: 1
+          httpGet:
+            scheme: HTTPS
+            path: /
+            port: 8080
+          timeoutSeconds: 10
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          successThreshold: 1
+          httpGet:
+            scheme: HTTPS
+            path: /
+            port: 8080
+          timeoutSeconds: 10
+        resources:
+          requests:
+            cpu: 1001m
+            memory: 1001Mi
+          limits:
+            cpu: 2
+            memory: 2Gi
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1001
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+        - name: token-vol
+          projected:
+            sources:
+            - serviceAccountToken:
+                audience: api
+                expirationSeconds: 600
+                path: token

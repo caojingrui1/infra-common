@@ -1,18 +1,13 @@
-resources:
-- ingress.yaml
-- deployment.yaml
-- service.yaml
-- pvc.yaml
-- autoscaler.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
 commonAnnotations:
   kubernetes.ops.cluster: test
   kubernetes.ops.email: ""
-  kubernetes.ops.os.base: debian
-  kubernetes.ops.owner: chenzeng
+  kubernetes.ops.os.base: openeuler
+  kubernetes.ops.owner: fuxinji
   kubernetes.ops.region: hk
-namespace: cla
-apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-images:
-- name: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/cla-backend-test
-  newTag: 45dde8b92355d0ddebb654957fcb0d3b6d3c9ccb
+namespace: openeuler-compatibility
+resources:
+- service.yaml
+- deployment.yaml
+- autoscaler.yaml

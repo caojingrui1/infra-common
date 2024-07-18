@@ -1,11 +1,11 @@
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: server-autoscaler
-  namespace: server
+  name: website-autoscaler
+  namespace: openeuler-compatibility
 spec:
   scaleTargetRef:
-    name: server
+    name: website
   triggers:
   - type: cron
     metadata:

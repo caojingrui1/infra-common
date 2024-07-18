@@ -1,99 +1,88 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: cla-backend
-  name: cla-backend
-  namespace: cla
+  name: server
+  namespace: openeuler-compatibility
 spec:
-  strategy:
-    type: Recreate
   selector:
     matchLabels:
-      component: cla-backend
+      app: server
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
-        vault.hashicorp.com/role: 'cla'
-        vault.hashicorp.com/agent-inject-perms-config: "0700"
-        vault.hashicorp.com/agent-inject-perms-ca.crt: "0700"
-        vault.hashicorp.com/agent-run-as-user: "1000"
-        vault.hashicorp.com/agent-inject-secret-config: 'internal/data/infra-test/cla'
         vault.hashicorp.com/agent-pre-populate-only: "true"
-        vault.hashicorp.com/agent-inject-template-config: |  
-          {{- with secret "internal/infra-test/cla" -}}  
-          {{ .Data.data.config }}
-          {{- end }}
-        vault.hashicorp.com/agent-inject-secret-ca.crt: 'internal/data/infra-test/cla'
-        vault.hashicorp.com/agent-inject-template-ca.crt: |
-          {{- with secret "internal/infra-test/cla" -}}  
-          {{ .Data.data.CA_CERT }}
-          {{- end }}
+        vault.hashicorp.com/tls-skip-verify: "true"
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/role: 'openeuler-compatibility'
+        vault.hashicorp.com/agent-run-as-user: "1001"
+        vault.hashicorp.com/agent-run-as-group: "1001"
+        vault.hashicorp.com/secret-volume-path: "/home/certification/conf/"
+        vault.hashicorp.com/agent-inject-secret-config.yaml: 'internal/data/infra-test/openeuler-compatibility'
+        vault.hashicorp.com/agent-inject-perms-config.yaml: "0400"
+        vault.hashicorp.com/agent-inject-template-config.yaml: |  
+          {{- with secret "internal/data/infra-test/openeuler-compatibility" -}}  
+          {{ .Data.data.serverConf }}
+          {{- end }}
       labels:
-        component: cla-backend
+        app: server
     spec:
-      serviceAccountName: cla
+      serviceAccount: openeuler-compatibility
       imagePullSecrets:
       - name: huawei-swr-image-pull-secret
-      nodeSelector:
-        autoscaler: "true"
       automountServiceAccountToken: false
       containers:
-      - image: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/cla-backend-test:c1de6a913e8a5e9ce2970d600b19e98b70a94712
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler-compatibility-test-backend:main-75ead4
         imagePullPolicy: IfNotPresent
-        name: cla-backend-pod
-        env:
-        - name: HTTP_PORT
-          value: "8080"
-        ports:
-        - containerPort: 8080
-          name: http
-          protocol: TCP
-        resources:
-          requests:
-            cpu: 1000m
-            memory: 1000Mi
-          limits:
-            cpu: 1000m
-            memory: 1000Mi
-        command:
-        - /bin/sh
-        - -c
-        - |
-          /home/cla/cla-server --config-file=/vault/secrets/config
         volumeMounts:
-        - mountPath: /home/cla/conf/pdfs
-          name: data-volume
-        readinessProbe:
-          tcpSocket:
-            port: 8080
-          initialDelaySeconds: 10
-          failureThreshold: 3
-          successThreshold: 1
-          periodSeconds: 10
-          timeoutSeconds: 5
+        - mountPath: /opt/docker/certification/log/
+          name: server-data-volume
         livenessProbe:
-          tcpSocket:
-            port: 8080
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          successThreshold: 1
           failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          successThreshold: 1
+          httpGet:
+            scheme: HTTPS
+            path: /
+            port: 8003
           timeoutSeconds: 5
+        name: server
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          successThreshold: 1
+          httpGet:
+            scheme: HTTPS
+            path: /
+            port: 8003
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 2
+            memory: 8Gi
+          requests:
+            cpu: 500m
+            memory: 500Mi
         securityContext:
           allowPrivilegeEscalation: false
-          runAsUser: 1000
+          runAsUser: 1001
+          capabilities:
+            drop:
+              - ALL
       volumes:
-      - name: data-volume
-        persistentVolumeClaim:
-          claimName: cla-data-vol
       - name: token-vol
         projected:
           sources:
           - serviceAccountToken:
               audience: api
               expirationSeconds: 600
-              path: token
+              path: token       
+      - name: server-data-volume
+        persistentVolumeClaim:
+          claimName: server-data-volume
