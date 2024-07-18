@@ -8,7 +8,7 @@ metadata:
   labels:
     app: input-epkg
 spec:
-  schedule: "* * * * *"
+  schedule: "0 */8 * * *"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 180
   jobTemplate:
