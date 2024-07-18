@@ -14,6 +14,6 @@ resources:
 - pvc.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-clam-go-test
-  newTag: main-e399e4
+  newTag: jfq-8e7abd
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-local-clam-db-test
   newTag: main-684d55
