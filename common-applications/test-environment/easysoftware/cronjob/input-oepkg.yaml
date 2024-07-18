@@ -3,10 +3,10 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: input-field-domain
+  name: input-oepkg
   namespace: easysoftware
   labels:
-    app: input-field-domain
+    app: input-oepkg
 spec:
   schedule: "* * * * *"
   concurrencyPolicy: Forbid
@@ -36,7 +36,7 @@ spec:
               {{ base64Decode .Data.data.mysqljks }}
               {{- end }}
           labels:
-            app: input-field-domain
+            app: input-oepkg
         spec:
           serviceAccount: easysoftware
           restartPolicy: OnFailure
@@ -54,8 +54,8 @@ spec:
             - name: APPLICATION_PATH
               value: /vault/secrets/application.yaml
             - name: ISERVICE
-              value: FIELD,DOMAIN
-            name: input-field-domain
+              value: OEPKG
+            name: input-oepkg
             resources:
               limits:
                 cpu: 2
