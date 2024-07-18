@@ -14,4 +14,4 @@ resources:
 - pvc.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-space-test
-  newTag: fix_config_parse_error-4af6b4
+  newTag: fix_config_parse_error-4d8295
