@@ -39,7 +39,7 @@ spec:
         imagePullPolicy: IfNotPresent
         env:
         - name: APPLICATION_PATH
-          value: "/valut/secrets/config.yaml"
+          value: "/vault/secrets/config.yaml"
         volumeMounts:
         - mountPath: /opt/docker/certification/log/
           name: server-data-volume
