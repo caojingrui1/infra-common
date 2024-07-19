@@ -21,7 +21,6 @@ spec:
         vault.hashicorp.com/role: 'openeuler-compatibility'
         vault.hashicorp.com/agent-run-as-user: "1001"
         vault.hashicorp.com/agent-run-as-group: "1001"
-        vault.hashicorp.com/secret-volume-path: "/home/certification/conf/"
         vault.hashicorp.com/agent-inject-secret-config.yaml: 'internal/data/infra-test/openeuler-compatibility'
         vault.hashicorp.com/agent-inject-perms-config.yaml: "0400"
         vault.hashicorp.com/agent-inject-template-config.yaml: |  
@@ -38,6 +37,9 @@ spec:
       containers:
       - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler-compatibility-test-backend:main-75ead4
         imagePullPolicy: IfNotPresent
+        env:
+        - name: APPLICATION_PATH
+          value: "/vault/secrets/config.yaml"
         volumeMounts:
         - mountPath: /opt/docker/certification/log/
           name: server-data-volume
