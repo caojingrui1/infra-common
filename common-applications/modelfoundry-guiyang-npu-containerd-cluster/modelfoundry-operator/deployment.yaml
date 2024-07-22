@@ -447,9 +447,18 @@ spec:
               nameNginx:
                 description: NameNginx is the name of the Nginx container.
                 type: string
+              pvcProvisioner:
+                type: string
+              pvcStoreClassName:
+                type: string
+              pvcVolumeMode:
+                description: PersistentVolumeMode describes how a volume is intended
+                  to be consumed, either Block or Filesystem.
+                type: string
             required:
             - name
             - nameNginx
+            type: object
             type: object
           status:
             description: AppStatus defines the observed state of App
