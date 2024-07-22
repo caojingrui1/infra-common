@@ -7,7 +7,7 @@ metadata:
   labels:
     app: check-user-revoke
 spec:
-  schedule: "0 * * * *"
+  schedule: "0 2 * * *"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 180
   jobTemplate:
