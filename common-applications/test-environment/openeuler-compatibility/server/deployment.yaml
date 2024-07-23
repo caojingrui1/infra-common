@@ -27,6 +27,18 @@ spec:
           {{- with secret "internal/data/infra-test/openeuler-compatibility" -}}  
           {{ .Data.data.serverConf }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-secret-config.yaml: 'internal/data/infra-test/test-osinfra-cn-tls'
+        vault.hashicorp.com/agent-inject-perms-config.yaml: "0400"
+        vault.hashicorp.com/agent-inject-template-config.yaml: |  
+          {{- with secret "internal/data/infra-test/test-osinfra-cn-tls" -}}  
+          {{ .Data.data.ServerCrt }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-config.yaml: 'internal/data/infra-test/test-osinfra-cn-tls'
+        vault.hashicorp.com/agent-inject-perms-config.yaml: "0400"
+        vault.hashicorp.com/agent-inject-template-config.yaml: |  
+          {{- with secret "internal/data/infra-test/test-osinfra-cn-tls" -}}  
+          {{ .Data.data.ServerKey }}
+          {{- end }}
       labels:
         app: server
     spec:
