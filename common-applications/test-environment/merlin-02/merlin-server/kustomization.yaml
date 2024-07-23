@@ -9,7 +9,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test
   newTag: main-510372
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
-  newTag: main-2ca5e8
+  newTag: notebook-c30759
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/server-cronjob
   newTag: main-fd10d5
 kind: Kustomization
