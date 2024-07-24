@@ -29,4 +29,4 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/sca-gateway
   newTag: c8d6f0e01ef0e8c52e039e295648983f477164ba
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/sca-web
-  newTag: 9124cc61c05476a4362fba9ce9668d6b6d7df1d2
+  newTag: 9acf2a8879b3fcd28064731399f1c68e6b747374
