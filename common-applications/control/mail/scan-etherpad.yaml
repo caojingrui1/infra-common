@@ -40,6 +40,9 @@ spec:
           - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/tools/scan-etherpad-test:main-db7bf7
             imagePullPolicy: IfNotPresent
             name: scan-etherpad
+            env:
+            - name: CONFIG_PATH
+              value: /vault/secrets/compose-config.yml
             resources:
               limits:
                 cpu: 2
