@@ -15,6 +15,7 @@ resources:
 - exim-configmap.yaml
 - dovecot.yaml
 - sa.yaml
+- scan-etherpad.yaml
 commonAnnotations:
   email: tommylikehu@gmail.com
   owner: tommylike
