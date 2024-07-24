@@ -56,7 +56,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTPS
-            path: /
+            path: /certification/health/check
             port: 8003
           timeoutSeconds: 5
         name: server
@@ -67,7 +67,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTPS
-            path: /
+            path: /certification/health/check
             port: 8003
           timeoutSeconds: 5
         resources:
