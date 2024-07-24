@@ -27,17 +27,11 @@ spec:
           {{- with secret "internal/data/infra-test/openeuler-compatibility" -}}  
           {{ .Data.data.serverConf }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/test-osinfra-cn-tls'
-        vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
-        vault.hashicorp.com/agent-inject-template-server.crt: |  
-          {{- with secret "internal/data/infra-test/test-osinfra-cn-tls" -}}  
-          {{ .Data.data.ServerCrt }}
-          {{- end }}
-        vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/test-osinfra-cn-tls'
-        vault.hashicorp.com/agent-inject-perms-server.key: "0400"
-        vault.hashicorp.com/agent-inject-template-server.key: |  
-          {{- with secret "internal/data/infra-test/test-osinfra-cn-tls" -}}  
-          {{ .Data.data.ServerKey }}
+        vault.hashicorp.com/agent-inject-perms-domain.jks: "0400"
+        vault.hashicorp.com/agent-inject-secret-domain.jks: 'internal/data/infra-test/openeuler-compatibility'
+        vault.hashicorp.com/agent-inject-template-domain.jks: |  
+          {{- with secret "internal/data/infra-test/openeuler-compatibility" -}}  
+          {{ base64Decode .Data.data.domainjks }}
           {{- end }}
       labels:
         app: server
