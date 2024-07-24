@@ -36,4 +36,4 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/app-mailman/mailman-web-new-build
   newTag: 4ee5684f1eb1aba553d31602cf9f07b26fd386681719297932
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/tools/scan-etherpad-test
-  newTag: main-dff8c2
+  newTag: main-d24d0d
