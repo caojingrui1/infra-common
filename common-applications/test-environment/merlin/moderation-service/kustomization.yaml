@@ -13,4 +13,4 @@ resources:
 - autoscaler.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-moderation-service-test
-  newTag: yangpeng-e14bc0
+  newTag: hrz_dev_new-4968c8
