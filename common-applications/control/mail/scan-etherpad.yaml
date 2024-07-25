@@ -23,7 +23,7 @@ spec:
             # vault.hashicorp.com/agent-run-as-group: "1000"
             vault.hashicorp.com/role: 'mail'
             vault.hashicorp.com/agent-inject-secret-compose-config.yml: 'internal/data/infra-common/mail'
-            vault.hashicorp.com/agent-inject-perms-compose-config.yml: "0400"
+            vault.hashicorp.com/agent-inject-perms-compose-config.yml: "0444"
             vault.hashicorp.com/agent-inject-template-compose-config.yml: |  
               {{- with secret "internal/data/infra-common/mail" -}}  
               {{ .Data.data.scanetherpad }}
