@@ -12,4 +12,4 @@ resources:
 - autoscaler.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-ci-adapter-test
-  newTag: master-d0ad2f
+  newTag: master-bd8b06
