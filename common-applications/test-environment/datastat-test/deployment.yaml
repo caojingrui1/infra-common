@@ -19,8 +19,8 @@ spec:
         vault.hashicorp.com/tls-skip-verify: "true"
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/role: 'datastat-test'
-        vault.hashicorp.com/agent-run-as-user: "1001"
-        vault.hashicorp.com/agent-run-as-group: "1001"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/secret-volume-path: "/opt/config/"
         vault.hashicorp.com/agent-inject-secret-application.properties: 'internal/data/infra-test/ds-developer'
         vault.hashicorp.com/agent-inject-perms-application.properties: "0400"
@@ -106,7 +106,7 @@ spec:
             memory: 500Mi
         securityContext:
           allowPrivilegeEscalation: falses
-          runAsUser: 1001
+          runAsUser: 1000
           capabilities:
             drop:
               - ALL
