@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datastat-test
+  namespace: datastat-test
+spec:
+  selector:
+    matchLabels:
+      app: datastat-test
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/role: 'datastat-test'
+        vault.hashicorp.com/agent-run-as-user: "1001"
+        vault.hashicorp.com/agent-run-as-group: "1001"
+        vault.hashicorp.com/secret-volume-path: "/opt/config/"
+        vault.hashicorp.com/agent-inject-secret-application.properties: 'internal/data/infra-test/ds-developer'
+        vault.hashicorp.com/agent-inject-perms-application.properties: "0400"
+        vault.hashicorp.com/agent-inject-template-application.properties: |  
+          {{- with secret "internal/data/infra-test/ds-developer " -}}  
+          {{ .Data.data.application_properties }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-custom.properties: 'internal/data/infra-test/ds-developer'
+        vault.hashicorp.com/agent-inject-perms-custom.properties: "0400"
+        vault.hashicorp.com/agent-inject-template-custom.properties: |
+          {{- with secret "internal/data/infra-test/ds-developer " -}}  
+          {{ .Data.data.custom_properties }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-openEuler.properties: 'internal/data/infra-test/ds-developer'
+        vault.hashicorp.com/agent-inject-perms-openEuler.properties: "0400"
+        vault.hashicorp.com/agent-inject-template-openEuler.properties: |
+          {{- with secret "internal/data/infra-test/ds-developer " -}}  
+          {{ .Data.data.openEuler_properties }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-openGauss.properties: 'internal/data/infra-test/ds-developer'
+        vault.hashicorp.com/agent-inject-perms-openGauss.properties: "0400"
+        vault.hashicorp.com/agent-inject-template-openGauss.properties: |
+          {{- with secret "internal/data/infra-test/ds-developer " -}}  
+          {{ .Data.data.openGauss_properties }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-foundry.properties: 'internal/data/infra-test/ds-developer'
+        vault.hashicorp.com/agent-inject-perms-foundry.properties: "0400"
+        vault.hashicorp.com/agent-inject-template-foundry.properties: |
+          {{- with secret "internal/data/infra-test/ds-developer " -}}  
+          {{ .Data.data.foundry_properties }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-mindSpore.properties: 'internal/data/infra-test/ds-developer'
+        vault.hashicorp.com/agent-inject-perms-mindSpore.properties: "0400"
+        vault.hashicorp.com/agent-inject-template-mindSpore.properties: |
+          {{- with secret "internal/data/infra-test/ds-developer " -}}  
+          {{ .Data.data.mindSpore_properties }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-openLookeng.properties: 'internal/data/infra-test/ds-developer'
+        vault.hashicorp.com/agent-inject-perms-openLookeng.properties: "0400"
+        vault.hashicorp.com/agent-inject-template-openLookeng.properties: |
+          {{- with secret "internal/data/infra-test/ds-developer " -}}  
+          {{ .Data.data.openLookeng_properties }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-software.properties: 'internal/data/infra-test/ds-developer'
+        vault.hashicorp.com/agent-inject-perms-software.properties: "0400"
+        vault.hashicorp.com/agent-inject-template-software.properties: |
+          {{- with secret "internal/data/infra-test/ds-developer " -}}  
+          {{ .Data.data.software_properties }}
+          {{- end }}
+      labels:
+        app: datastat-test
+    spec:
+      serviceAccount: datastat-test
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      automountServiceAccountToken: false
+      containers:
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/datastat-backend-test:develop_test-ec983b
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 8080
+          timeoutSeconds: 5
+        name: server
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 8080
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 2
+            memory: 8Gi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+        securityContext:
+          allowPrivilegeEscalation: falses
+          runAsUser: 1001
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token

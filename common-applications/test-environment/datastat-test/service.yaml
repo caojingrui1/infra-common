@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: datastat-test-service
+  namespace: datastat-test
+spec:
+  ports:
+  - name: http-port
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: datastat-test
+  type: ClusterIP
