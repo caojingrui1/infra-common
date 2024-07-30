@@ -39,6 +39,12 @@ spec:
           {{- with secret "internal/data/infra-test/message-center" -}}  
           {{ .Data.data.transferGiteeConf }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-perms-meeting_conf.yaml: "0400"
+        vault.hashicorp.com/agent-inject-secret-meeting_conf.yaml: 'internal/data/infra-test/message-center'
+        vault.hashicorp.com/agent-inject-template-meeting_conf.yaml: |  
+          {{- with secret "internal/data/infra-test/message-center" -}}  
+          {{ .Data.data.meetingConf }}
+          {{- end }}
       labels:
         app: transfer
     spec:
