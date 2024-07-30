@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: om-webserver-deployment
+  namespace: om-webserver
+  labels:
+    app: om-webserver
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: om-webserver
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/role: 'om-webserver'
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/agent-inject-perms-application.yaml: "0400"
+        vault.hashicorp.com/agent-inject-secret-application.yaml: 'internal/data/icsl/om-webserver'
+        vault.hashicorp.com/agent-inject-template-application.yaml: |  
+          {{- with secret "internal/data/icsl/om-webserver" -}}  
+          {{ .Data.data.application }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
+        vault.hashicorp.com/agent-inject-secret-redis.crt: 'internal/data/icsl/om-webserver'
+        vault.hashicorp.com/agent-inject-template-redis.crt: |  
+          {{- with secret "internal/data/icsl/om-webserver" -}}  
+          {{ .Data.data.redisCA }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-perms-ssl.pfx: "0400"
+        vault.hashicorp.com/agent-inject-secret-ssl.pfx: 'internal/data/icsl/om-webserver'
+        vault.hashicorp.com/agent-inject-template-ssl.pfx: |  
+          {{- with secret "internal/data/icsl/om-webserver" -}}  
+          {{ base64Decode .Data.data.sslpfx }}
+          {{- end }}
+      labels:
+        app: om-webserver
+    spec:
+      securityContext:
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      serviceAccountName: om-webserver
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      nodeSelector:
+        om-webserver: "true"
+      containers:
+      - name: om-webserver
+        image: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-icsl:master-05a5fa
+        env:
+        - name: APPLICATION_PATH
+          value: /vault/secrets/application.yaml
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 2Gi
+          requests:
+            cpu: 1000m
+            memory: 2Gi
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          successThreshold: 1
+          httpGet:
+            path: /oneid/checkOmService
+            port: 8080
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          httpGet:
+            path: /oneid/checkOmService
+            port: 8080
+          timeoutSeconds: 5
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+        - name: token-vol
+          projected:
+            sources:
+            - serviceAccountToken:
+                audience: api
+                expirationSeconds: 600
+                path: token
+        
