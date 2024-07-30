@@ -1,0 +1,19 @@
+kind: NetworkPolicy
+metadata:
+  name: datastat-test-policy-01
+  namespace: datastat-test
+spec:
+  podSelector:
+    matchLabels:
+      app: datastat-test
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - namespaceSelector:
+            matchLabels:
+              project: ingress-nginx
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
