@@ -9,7 +9,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test
   newTag: lr_spt-c28367
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
-  newTag: lyh_test-0f94ee
+  newTag: lyh_tag-3e21ec
 kind: Kustomization
 namespace: merlin
 resources:
