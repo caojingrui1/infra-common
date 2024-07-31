@@ -72,6 +72,7 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           httpGet:
+            scheme: HTTPS
             path: /oneid/checkOmService
             port: 8080
           timeoutSeconds: 5
@@ -81,6 +82,7 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           httpGet:
+            scheme: HTTPS
             path: /oneid/checkOmService
             port: 8080
           timeoutSeconds: 5
