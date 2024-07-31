@@ -20,8 +20,8 @@ spec:
         vault.hashicorp.com/tls-skip-verify: "true"
         vault.hashicorp.com/role: 'om-webserver'
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
-        vault.hashicorp.com/agent-run-as-user: "1000"
-        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/agent-run-as-user: "1001"
+        vault.hashicorp.com/agent-run-as-group: "1001"
         vault.hashicorp.com/agent-inject-perms-application.yaml: "0400"
         vault.hashicorp.com/agent-inject-secret-application.yaml: 'internal/data/icsl/om-webserver'
         vault.hashicorp.com/agent-inject-template-application.yaml: |  
@@ -86,7 +86,7 @@ spec:
           timeoutSeconds: 5
         securityContext:
           allowPrivilegeEscalation: false
-          runAsUser: 1000
+          runAsUser: 1001
           capabilities:
             drop:
               - ALL
