@@ -9,7 +9,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test
   newTag: lr_spt-c28367
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
-  newTag: yongfu-distroless-dockerfile-fe1c72
+  newTag: public0730-59c9c1
 kind: Kustomization
 namespace: merlin
 resources:
