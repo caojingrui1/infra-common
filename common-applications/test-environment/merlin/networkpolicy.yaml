@@ -697,3 +697,27 @@ spec:
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: merlin-moderation-server-policy-01
+  namespace: merlin
+spec:
+  podSelector:
+    matchLabels:
+      app: moderation-server
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: gitea-repo
+          namespaceSelector:
+            matchLabels:
+              project: gitea-repo
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
