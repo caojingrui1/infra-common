@@ -10,3 +10,6 @@ namespace: om-webserver
 resources:
 - service.yaml
 - deployment.yaml
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/om/usercenter-website-icsl
+  newTag: main-384a75
