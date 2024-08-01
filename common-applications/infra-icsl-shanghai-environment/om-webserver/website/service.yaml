@@ -3,9 +3,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: website-service
-  namespace: easysoftware
+  namespace: om-webserver
   annotations:
-    kubernetes.io/elb.id: 73aa678a-b776-4c08-822b-6bf6bc24f2be
+    kubernetes.io/elb.id: bfdeb842-4034-45a4-ab4a-96f1dde290b0
     kubernetes.io/elb.class: union
     kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
 spec:

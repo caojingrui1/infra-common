@@ -55,7 +55,7 @@ spec:
         om-webserver: "true"
       containers:
       - name: om-webserver
-        image: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-icsl:master-05a5fa
+        image: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-icsl:master-4d255b
         env:
         - name: APPLICATION_PATH
           value: /vault/secrets/application.properties
