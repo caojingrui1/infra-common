@@ -16,7 +16,6 @@ resources:
   - openmind-model-download-sh
   - openmind-space-event
   - openmind-dataset-event
-  - community-tracker-test
 commonAnnotations:
   owner: zhongjun
   email: "jun.zhongjun2@gmail.com"
