@@ -53,6 +53,7 @@ resources:
   - eur-openeuler-download
   - hub-oepkgs
   - gitee-feature
+  - software-repo-maintain
 commonAnnotations:
   owner: zhongjun
   email: "jun.zhongjun2@gmail.com"
