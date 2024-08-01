@@ -27,3 +27,4 @@ resources:
 - moderation-video.yaml
 - deploy-task.yaml
 - virus-scan.yaml
+- openmind-api-autotest.yaml

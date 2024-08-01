@@ -1,0 +1,70 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: openmind-api-autotest
+  namespace: merlin
+  labels:
+    app: openmind-api-autotest
+spec:
+  schedule: "1 1 * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 180
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            vault.hashicorp.com/agent-inject: 'true'
+            vault.hashicorp.com/role: 'merlin'
+            vault.hashicorp.com/agent-inject-secret-mail.yml: 'internal/data/infra-test/merlin'
+            vault.hashicorp.com/agent-pre-populate-only: "true"
+            vault.hashicorp.com/agent-inject-perms-mail.yml: "0400"
+            vault.hashicorp.com/agent-run-as-user: "1000"
+            vault.hashicorp.com/agent-run-as-group: "1000"
+            vault.hashicorp.com/agent-inject-template-mail.yml: |  
+              {{- with secret "internal/data/infra-test/merlin" -}}  
+              {{ .Data.data.mail }}
+              {{- end }}
+            vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+            vault.hashicorp.com/tls-skip-verify: "true"
+          labels:
+            app: openmind-api-autotest
+        spec:
+          serviceAccount: merlin
+          restartPolicy: OnFailure
+          imagePullSecrets:
+          - name: huawei-swr-image-pull-secret
+          securityContext:
+            seccompProfile:
+              type: Localhost
+              localhostProfile: infra-seccomp.json
+          automountServiceAccountToken: false
+          containers:
+          - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-autotest:master-68aa16
+            imagePullPolicy: IfNotPresent
+            name: openmind-api-autotest
+            resources:
+              limits:
+                cpu: 500m
+                memory: 500Mi
+              requests:
+                cpu: 500m
+                memory: 500Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              runAsUser: 1000
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+          volumes:
+          - name: token-vol
+            projected:
+              sources:
+              - serviceAccountToken:
+                  audience: api
+                  expirationSeconds: 600
+                  path: token
+
+              
