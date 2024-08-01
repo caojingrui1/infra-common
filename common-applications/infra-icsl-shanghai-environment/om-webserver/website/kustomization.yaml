@@ -12,4 +12,4 @@ resources:
 - deployment.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/om/usercenter-website-icsl
-  newTag: main-940a2
+  newTag: main-ddfb9
