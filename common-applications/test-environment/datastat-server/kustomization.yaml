@@ -5,6 +5,8 @@ resources:
 - service.yaml
 - namespace.yaml
 - autoscaler.yaml
+- sa.yaml
+- networkpolicy.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: datastat-server
