@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: oauth2-proxy
+  name: oauth2-proxy
+  namespace: argocd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: oauth2-proxy
+  template:
+    metadata:
+      labels:
+        k8s-app: oauth2-proxy
+    spec:
+      automountServiceAccountToken: false
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      containers:
+        - args:
+            - --provider=oidc
+            - --email-domain=*
+            - --upstream=https://argocd-server.argocd.svc.cluster.local
+            - --http-address=0.0.0.0:4180
+            - --provider-display-name=authing
+            - --cookie-expire=6h0m0s
+            - --redirect-url=https://build-02.test.osinfra.cn/oauth2/callback
+            - --oidc-issuer-url=https://cluster-display.authing.cn/oidc
+            - --skip-auth-regex=^/api/
+            - --insecure-oidc-allow-unverified-email=true
+            - --session-cookie-minimal=false
+            - --pass-access-token=true
+            - --cookie-secure=false
+            - --ssl-upstream-insecure-skip-verify
+          env:
+            - name: OAUTH2_PROXY_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  key: client_id
+                  name: argocd-oauth-secret
+            - name: OAUTH2_PROXY_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: client_secret
+                  name: argocd-oauth-secret
+            - name: OAUTH2_PROXY_COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: cookie_secret
+                  name: argocd-oauth-secret
+          image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/oauth2-proxy:4b64a9c04a247dd5da3ff664d9d497c902324c3a
+          imagePullPolicy: Always
+          name: oauth2-proxy
+          ports:
+            - containerPort: 4180
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 4180
+            timeoutSeconds: 5
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 4180
+            timeoutSeconds: 5
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 500m
+              memory: 500Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    k8s-app: oauth2-proxy
+  name: oauth2-proxy
+  namespace: argocd
+spec:
+  ports:
+    - name: http
+      port: 4180
+      protocol: TCP
+      targetPort: 4180
+  selector:
+    k8s-app: oauth2-proxy
+
