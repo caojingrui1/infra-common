@@ -9,7 +9,7 @@ spec:
   tls:
     - hosts:
         - build-02.test.osinfra.cn
-      secretName: argocd-repo-server-tls
+      secretName: argocd-server-tls
   rules:
     - host: build-02.test.osinfra.cn
       http:
