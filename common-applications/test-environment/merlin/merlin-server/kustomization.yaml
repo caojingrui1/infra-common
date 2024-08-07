@@ -11,7 +11,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
   newTag: jackpotMail-fec452
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-autotest
-  newTag: master-f8b0b1
+  newTag: master-5ec54b
 kind: Kustomization
 namespace: merlin
 resources:
