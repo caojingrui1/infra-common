@@ -11,7 +11,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
   newTag: public_debug-301ffd
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-autotest
-  newTag: master-4391b2
+  newTag: master-f98d0c
 kind: Kustomization
 namespace: merlin
 resources:
