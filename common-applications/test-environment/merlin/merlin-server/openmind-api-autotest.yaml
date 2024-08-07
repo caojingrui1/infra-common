@@ -7,7 +7,7 @@ metadata:
   labels:
     app: openmind-api-autotest
 spec:
-  schedule: "1 1 * * *"
+  schedule: "0 8 * * *"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 180
   jobTemplate:
@@ -41,7 +41,7 @@ spec:
               localhostProfile: infra-seccomp.json
           automountServiceAccountToken: false
           containers:
-          - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-autotest:master-68aa16
+          - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-autotest:master-f98d0c
             imagePullPolicy: IfNotPresent
             name: openmind-api-autotest
             resources:
@@ -54,7 +54,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               runAsUser: 1000
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: flase
               capabilities:
                 drop:
                   - ALL
