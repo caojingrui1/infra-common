@@ -451,9 +451,7 @@ spec:
                 type: string
               pvcStoreClassName:
                 type: string
-              pvcVolumeMode:
-                description: PersistentVolumeMode describes how a volume is intended
-                  to be consumed, either Block or Filesystem.
+              pvcName:
                 type: string
             required:
             - name
