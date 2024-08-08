@@ -449,6 +449,10 @@ spec:
                 type: string
               pvcProvisioner:
                 type: string
+              pvcPath:
+                type: string
+              pvcSize:
+                type: string
               pvcStoreClassName:
                 type: string
               pvcName:
