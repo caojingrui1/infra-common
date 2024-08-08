@@ -12,4 +12,4 @@ resources:
 - deployment.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/om/usercenter-website-icsl
-  newTag: euler_icsl-f4fa3
+  newTag: euler_icsl-18813
