@@ -10,3 +10,6 @@ commonAnnotations:
   kubernetes.ops.owner: wucaiping
   kubernetes.ops.region: shanghai
 kind: Kustomization
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-icsl
+  newTag: stable-ba2dc8
