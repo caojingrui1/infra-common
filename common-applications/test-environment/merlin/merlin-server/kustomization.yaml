@@ -9,7 +9,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test
   newTag: lr_spt-31ca2d
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
-  newTag: main-e75a80
+  newTag: yw_message2_debug-948183
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-autotest
   newTag: master-f98d0c
 kind: Kustomization
@@ -30,4 +30,3 @@ resources:
 - deploy-task.yaml
 - virus-scan.yaml
 - openmind-api-autotest.yaml
-#- generate-usage.yaml
