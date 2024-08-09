@@ -14,4 +14,4 @@ resources:
 - pvc.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-space-test
-  newTag: sjh_fix_dockercommand-cb6436
+  newTag: sjh_fix_dockercommand-72ebe0
