@@ -1,8 +1,6 @@
 resources:
 - v1.8.2-deployment.yaml
-- ingress-nginx-controller-configmap.yaml
-- ./custome-errors/custom-default-backend-error_pages.configMap.yaml
-- ./custome-errors/custom-default-backend.yaml
+- custom-default-backend.yaml
 commonAnnotations:
   kubernetes.ops.cluster: modelfoundry-guiyang-npu-containerd-cluster
   kubernetes.ops.email: ""
