@@ -455,7 +455,7 @@ spec:
       from:
         - podSelector:
             matchLabels:
-              app: update-data
+              app: update-download-data
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
