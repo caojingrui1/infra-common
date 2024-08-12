@@ -321,6 +321,7 @@ subjects:
 apiVersion: v1
 data:
   allow-snippet-annotations: "true"
+  custom-http-errors: "503"
 kind: ConfigMap
 metadata:
   labels:
