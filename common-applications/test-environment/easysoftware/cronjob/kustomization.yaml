@@ -9,6 +9,7 @@ resources:
 - input-oepkg.yaml
 - input-rpm.yaml
 - input-maintainer.yaml
+- testdag.yaml
 namespace: easysoftware
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
