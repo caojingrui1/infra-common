@@ -44,6 +44,9 @@ spec:
           - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-autotest:master-f98d0c
             imagePullPolicy: IfNotPresent
             name: openmind-api-autotest
+            env:
+              - name: TZ
+                value: Asia/Shanghai
             resources:
               limits:
                 cpu: 500m
