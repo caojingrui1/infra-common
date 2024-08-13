@@ -11,3 +11,4 @@ resources:
 - service.yaml
 - deployment.yaml
 - sa.yaml
+- namespace.yaml

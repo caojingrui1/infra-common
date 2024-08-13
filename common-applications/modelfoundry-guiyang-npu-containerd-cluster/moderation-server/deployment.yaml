@@ -46,7 +46,7 @@ spec:
     spec:
       serviceAccount: moderation-server
       imagePullSecrets:
-      - name: huawei-swr-image-pull-secret
+      - name: swr-image-pull
       securityContext:
         seccompProfile:
           type: Localhost
