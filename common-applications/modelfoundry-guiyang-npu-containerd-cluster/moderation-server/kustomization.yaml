@@ -12,3 +12,6 @@ resources:
 - deployment.yaml
 - sa.yaml
 - namespace.yaml
+images:
+- name: swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/merlin/moderation-server-test
+  newTag: main-b4ee51-arm
