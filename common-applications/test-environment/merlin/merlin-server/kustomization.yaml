@@ -7,7 +7,7 @@ commonAnnotations:
   kubernetes.ops.region: shanghai
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test
-  newTag: lr_spt-31ca2d
+  newTag: yw_release_update-83953a
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
   newTag: test0812-193d2a8
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-autotest
