@@ -30,3 +30,4 @@ resources:
 - deploy-task.yaml
 - virus-scan.yaml
 - openmind-api-autotest.yaml
+- sync-changelog.yaml
