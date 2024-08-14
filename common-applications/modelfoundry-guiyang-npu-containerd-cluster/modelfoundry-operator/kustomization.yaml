@@ -6,7 +6,7 @@ commonAnnotations:
   kubernetes.ops.os.base: Alpine
   kubernetes.ops.owner: wangxiyuan
   kubernetes.ops.region: guiyang
-namespace: openmind-space-operator-system
+namespace: space-k8s-operator-system
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
