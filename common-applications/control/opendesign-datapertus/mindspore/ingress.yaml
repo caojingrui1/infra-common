@@ -4,29 +4,6 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt-issuer
-  name: opendesign-datapertus-mindspore-ingress
-  namespace: opendesign-datapertus
-spec:
-  tls:
-    - hosts:
-        - datastat.mindspore.cn
-      secretName: datastat-mindspore-tls
-  rules:
-    - host: datastat.mindspore.cn
-      http:
-        paths:
-          - backend:
-              serviceName: mindspore-service
-              servicePort: 80
-            path: /
-
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    kubernetes.io/ingress.class: nginx
   name: opendesign-datapertus-mindspore-osinfra-ingress
   namespace: opendesign-datapertus
 spec:
