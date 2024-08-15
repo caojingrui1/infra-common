@@ -634,7 +634,7 @@ spec:
                 type: string
             required:
             - name
-			- nameModeration
+            - nameModeration
             - nameNginx
             type: object
           status:
