@@ -65,11 +65,11 @@ spec:
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/sbom-repo-service:568471465707c5102c1e93c350cfd8fb359f2e4f
         resources:
           requests:
-            cpu: 1000m
+            cpu: 4000m
             memory: 8Gi
           limits:
-            cpu: 1000m
-            memory: 8Gi
+            cpu: 4000m
+            memory: 20Gi
         volumeMounts:
         - mountPath: /opt/repo-data
           name: repo-data
