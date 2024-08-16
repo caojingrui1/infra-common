@@ -9,7 +9,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test
   newTag: yw_release_update-7778c0
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
-  newTag: main-d7447ba
+  newTag: test0815-0d469c4
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-autotest
   newTag: master-60528c
 kind: Kustomization
