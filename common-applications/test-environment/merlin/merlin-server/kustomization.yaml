@@ -31,3 +31,4 @@ resources:
 - virus-scan.yaml
 - openmind-api-autotest.yaml
 - sync-changelog.yaml
+- topic-task.yaml
