@@ -15,4 +15,4 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-input-test
   newTag: master-a9f57
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-test
-  newTag: test-9ca07d
+  newTag: test-4bc2dc
