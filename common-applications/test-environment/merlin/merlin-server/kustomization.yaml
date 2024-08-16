@@ -34,3 +34,4 @@ resources:
 - openmind-api-autotest.yaml
 - sync-changelog.yaml
 - topic-task.yaml
+- sort-job.yaml
