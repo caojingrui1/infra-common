@@ -12,4 +12,4 @@ commonAnnotations:
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-icsl
-  newTag: stable-revokeprivacy-78b590
+  newTag: stable-revokeprivacy-7ff0bf
