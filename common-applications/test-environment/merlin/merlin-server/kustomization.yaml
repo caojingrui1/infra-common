@@ -13,7 +13,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-autotest
   newTag: master-5cf264
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-hub
-  newTag: master-a14d3c
+  newTag: master-f6873e
 kind: Kustomization
 namespace: merlin
 resources:
