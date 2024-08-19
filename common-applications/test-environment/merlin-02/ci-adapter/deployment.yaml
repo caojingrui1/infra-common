@@ -60,7 +60,7 @@ spec:
       - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-ci-adapter-test:master-382e5d
         imagePullPolicy: IfNotPresent        
         args:
-        - --env=production
+        - --env=sh
         name: server
         resources:
           limits:
