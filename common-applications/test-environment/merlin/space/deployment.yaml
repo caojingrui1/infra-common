@@ -18,29 +18,41 @@ spec:
         vault.hashicorp.com/agent-inject-secret-compose-config.yml: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/merlin'
-        vault.hashicorp.com/agent-inject-secret-cci-config.yml: 'internal/data/infra-test/merlin'
-        vault.hashicorp.com/agent-inject-secret-k8s-config.yml: 'internal/data/infra-test/merlin'
-        vault.hashicorp.com/agent-inject-secret-k8s-config-tianyiyun.yml: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-hw-guiyang-cci-test-config.yml: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-hw-guiyang-cci-prod-config.yml: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-hw-guiyang-k8s-test-config.yml: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-hw-guiyang-k8s-prod-config.yml: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-telecom-hangzhou-k8s-test-config.yml: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-telecom-beijing-k8s-prod-config.yml: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-sql.crt: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-docker.json: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-space-client.yml: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-vault.crt: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-compose-config.yml: "0400"
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-server.key: "0400"
-        vault.hashicorp.com/agent-inject-perms-cci-config.yml: "0400"
-        vault.hashicorp.com/agent-inject-perms-k8s-config.yml: "0400"
-        vault.hashicorp.com/agent-inject-perms-k8s-config-tianyiyun.yml: "0400"
+        vault.hashicorp.com/agent-inject-perms-hw-guiyang-cci-test-config.yml: "0400"
+        vault.hashicorp.com/agent-inject-perms-hw-guiyang-cci-prod-config.yml: "0400"
+        vault.hashicorp.com/agent-inject-perms-hw-guiyang-k8s-test-config.yml: "0400"
+        vault.hashicorp.com/agent-inject-perms-hw-guiyang-k8s-prod-config.yml: "0400"
+        vault.hashicorp.com/agent-inject-perms-telecom-hangzhou-k8s-test-config.yml: "0400"
+        vault.hashicorp.com/agent-inject-perms-telecom-beijing-k8s-prod-config.yml: "0400"
         vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-sql.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-docker.json: "0400"
+        vault.hashicorp.com/agent-inject-perms-space-client.yml: "0400"
         vault.hashicorp.com/agent-inject-perms-vault.crt: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/agent-inject-template-compose-config.yml: |  
           {{- with secret "internal/data/infra-test/merlin" -}}  
           {{ .Data.data.spaceConf }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-space-client.yml: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.spaceClientConf }}
           {{- end }}
         vault.hashicorp.com/agent-inject-template-server.crt: |  
           {{- with secret "internal/data/infra-test/merlin" -}}  
@@ -50,17 +62,21 @@ spec:
           {{- with secret "internal/data/infra-test/merlin" -}}  
           {{ .Data.data.ServerKey }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-template-cci-config.yml: |  
+        vault.hashicorp.com/agent-inject-template-hw-guiyang-cci-test-config.yml: |  
           {{- with secret "internal/data/infra-test/merlin" -}}  
           {{ .Data.data.cciConf }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-template-k8s-config.yml: |  
+        vault.hashicorp.com/agent-inject-template-hw-guiyang-cci-prod-config.yml: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.cciConf }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-hw-guiyang-k8s-test-config.yml: |  
           {{- with secret "internal/data/infra-test/merlin" -}}  
           {{ .Data.data.k8sConf }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-template-k8s-config-tianyiyun.yml: |  
+        vault.hashicorp.com/agent-inject-template-hw-guiyang-k8s-prod-config.yml: |  
           {{- with secret "internal/data/infra-test/merlin" -}}  
-          {{ .Data.data.k8sConfTianyiyun }}
+          {{ .Data.data.k8sConfProd }}
           {{- end }}
         vault.hashicorp.com/agent-inject-template-kafka.crt: |  
           {{- with secret "internal/data/infra-test/merlin" -}}  
@@ -77,6 +93,14 @@ spec:
         vault.hashicorp.com/agent-inject-template-vault.crt: |  
           {{- with secret "internal/data/infra-test/merlin" -}}  
           {{ .Data.data.vaultCA }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-telecom-hangzhou-k8s-test-config.yml: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.k8sConfTianyiyun }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-telecom-beijing-k8s-prod-config.yml: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.k8sConfTianyiyunBeijing }}
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
@@ -100,6 +124,8 @@ spec:
           value: /vault/secrets/compose-config.yml
         - name: LOG_PATH
           value: /var/log/space-server.log
+        - name: SPACE_CLIENT_CONFIG_FILE
+          value: /vault/secrets/space-client.yml
         - name: IP
           value: "0.0.0.0"
         - name: PORT
