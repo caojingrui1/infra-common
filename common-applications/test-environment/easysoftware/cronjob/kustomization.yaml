@@ -1,14 +1,7 @@
 resources:
-- input.yaml
 - autoupgrade.yaml
-- input-field-domain.yaml
-- input-archnum.yaml
 - input-externalos.yaml
 - input-operationconfig.yaml
-- input-epkg.yaml
-- input-oepkg.yaml
-- input-rpm.yaml
-- input-maintainer.yaml
 - arrangement.yaml
 - input-srcrepo.yaml
 namespace: easysoftware
