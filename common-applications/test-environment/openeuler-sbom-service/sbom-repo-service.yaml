@@ -46,6 +46,7 @@ metadata:
   name: sbom-repo-service
   namespace: openeuler-sbom-service
 spec:
+  replicas: 2
   strategy:
     type: Recreate
   selector:
