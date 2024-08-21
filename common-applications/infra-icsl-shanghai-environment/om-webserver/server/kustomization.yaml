@@ -12,4 +12,4 @@ commonAnnotations:
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-icsl
-  newTag: stable-env-25577a
+  newTag: stable-env-a2538e
