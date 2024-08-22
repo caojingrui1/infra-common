@@ -7,6 +7,11 @@ metadata:
   labels: 
     app: merlin-website
 spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
       app: merlin-website
@@ -66,6 +71,9 @@ spec:
         ports:
         - containerPort: 8080
           name: http
+          protocol: TCP
+        - containerPort: 8088
+          name: registry
           protocol: TCP
         readinessProbe:
           failureThreshold: 3
