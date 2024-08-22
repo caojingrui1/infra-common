@@ -40,7 +40,6 @@ spec:
       - name: swr-image-pull
       nodeSelector:
         kubernetes.io/os: linux
-        node-role.kubernetes.io/worker: worker
       securityContext:
         seccompProfile:
           localhostProfile: infra-seccomp.json
