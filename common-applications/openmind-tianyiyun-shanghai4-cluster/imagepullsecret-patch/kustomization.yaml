@@ -1,0 +1,13 @@
+resources:
+- deployment.yaml
+- namespace.yaml
+- rbac.yaml
+#- networkpolicy.yaml
+commonAnnotations:
+  kubernetes.ops.cluster: openmind-tianyiyun-shanghai4-cluster
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: ""
+  kubernetes.ops.owner: liuyang
+  kubernetes.ops.region: sh
+namespace: imagepullsecret-patch
+

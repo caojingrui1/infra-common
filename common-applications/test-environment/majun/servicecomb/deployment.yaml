@@ -23,6 +23,11 @@ spec:
           type: Localhost
           localhostProfile: infra-seccomp.json
       automountServiceAccountToken: false
+      tolerations:
+      - key: "majun-icsl"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
       containers:
       - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/majun/servicecomb:2.0.0
         imagePullPolicy: IfNotPresent
@@ -30,9 +35,9 @@ spec:
         resources:
           limits:
             cpu: 1000m
-            memory: 1000Mi
+            memory: 2000Mi
           requests:
             cpu: 1000m
-            memory: 1000Mi
+            memory: 2000Mi
         securityContext:
           allowPrivilegeEscalation: false

@@ -204,6 +204,10 @@ spec:
           value: "https://etherpad.openeuler.org"
         - name: REQUIRE_AUTHENTICATION
           value: "true"
+        - name: OSSLOGOUTURL
+          value: "https://id.openeuler.org/logout"
+        - name: OSSCHECKURL
+          value: "https://omapi.osinfra.cn/oneid/user/permission?community=openeuler"
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/etherpad:dev-1.8.18-238541
         imagePullPolicy: IfNotPresent
         name: etherpad-lite

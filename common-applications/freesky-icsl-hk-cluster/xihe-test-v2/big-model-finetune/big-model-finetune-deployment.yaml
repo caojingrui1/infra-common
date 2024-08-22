@@ -4,7 +4,7 @@ metadata:
   name: big-model-finetune-deployment
   namespace: xihe-test-v2
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: big-model-finetune

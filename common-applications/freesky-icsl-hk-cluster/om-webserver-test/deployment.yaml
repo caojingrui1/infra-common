@@ -6,7 +6,7 @@ metadata:
   labels:
     app: om-webserver
 spec:
-  replicas: 1
+  replicas: 0
   revisionHistoryLimit: 10
   strategy:
     type: Recreate

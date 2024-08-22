@@ -92,6 +92,41 @@ spec:
               secretKeyRef:
                 name: sca-secret
                 key: appId
+          - name: X_ARMOR_SECURITY_ENABLE
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: X_ARMOR_SECURITY_ENABLE
+          - name: X_ARMOR_SECURITY_ROOT_PASSWORD_0
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: X_ARMOR_SECURITY_ROOT_PASSWORD_0
+          - name: X_ARMOR_SECURITY_WORK_PASSWORD_0
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: X_ARMOR_SECURITY_WORK_PASSWORD_0
+          - name: X_ARMOR_BACKEND_APP_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: X_ARMOR_BACKEND_APP_TOKEN
+          - name: X_ARMOR_BACKEND_APP_ID
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: X_ARMOR_BACKEND_APP_ID
+          - name: X_ARMOR_BACKEND_BACKEND_URL
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: X_ARMOR_BACKEND_BACKEND_URL
+          - name: X_ARMOR_BACKEND_TENANT_ID
+            valueFrom:
+              secretKeyRef:
+                name: sca-secret
+                key: X_ARMOR_BACKEND_TENANT_ID
         resources:
           requests:
             cpu: 200m

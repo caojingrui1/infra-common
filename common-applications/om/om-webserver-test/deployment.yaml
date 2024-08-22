@@ -10,9 +10,36 @@ spec:
   revisionHistoryLimit: 10
   template:
     metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/role: 'openeuler-omwebserver'
+        vault.hashicorp.com/agent-run-as-user: "1001"
+        vault.hashicorp.com/agent-run-as-group: "1001"
+        vault.hashicorp.com/agent-inject-perms-application.properties: "0400"
+        vault.hashicorp.com/agent-inject-perms-tls.pfx: "0400"
+        vault.hashicorp.com/agent-inject-secret-tls.pfx: 'internal/data/infra-test/openeuler-omwebserver'
+        vault.hashicorp.com/agent-inject-template-tls.pfx: |  
+          {{- with secret "internal/data/infra-test/openeuler-omwebserver" -}}  
+          {{ base64Decode .Data.data.tlspfx }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-application.properties: 'internal/data/infra-test/openeuler-omwebserver'
+        vault.hashicorp.com/agent-inject-template-application.properties: |  
+          {{- with secret "internal/data/infra-test/openeuler-omwebserver" -}}  
+          {{ .Data.data.application }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
+        vault.hashicorp.com/agent-inject-secret-redis.crt: 'internal/data/infra-test/openeuler-omwebserver'
+        vault.hashicorp.com/agent-inject-template-redis.crt: |  
+          {{- with secret "internal/data/infra-test/openeuler-omwebserver" -}}  
+          {{ .Data.data.redis }}
+          {{- end }}
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/secret-volume-path: "/var/lib/om-webserver/"
       labels:
         app: om-webserver
     spec:
+      serviceAccountName: openeuler-omwebserver
       imagePullSecrets:
       - name: huawei-swr-image-pull-secret
       containers:
@@ -36,6 +63,7 @@ spec:
             httpGet:
               path: /oneid/checkOmService
               port: 8080
+              scheme: HTTPS
             timeoutSeconds: 5
           readinessProbe:
             failureThreshold: 3
@@ -45,15 +73,22 @@ spec:
             httpGet:
               path: /oneid/checkOmService
               port: 8080
+              scheme: HTTPS
             timeoutSeconds: 5
           ports:
             - containerPort: 8080
               name: om-webserver
-          volumeMounts:
-            - mountPath: /var/lib/om-webserver/application.properties
-              subPath: application_properties
-              name: om-webserver-secrets-volume
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 1001
+            capabilities:
+              drop:
+                - ALL
       volumes:
-        - name: om-webserver-secrets-volume
-          secret:
-            secretName: om-webserver-secrets
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token

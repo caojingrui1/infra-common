@@ -13,11 +13,70 @@ spec:
       app: datastat-server
   template:
     metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/role: 'datastat-server'
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/secret-volume-path: "/opt/config/"
+        vault.hashicorp.com/agent-inject-secret-application.properties: 'internal/data/infra-test/datastat-server'
+        vault.hashicorp.com/agent-inject-perms-application.properties: "0400"
+        vault.hashicorp.com/agent-inject-template-application.properties: |  
+          {{- with secret "internal/data/infra-test/datastat-server " -}}  
+          {{ .Data.data.application_properties }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-custom.properties: 'internal/data/infra-test/datastat-server'
+        vault.hashicorp.com/agent-inject-perms-custom.properties: "0400"
+        vault.hashicorp.com/agent-inject-template-custom.properties: |
+          {{- with secret "internal/data/infra-test/datastat-server " -}}  
+          {{ .Data.data.custom_properties }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-openEuler.properties: 'internal/data/infra-test/datastat-server'
+        vault.hashicorp.com/agent-inject-perms-openEuler.properties: "0400"
+        vault.hashicorp.com/agent-inject-template-openEuler.properties: |
+          {{- with secret "internal/data/infra-test/datastat-server " -}}  
+          {{ .Data.data.openEuler_properties }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-openGauss.properties: 'internal/data/infra-test/datastat-server'
+        vault.hashicorp.com/agent-inject-perms-openGauss.properties: "0400"
+        vault.hashicorp.com/agent-inject-template-openGauss.properties: |
+          {{- with secret "internal/data/infra-test/datastat-server " -}}  
+          {{ .Data.data.openGauss_properties }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-foundry.properties: 'internal/data/infra-test/datastat-server'
+        vault.hashicorp.com/agent-inject-perms-foundry.properties: "0400"
+        vault.hashicorp.com/agent-inject-template-foundry.properties: |
+          {{- with secret "internal/data/infra-test/datastat-server " -}}  
+          {{ .Data.data.foundry_properties }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-mindSpore.properties: 'internal/data/infra-test/datastat-server'
+        vault.hashicorp.com/agent-inject-perms-mindSpore.properties: "0400"
+        vault.hashicorp.com/agent-inject-template-mindSpore.properties: |
+          {{- with secret "internal/data/infra-test/datastat-server " -}}  
+          {{ .Data.data.mindSpore_properties }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-openLookeng.properties: 'internal/data/infra-test/datastat-server'
+        vault.hashicorp.com/agent-inject-perms-openLookeng.properties: "0400"
+        vault.hashicorp.com/agent-inject-template-openLookeng.properties: |
+          {{- with secret "internal/data/infra-test/datastat-server " -}}  
+          {{ .Data.data.openLookeng_properties }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-software.properties: 'internal/data/infra-test/datastat-server'
+        vault.hashicorp.com/agent-inject-perms-software.properties: "0400"
+        vault.hashicorp.com/agent-inject-template-software.properties: |
+          {{- with secret "internal/data/infra-test/datastat-server " -}}  
+          {{ .Data.data.software_properties }}
+          {{- end }}
       labels:
         app: datastat-server
     spec:
+      serviceAccount: datastat-server
       imagePullSecrets:
       - name: huawei-swr-image-pull-secret
+      automountServiceAccountToken: false
       containers:
         - name: datastat-server
           image: swr.cn-north-4.myhuaweicloud.com/opensourceway/datastat/server-test:test-6f0db0
@@ -47,32 +106,11 @@ spec:
           ports:
             - containerPort: 8080
               name: datastat-server
-          volumeMounts:
-            - mountPath: /var/lib/ds/custom.properties
-              subPath: custom_properties
-              name: datastat-server-secrets-volume
-            - mountPath: /var/lib/ds/openEuler.properties
-              subPath: openEuler_properties
-              name: datastat-server-secrets-volume
-            - mountPath: /var/lib/ds/openGauss.properties
-              subPath: openGauss_properties
-              name: datastat-server-secrets-volume
-            - mountPath: /var/lib/ds/openLookeng.properties
-              subPath: openLookeng_properties
-              name: datastat-server-secrets-volume
-            - mountPath: /var/lib/ds/mindSpore.properties
-              subPath: mindSpore_properties
-              name: datastat-server-secrets-volume
-            - mountPath: /var/lib/ds/application.properties
-              subPath: application_properties
-              name: datastat-server-secrets-volume
-            - mountPath: /var/lib/ds/foundry.properties
-              subPath: foundry_properties
-              name: datastat-server-secrets-volume
-            - mountPath: /var/lib/ds/software.properties
-              subPath: software_properties
-              name: datastat-server-secrets-volume
       volumes:
-        - name: datastat-server-secrets-volume
-          secret:
-            secretName: datastat-server-secrets
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token

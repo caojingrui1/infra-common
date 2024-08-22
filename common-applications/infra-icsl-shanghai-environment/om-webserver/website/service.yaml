@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: website-service
+  namespace: om-webserver
+  annotations:
+    kubernetes.io/elb.id: bfdeb842-4034-45a4-ab4a-96f1dde290b0
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
+spec:
+  ports:
+  - name: httpport
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: website
+  type: LoadBalancer

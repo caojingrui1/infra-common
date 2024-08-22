@@ -1,0 +1,10 @@
+resources:
+- namespace.yaml
+- sa.yaml
+- networkpolicy.yaml
+- pvc.yaml
+- website
+- server
+namespace: openeuler-compatibility
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization

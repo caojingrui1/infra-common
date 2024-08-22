@@ -1,0 +1,9 @@
+resources:
+- autoupgrade.yaml
+- input-externalos.yaml
+- input-operationconfig.yaml
+- arrangement.yaml
+- input-srcrepo.yaml
+namespace: easysoftware
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization

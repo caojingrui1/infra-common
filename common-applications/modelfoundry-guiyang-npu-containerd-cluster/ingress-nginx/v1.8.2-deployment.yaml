@@ -321,6 +321,7 @@ subjects:
 apiVersion: v1
 data:
   allow-snippet-annotations: "true"
+  custom-http-errors: "503"
 kind: ConfigMap
 metadata:
   labels:
@@ -402,6 +403,7 @@ metadata:
   name: ingress-nginx-controller
   namespace: ingress-nginx
 spec:
+  replicas: 3
   minReadySeconds: 0
   revisionHistoryLimit: 10
   selector:
@@ -427,6 +429,7 @@ spec:
       containers:
       - args:
         - /nginx-ingress-controller
+        - --default-backend-service=$(POD_NAMESPACE)/ingress-nginx-errors
         - --publish-service=$(POD_NAMESPACE)/ingress-nginx-controller
         - --election-id=ingress-nginx-leader
         - --controller-class=k8s.io/ingress-nginx

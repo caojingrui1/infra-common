@@ -33,6 +33,12 @@ spec:
           {{- with secret "internal/data/infra-test/message-center" -}}  
           {{ .Data.data.collectEurBuildConf }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-perms-meeting_conf.yaml: "0400"
+        vault.hashicorp.com/agent-inject-secret-meeting_conf.yaml: 'internal/data/infra-test/message-center'
+        vault.hashicorp.com/agent-inject-template-meeting_conf.yaml: |  
+          {{- with secret "internal/data/infra-test/message-center" -}}  
+          {{ .Data.data.collectMeetingConf }}
+          {{- end }}
       labels:
         app: collect
     spec:
@@ -45,6 +51,7 @@ spec:
         args:
         - --config-file=/vault/secrets/conf.yaml
         - --eur-build-config-file=/vault/secrets/eur_build_conf.yaml
+        - --meeting-config-file=/vault/secrets/meeting_conf.yaml
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/message-center/message-collect-test:ssp_dev-ad1f82
         imagePullPolicy: IfNotPresent
         resources:
