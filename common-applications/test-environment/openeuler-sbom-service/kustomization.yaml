@@ -24,6 +24,6 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-sbom-website-test
   newTag: v1.0.20231110191003
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/repo-post-verification-test
-  newTag: c3d8984f2ecb2169ac8b8efd552997ede0c5a373
+  newTag: 4e83c096ab4c1b5fb49df74546303bee3bbdf487
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/sbom-repo-service
   newTag: v1.0.20240820105514
