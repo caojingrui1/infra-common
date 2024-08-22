@@ -35,3 +35,4 @@ resources:
 - sync-changelog.yaml
 - topic-task.yaml
 - sort-job.yaml
+- sync-image-center.yaml
