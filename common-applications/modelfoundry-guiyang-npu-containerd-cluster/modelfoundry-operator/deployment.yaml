@@ -567,6 +567,8 @@ spec:
                   Image is the container image name for the App.
                   See also: https://kubernetes.io/docs/concepts/containers/images
                 type: string
+              imageInit:
+                type: string
               imageModeration:
                 description: ImageModeration is the Docker image for the Moderation
                   container.
@@ -787,7 +789,7 @@ rules:
 - apiGroups:
   - ""
   resources:
-  - configmaps
+  - persistentvolumeclaims
   verbs:
   - create
   - delete
@@ -825,46 +827,6 @@ rules:
   resources:
   - pods/status
   verbs:
-  - patch
-  - update
-- apiGroups:
-  - apps
-  resources:
-  - deployments
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - apps
-  resources:
-  - deployments/status
-  verbs:
-  - get
-  - patch
-  - update
-- apiGroups:
-  - apps
-  resources:
-  - pods
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - apps
-  resources:
-  - pods/status
-  verbs:
-  - get
   - patch
   - update
 - apiGroups:
@@ -929,18 +891,6 @@ rules:
   - get
   - patch
   - update
-- apiGroups:
-  - ""
-  resources:
-  - persistentvolumeclaims
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
