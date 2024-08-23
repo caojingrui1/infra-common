@@ -26,6 +26,18 @@ spec:
           {{- with secret "internal/data/openmind/moderation-server" -}}  
           {{ .Data.data.moderationServerConf }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/openmind/moderation-server'
+        vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
+        vault.hashicorp.com/agent-inject-template-server.crt: |  
+          {{- with secret "internal/data/openmind/moderation-server" -}}  
+          {{ .Data.data.ServerCrt }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/openmind/moderation-server'
+        vault.hashicorp.com/agent-inject-perms-server.key: "0400"
+        vault.hashicorp.com/agent-inject-template-server.key: |  
+          {{- with secret "internal/data/openmind/moderation-server" -}}  
+          {{ .Data.data.ServerKey }}
+          {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
       labels:
         app: moderation-server
