@@ -402,6 +402,8 @@ spec:
                   Image is the container image name for the App.
                   See also: https://kubernetes.io/docs/concepts/containers/images
                 type: string
+              imageInit:
+                type: string
               imageNginx:
                 description: ImageNginx is the Docker image for the Nginx container.
                 type: string
@@ -447,13 +449,13 @@ spec:
               nameNginx:
                 description: NameNginx is the name of the Nginx container.
                 type: string
+              pvcPath:
+                type: string
               pvcProvisioner:
                 type: string
-              pvcStoreClassName:
+              pvcSize:
                 type: string
-              pvcVolumeMode:
-                description: PersistentVolumeMode describes how a volume is intended
-                  to be consumed, either Block or Filesystem.
+              pvcStoreClassName:
                 type: string
             required:
             - name
@@ -604,8 +606,20 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: openmind-space-operator-manager-role
+  name: manager-role
 rules:
+- apiGroups:
+  - ""
+  resources:
+  - persistentvolumeclaims
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - ""
   resources:
@@ -635,46 +649,6 @@ rules:
   resources:
   - pods/status
   verbs:
-  - patch
-  - update
-- apiGroups:
-  - apps
-  resources:
-  - deployments
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - apps
-  resources:
-  - deployments/status
-  verbs:
-  - get
-  - patch
-  - update
-- apiGroups:
-  - apps
-  resources:
-  - pods
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - apps
-  resources:
-  - pods/status
-  verbs:
-  - get
   - patch
   - update
 - apiGroups:
@@ -739,18 +713,6 @@ rules:
   - get
   - patch
   - update
-- apiGroups:
-  - ""
-  resources:
-  - persistentvolumeclaims
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
