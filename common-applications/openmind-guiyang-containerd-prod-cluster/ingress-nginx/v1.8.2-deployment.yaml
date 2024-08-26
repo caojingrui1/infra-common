@@ -331,7 +331,7 @@ data:
     "method": "$request_method", "http_referrer": "$http_referer", "http_user_agent":
     "$http_user_agent"}'
   use-forwarded-headers: "true"
-  custom-http-errors: "503"
+  custom-http-errors: "502,503"
 kind: ConfigMap
 metadata:
   labels:
