@@ -13,7 +13,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-autotest
   newTag: master-70a91a
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-hub
-  newTag: master-cc1520
+  newTag: master-c74875
 kind: Kustomization
 namespace: merlin
 resources:
