@@ -6,7 +6,6 @@ metadata:
   labels:
     app: easysoftware
 spec:
-  replicas: 2
   strategy:
     type: Recreate
   selector:
@@ -43,6 +42,8 @@ spec:
         app: easysoftware
     spec:
       serviceAccountName: easysoftware
+      nodeSelector:
+        easysoftware: "true"
       imagePullSecrets:
       - name: huawei-swr-image-pull-secret
       containers:

@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moderation-server-deployment
+  namespace: moderation-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: moderation-server
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/role: 'moderation-server'
+        vault.hashicorp.com/agent-inject-secret-config.yml: 'internal/data/openmind/moderation-server'
+        vault.hashicorp.com/agent-inject-perms-config.yml: "0400"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/agent-inject-template-config.yml: |  
+          {{- with secret "internal/data/openmind/moderation-server" -}}  
+          {{ .Data.data.moderationServerConf }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/openmind/domain-tls'
+        vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
+        vault.hashicorp.com/agent-inject-template-server.crt: |  
+          {{- with secret "internal/data/openmind/domain-tls" -}}  
+          {{ .Data.data.ServerCrt }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/openmind/domain-tls'
+        vault.hashicorp.com/agent-inject-perms-server.key: "0400"
+        vault.hashicorp.com/agent-inject-template-server.key: |  
+          {{- with secret "internal/data/openmind/domain-tls" -}}  
+          {{ .Data.data.ServerKey }}
+          {{- end }}
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+      labels:
+        app: moderation-server
+    spec:
+      serviceAccount: moderation-server
+      imagePullSecrets:
+      - name: swr-image-pull
+      securityContext:
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      containers:
+      - image: swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/merlin/moderation-server-test:main-b4ee51-arm
+        imagePullPolicy: IfNotPresent        
+        args:
+        - --config-file=/vault/secrets/config.yml
+        - --port=8080
+        - --enable_debug=true
+        - --rm-cfg=true
+        - --cert=/vault/secrets/server.crt
+        - --key=/vault/secrets/server.key
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 3
+          successThreshold: 1
+          httpGet:
+            scheme: HTTPS
+            path: /internal/heartbeat
+            port: 8080
+          timeoutSeconds: 5
+        name: moderation
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 3
+          successThreshold: 1
+          httpGet:
+            scheme: HTTPS
+            path: /internal/heartbeat
+            port: 8080
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 1
+            memory: 1Gi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token

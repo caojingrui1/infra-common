@@ -6,9 +6,9 @@ commonAnnotations:
   kubernetes.ops.os.base: Alpine
   kubernetes.ops.owner: wangxiyuan
   kubernetes.ops.region: guiyang
-namespace: openmind-space-operator-system
+namespace: space-k8s-operator-system
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/modelfoundry-operator
-  newTag: main-976600
+  newTag: zxy_content_review-4a678c

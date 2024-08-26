@@ -1,0 +1,15 @@
+resources:
+- deployment.yaml
+- service.yaml
+namespace: om-webserver
+apiVersion: kustomize.config.k8s.io/v1beta1
+commonAnnotations:
+  kubernetes.ops.cluster: shanghai-icsl-cluster
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: debian
+  kubernetes.ops.owner: wucaiping
+  kubernetes.ops.region: shanghai
+kind: Kustomization
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-icsl
+  newTag: stable-env-9a1d09

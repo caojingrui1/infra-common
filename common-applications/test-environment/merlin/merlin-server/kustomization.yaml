@@ -7,13 +7,32 @@ commonAnnotations:
   kubernetes.ops.region: shanghai
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test
-  newTag: hrz-dev-a9819a
+  newTag: image_center-2a751b
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
-  newTag: test620-685974
+  newTag: 0830_test-32311f9
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-autotest
+  newTag: master-f6c67d
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-hub
+  newTag: master-e22997
 kind: Kustomization
 namespace: merlin
 resources:
 - server-service.yaml
 - server-deployment.yaml
 - autoscaler.yaml
-- cronjob.yaml
+- server-check-user-revoke.yaml
+- server-udpate-visit-data.yaml
+- server-update-download-data.yaml
+- moderation-init.yaml
+- moderation-readme.yaml
+- moderation-audio.yaml
+- moderation-doc.yaml
+- moderation-pic.yaml
+- moderation-video.yaml
+- deploy-task.yaml
+- virus-scan.yaml
+- openmind-api-autotest.yaml
+- sync-changelog.yaml
+- topic-task.yaml
+- sort-job.yaml
+- sync-image-center.yaml

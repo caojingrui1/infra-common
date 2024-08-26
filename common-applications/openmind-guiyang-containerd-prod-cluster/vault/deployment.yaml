@@ -337,6 +337,7 @@ spec:
       nodeSelector:
         kubernetes.io/os: linux
         node-role.kubernetes.io/worker: worker
+        kubernetes.io/hostname: modelfoundry-prod-node-0006
       imagePullSecrets:
       - name: swr-image-pull
       terminationGracePeriodSeconds: 10

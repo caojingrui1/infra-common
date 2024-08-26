@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: datastat-test-ingress
+  namespace: datastat-test
+spec:
+  tls:
+    - hosts:
+        - datastat-develop.test.osinfra.cn
+      secretName: tls-secrets
+  rules:
+    - host: datastat-develop.test.osinfra.cn
+      http:
+          paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: datastat-test-service
+                port:
+                  number: 8080
+  ingressClassName: nginx

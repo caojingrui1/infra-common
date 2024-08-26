@@ -1,0 +1,69 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scan-etherpad
+  namespace: mail
+  labels:
+    app: scan-etherpad
+spec:
+  schedule: "0 0 * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 180
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            vault.hashicorp.com/agent-inject: 'true'
+            vault.hashicorp.com/agent-pre-populate-only: "true"
+            vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+            vault.hashicorp.com/tls-skip-verify: "true"
+            # vault.hashicorp.com/agent-run-as-user: "1000"
+            # vault.hashicorp.com/agent-run-as-group: "1000"
+            vault.hashicorp.com/role: 'mail'
+            vault.hashicorp.com/agent-inject-secret-compose-config.yml: 'internal/data/infra-common/mail'
+            vault.hashicorp.com/agent-inject-perms-compose-config.yml: "0444"
+            vault.hashicorp.com/agent-inject-template-compose-config.yml: |  
+              {{- with secret "internal/data/infra-common/mail" -}}  
+              {{ .Data.data.scanetherpad }}
+              {{- end }}
+          labels:
+            app: scan-etherpad
+        spec:
+          serviceAccount: mail
+          restartPolicy: OnFailure
+          imagePullSecrets:
+          - name: huawei-swr-image-pull-secret
+          automountServiceAccountToken: false
+          containers:
+          - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/tools/scan-etherpad-test:main-db7bf7
+            imagePullPolicy: IfNotPresent
+            name: scan-etherpad
+            env:
+            - name: CONFIG_PATH
+              value: /vault/secrets/compose-config.yml
+            resources:
+              limits:
+                cpu: 2
+                memory: 4Gi
+              requests:
+                cpu: 500m
+                memory: 500Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              # runAsUser: 1000
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+          volumes:
+          - name: token-vol
+            projected:
+              sources:
+              - serviceAccountToken:
+                  audience: api
+                  expirationSeconds: 600
+                  path: token
+
+              

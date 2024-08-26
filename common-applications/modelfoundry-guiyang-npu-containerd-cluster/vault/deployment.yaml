@@ -465,7 +465,7 @@ spec:
         resources:
           requests:
             storage: 10Gi
-        storageClassName: evs-sc
+        storageClassName: csi-disk-ssd
 ---
 # Source: vault/templates/injector-mutating-webhook.yaml
 apiVersion: admissionregistration.k8s.io/v1

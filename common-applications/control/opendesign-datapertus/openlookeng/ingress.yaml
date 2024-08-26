@@ -4,29 +4,6 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: repo-nginx
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-  name: opendesign-datapertus-openlookeng-new-ingress
-  namespace: opendesign-datapertus
-spec:
-  tls:
-    - hosts:
-        - datastat.openlookeng.io
-      secretName: datastat-openlookeng-new-tls
-  rules:
-    - host: datastat.openlookeng.io
-      http:
-        paths:
-          - backend:
-              serviceName: openlookeng-service
-              servicePort: 80
-            path: /
-
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    kubernetes.io/ingress.class: repo-nginx
   name: opendesign-datapertus-openlookeng-osinfra-ingress
   namespace: opendesign-datapertus
 spec:

@@ -1,10 +1,12 @@
 resources:
 - v1.8.2-deployment.yaml
+- custom-default-backend.yaml
 commonAnnotations:
   kubernetes.ops.cluster: modelfoundry-guiyang-npu-containerd-cluster
   kubernetes.ops.email: ""
   kubernetes.ops.os.base: "Alpine"
   kubernetes.ops.owner: liuyang
   kubernetes.ops.region: guiyang
-namespace: modelfoundry-operator-system
+  common: "true"
+namespace: ingress-nginx
 

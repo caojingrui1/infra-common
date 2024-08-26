@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: website-service
+  namespace: opengpts-02
+  annotations:
+    kubernetes.io/elb.id: 6bdbb6b1-e217-4d8b-8d12-017f7a8a7094
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
+spec:
+  ports:
+  - name: http-port
+    port: 5173
+    protocol: TCP
+    targetPort: 5173
+  selector:
+    app: website
+  type: LoadBalancer

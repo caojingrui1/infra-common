@@ -3,13 +3,13 @@ kind: Namespace
 metadata:
   labels:
     app.kubernetes.io/component: manager
-    app.kubernetes.io/created-by: openmind-space-operator
+    app.kubernetes.io/created-by: space-k8s-operator
     app.kubernetes.io/instance: system
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: namespace
-    app.kubernetes.io/part-of: openmind-space-operator
+    app.kubernetes.io/part-of: space-k8s-operator
     control-plane: controller-manager
-  name: openmind-space-operator-system
+  name: space-k8s-operator-system
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -58,8 +58,118 @@ spec:
             properties:
               computeResources:
                 description: |-
-                  ComputeResources required by this App.
+                  ComputeResources specifies the compute resources required by the App container.
+                  This includes configurations such as CPU and memory limits.
                   See also: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                properties:
+                  claims:
+                    description: |-
+                      Claims lists the names of resources, defined in spec.resourceClaims,
+                      that are used by this container.
+
+
+                      This is an alpha field and requires enabling the
+                      DynamicResourceAllocation feature gate.
+                      This field is immutable. It can only be set for containers.
+                    items:
+                      description: ResourceClaim references one entry in PodSpec.ResourceClaims.
+                      properties:
+                        name:
+                          description: |-
+                            Name must match the name of one entry in pod.spec.resourceClaims of
+                            the Pod where this field is used. It makes that resource available
+                            inside a container.
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    type: array
+                    x-kubernetes-list-map-keys:
+                    - name
+                    x-kubernetes-list-type: map
+                  limits:
+                    additionalProperties:
+                      anyOf:
+                      - type: integer
+                      - type: string
+                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                      x-kubernetes-int-or-string: true
+                    description: |-
+                      Limits describes the maximum amount of compute resources allowed.
+                      More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                    type: object
+                  requests:
+                    additionalProperties:
+                      anyOf:
+                      - type: integer
+                      - type: string
+                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                      x-kubernetes-int-or-string: true
+                    description: |-
+                      Requests describes the minimum amount of compute resources required.
+                      If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+                      otherwise to an implementation-defined value. Requests cannot exceed Limits.
+                      More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                    type: object
+                type: object
+              computeResourcesModeration:
+                description: |-
+                  ComputeResourcesModeration specifies the amount of compute resources allowed for the Moderation container.
+                  This can include CPU and memory. Refer to Kubernetes documentation on managing compute resources for more details.
+                properties:
+                  claims:
+                    description: |-
+                      Claims lists the names of resources, defined in spec.resourceClaims,
+                      that are used by this container.
+                      This is an alpha field and requires enabling the
+                      DynamicResourceAllocation feature gate.
+
+                      This field is immutable. It can only be set for containers.
+                    items:
+                      description: ResourceClaim references one entry in PodSpec.ResourceClaims.
+                      properties:
+                        name:
+                          description: |-
+                            Name must match the name of one entry in pod.spec.resourceClaims of
+                            the Pod where this field is used. It makes that resource available
+                            inside a container.
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    type: array
+                    x-kubernetes-list-map-keys:
+                    - name
+                    x-kubernetes-list-type: map
+                  limits:
+                    additionalProperties:
+                      anyOf:
+                      - type: integer
+                      - type: string
+                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                      x-kubernetes-int-or-string: true
+                    description: |-
+                      Limits describes the maximum amount of compute resources allowed.
+                      More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                    type: object
+                  requests:
+                    additionalProperties:
+                      anyOf:
+                      - type: integer
+                      - type: string
+                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                      x-kubernetes-int-or-string: true
+                    description: |-
+                      Requests describes the minimum amount of compute resources required.
+                      If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+                      otherwise to an implementation-defined value. Requests cannot exceed Limits.
+                      More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                    type: object
+                type: object
+              computeResourcesNginx:
+                description: |-
+                  ComputeResourcesNginx specifies the amount of compute resources allowed for the Nginx container.
+                  This can include CPU and memory. Refer to Kubernetes documentation on managing compute resources for more details.
                 properties:
                   claims:
                     description: |-
@@ -114,7 +224,234 @@ spec:
                     type: object
                 type: object
               env:
-                description: The env for the app.
+                description: Env specifies the environment variables available to
+                  the App container.
+                items:
+                  description: EnvVar represents an environment variable present in
+                    a Container.
+                  properties:
+                    name:
+                      description: Name of the environment variable. Must be a C_IDENTIFIER.
+                      type: string
+                    value:
+                      description: |-
+                        Variable references $(VAR_NAME) are expanded
+                        using the previously defined environment variables in the container and
+                        any service environment variables. If a variable cannot be resolved,
+                        the reference in the input string will be unchanged. Double $$ are reduced
+                        to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
+                        "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
+                        Escaped references will never be expanded, regardless of whether the variable
+                        exists or not.
+                        Defaults to "".
+                      type: string
+                    valueFrom:
+                      description: Source for the environment variable's value. Cannot
+                        be used if value is not empty.
+                      properties:
+                        configMapKeyRef:
+                          description: Selects a key of a ConfigMap.
+                          properties:
+                            key:
+                              description: The key to select.
+                              type: string
+                            name:
+                              description: |-
+                                Name of the referent.
+                                More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Add other useful fields. apiVersion, kind, uid?
+                              type: string
+                            optional:
+                              description: Specify whether the ConfigMap or its key
+                                must be defined
+                              type: boolean
+                          required:
+                          - key
+                          type: object
+                          x-kubernetes-map-type: atomic
+                        fieldRef:
+                          description: |-
+                            Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
+                            spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
+                          properties:
+                            apiVersion:
+                              description: Version of the schema the FieldPath is
+                                written in terms of, defaults to "v1".
+                              type: string
+                            fieldPath:
+                              description: Path of the field to select in the specified
+                                API version.
+                              type: string
+                          required:
+                          - fieldPath
+                          type: object
+                          x-kubernetes-map-type: atomic
+                        resourceFieldRef:
+                          description: |-
+                            Selects a resource of the container: only resources limits and requests
+                            (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
+                          properties:
+                            containerName:
+                              description: 'Container name: required for volumes,
+                                optional for env vars'
+                              type: string
+                            divisor:
+                              anyOf:
+                              - type: integer
+                              - type: string
+                              description: Specifies the output format of the exposed
+                                resources, defaults to "1"
+                              pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                              x-kubernetes-int-or-string: true
+                            resource:
+                              description: 'Required: resource to select'
+                              type: string
+                          required:
+                          - resource
+                          type: object
+                          x-kubernetes-map-type: atomic
+                        secretKeyRef:
+                          description: Selects a key of a secret in the pod's namespace
+                          properties:
+                            key:
+                              description: The key of the secret to select from.  Must
+                                be a valid secret key.
+                              type: string
+                            name:
+                              description: |-
+                                Name of the referent.
+                                More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Add other useful fields. apiVersion, kind, uid?
+                              type: string
+                            optional:
+                              description: Specify whether the Secret or its key must
+                                be defined
+                              type: boolean
+                          required:
+                          - key
+                          type: object
+                          x-kubernetes-map-type: atomic
+                      type: object
+                  required:
+                  - name
+                  type: object
+                type: array
+              envModeration:
+                description: EnvModeration specifies the environment variables available
+                  to the Moderation container.
+                items:
+                  description: EnvVar represents an environment variable present in
+                    a Container.
+                  properties:
+                    name:
+                      description: Name of the environment variable. Must be a C_IDENTIFIER.
+                      type: string
+                    value:
+                      description: |-
+                        Variable references $(VAR_NAME) are expanded
+                        using the previously defined environment variables in the container and
+                        any service environment variables. If a variable cannot be resolved,
+                        the reference in the input string will be unchanged. Double $$ are reduced
+                        to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
+                        "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
+                        Escaped references will never be expanded, regardless of whether the variable
+                        exists or not.
+                        Defaults to "".
+                      type: string
+                    valueFrom:
+                      description: Source for the environment variable's value. Cannot
+                        be used if value is not empty.
+                      properties:
+                        configMapKeyRef:
+                          description: Selects a key of a ConfigMap.
+                          properties:
+                            key:
+                              description: The key to select.
+                              type: string
+                            name:
+                              description: |-
+                                Name of the referent.
+                                More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Add other useful fields. apiVersion, kind, uid?
+                              type: string
+                            optional:
+                              description: Specify whether the ConfigMap or its key
+                                must be defined
+                              type: boolean
+                          required:
+                          - key
+                          type: object
+                          x-kubernetes-map-type: atomic
+                        fieldRef:
+                          description: |-
+                            Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
+                            spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
+                          properties:
+                            apiVersion:
+                              description: Version of the schema the FieldPath is
+                                written in terms of, defaults to "v1".
+                              type: string
+                            fieldPath:
+                              description: Path of the field to select in the specified
+                                API version.
+                              type: string
+                          required:
+                          - fieldPath
+                          type: object
+                          x-kubernetes-map-type: atomic
+                        resourceFieldRef:
+                          description: |-
+                            Selects a resource of the container: only resources limits and requests
+                            (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
+                          properties:
+                            containerName:
+                              description: 'Container name: required for volumes,
+                                optional for env vars'
+                              type: string
+                            divisor:
+                              anyOf:
+                              - type: integer
+                              - type: string
+                              description: Specifies the output format of the exposed
+                                resources, defaults to "1"
+                              pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                              x-kubernetes-int-or-string: true
+                            resource:
+                              description: 'Required: resource to select'
+                              type: string
+                          required:
+                          - resource
+                          type: object
+                          x-kubernetes-map-type: atomic
+                        secretKeyRef:
+                          description: Selects a key of a secret in the pod's namespace
+                          properties:
+                            key:
+                              description: The key of the secret to select from.  Must
+                                be a valid secret key.
+                              type: string
+                            name:
+                              description: |-
+                                Name of the referent.
+                                More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Add other useful fields. apiVersion, kind, uid?
+                              type: string
+                            optional:
+                              description: Specify whether the Secret or its key must
+                                be defined
+                              type: boolean
+                          required:
+                          - key
+                          type: object
+                          x-kubernetes-map-type: atomic
+                      type: object
+                  required:
+                  - name
+                  type: object
+                type: array
+              envNginx:
+                description: EnvNginx specifies the environment variables available
+                  to the Nginx container.
                 items:
                   description: EnvVar represents an environment variable present in
                     a Container.
@@ -227,17 +564,35 @@ spec:
                 type: array
               image:
                 description: |-
-                  Image is the container image name for Space app
+                  Image is the container image name for the App.
                   See also: https://kubernetes.io/docs/concepts/containers/images
+                type: string
+              imageModeration:
+                description: ImageModeration is the Docker image for the Moderation
+                  container.
+                type: string
+              imageNginx:
+                description: ImageNginx is the Docker image for the Nginx container.
                 type: string
               imagePullPolicy:
                 description: |-
-                  Image pull policy: One of Always, Never, IfNotPresent.
+                  ImagePullPolicy defines when to pull the container image for the App.
+                  Options are Always, Never, IfNotPresent.
                   See also: https://kubernetes.io/docs/concepts/containers/images#updating-images
                 type: string
+              imagePullPolicyModeration:
+                description: |-
+                  ImagePullPolicyModeration defines when to pull the Moderation container image.
+                  The options are Always, Never, IfNotPresent.
+                type: string
+              imagePullPolicyNginx:
+                description: |-
+                  ImagePullPolicyNginx defines when to pull the Nginx container image.
+                  The options are Always, Never, IfNotPresent.
+                type: string
               imagePullSecrets:
-                description: Image pull secrets is a reference to the secret to be
-                  used to pull the image.
+                description: ImagePullSecrets is a reference to the secret to be used
+                  to pull the container image for the App.
                 items:
                   description: |-
                     LocalObjectReference contains enough information to let you locate the
@@ -253,17 +608,34 @@ spec:
                   x-kubernetes-map-type: atomic
                 type: array
               ingressHost:
-                description: The ingress domain for the app.
+                description: IngressHost specifies the ingress domain for the App.
                 type: string
               ingressTLSSecret:
-                description: The ingress tls secret name for the app.
+                description: IngressTLSSecret specifies the TLS secret name for ingress
+                  security for the App.
                 type: string
               name:
-                description: Name of the Space App specified as a DNS_LABEL. Each
-                  App must have a unique name.
+                description: Name is the name of the App container specified as a
+                  DNS_LABEL. Each container in a Pod must have a unique name.
+                type: string
+              nameModeration:
+                description: NameModeration is the name of the Moderation container.
+                type: string
+              nameNginx:
+                description: NameNginx is the name of the Nginx container.
+                type: string
+              pvcProvisioner:
+                type: string
+              pvcPath:
+                type: string
+              pvcSize:
+                type: string
+              pvcStoreClassName:
                 type: string
             required:
             - name
+            - nameModeration
+            - nameNginx
             type: object
           status:
             description: AppStatus defines the observed state of App
@@ -354,26 +726,26 @@ kind: ServiceAccount
 metadata:
   labels:
     app.kubernetes.io/component: rbac
-    app.kubernetes.io/created-by: openmind-space-operator
+    app.kubernetes.io/created-by: space-k8s-operator
     app.kubernetes.io/instance: controller-manager-sa
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: serviceaccount
-    app.kubernetes.io/part-of: openmind-space-operator
-  name: openmind-space-operator-controller-manager
-  namespace: openmind-space-operator-system
+    app.kubernetes.io/part-of: space-k8s-operator
+  name: space-k8s-operator-controller-manager
+  namespace: space-k8s-operator-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   labels:
     app.kubernetes.io/component: rbac
-    app.kubernetes.io/created-by: openmind-space-operator
+    app.kubernetes.io/created-by: space-k8s-operator
     app.kubernetes.io/instance: leader-election-role
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: role
-    app.kubernetes.io/part-of: openmind-space-operator
-  name: openmind-space-operator-leader-election-role
-  namespace: openmind-space-operator-system
+    app.kubernetes.io/part-of: space-k8s-operator
+  name: space-k8s-operator-leader-election-role
+  namespace: space-k8s-operator-system
 rules:
 - apiGroups:
   - ""
@@ -410,8 +782,51 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: openmind-space-operator-manager-role
+  name: space-k8s-operator-manager-role
 rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - pods/exec
+  verbs:
+  - create
+- apiGroups:
+  - ""
+  resources:
+  - pods/log
+  verbs:
+  - get
+- apiGroups:
+  - ""
+  resources:
+  - pods/status
+  verbs:
+  - patch
+  - update
 - apiGroups:
   - apps
   resources:
@@ -428,6 +843,26 @@ rules:
   - apps
   resources:
   - deployments/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - apps
+  resources:
+  - pods
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - pods/status
   verbs:
   - get
   - patch
@@ -494,18 +929,30 @@ rules:
   - get
   - patch
   - update
+- apiGroups:
+  - ""
+  resources:
+  - persistentvolumeclaims
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
     app.kubernetes.io/component: kube-rbac-proxy
-    app.kubernetes.io/created-by: openmind-space-operator
+    app.kubernetes.io/created-by: space-k8s-operator
     app.kubernetes.io/instance: metrics-reader
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: clusterrole
-    app.kubernetes.io/part-of: openmind-space-operator
-  name: openmind-space-operator-metrics-reader
+    app.kubernetes.io/part-of: space-k8s-operator
+  name: space-k8s-operator-metrics-reader
 rules:
 - nonResourceURLs:
   - /metrics
@@ -517,12 +964,12 @@ kind: ClusterRole
 metadata:
   labels:
     app.kubernetes.io/component: kube-rbac-proxy
-    app.kubernetes.io/created-by: openmind-space-operator
+    app.kubernetes.io/created-by: space-k8s-operator
     app.kubernetes.io/instance: proxy-role
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: clusterrole
-    app.kubernetes.io/part-of: openmind-space-operator
-  name: openmind-space-operator-proxy-role
+    app.kubernetes.io/part-of: space-k8s-operator
+  name: space-k8s-operator-proxy-role
 rules:
 - apiGroups:
   - authentication.k8s.io
@@ -542,75 +989,75 @@ kind: RoleBinding
 metadata:
   labels:
     app.kubernetes.io/component: rbac
-    app.kubernetes.io/created-by: openmind-space-operator
+    app.kubernetes.io/created-by: space-k8s-operator
     app.kubernetes.io/instance: leader-election-rolebinding
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: rolebinding
-    app.kubernetes.io/part-of: openmind-space-operator
-  name: openmind-space-operator-leader-election-rolebinding
-  namespace: openmind-space-operator-system
+    app.kubernetes.io/part-of: space-k8s-operator
+  name: space-k8s-operator-leader-election-rolebinding
+  namespace: space-k8s-operator-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: openmind-space-operator-leader-election-role
+  name: space-k8s-operator-leader-election-role
 subjects:
 - kind: ServiceAccount
-  name: openmind-space-operator-controller-manager
-  namespace: openmind-space-operator-system
+  name: space-k8s-operator-controller-manager
+  namespace: space-k8s-operator-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
     app.kubernetes.io/component: rbac
-    app.kubernetes.io/created-by: openmind-space-operator
+    app.kubernetes.io/created-by: space-k8s-operator
     app.kubernetes.io/instance: manager-rolebinding
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: clusterrolebinding
-    app.kubernetes.io/part-of: openmind-space-operator
-  name: openmind-space-operator-manager-rolebinding
+    app.kubernetes.io/part-of: space-k8s-operator
+  name: space-k8s-operator-manager-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: openmind-space-operator-manager-role
+  name: space-k8s-operator-manager-role
 subjects:
 - kind: ServiceAccount
-  name: openmind-space-operator-controller-manager
-  namespace: openmind-space-operator-system
+  name: space-k8s-operator-controller-manager
+  namespace: space-k8s-operator-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
     app.kubernetes.io/component: kube-rbac-proxy
-    app.kubernetes.io/created-by: openmind-space-operator
+    app.kubernetes.io/created-by: space-k8s-operator
     app.kubernetes.io/instance: proxy-rolebinding
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: clusterrolebinding
-    app.kubernetes.io/part-of: openmind-space-operator
-  name: openmind-space-operator-proxy-rolebinding
+    app.kubernetes.io/part-of: space-k8s-operator
+  name: space-k8s-operator-proxy-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: openmind-space-operator-proxy-role
+  name: space-k8s-operator-proxy-role
 subjects:
 - kind: ServiceAccount
-  name: openmind-space-operator-controller-manager
-  namespace: openmind-space-operator-system
+  name: space-k8s-operator-controller-manager
+  namespace: space-k8s-operator-system
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
     app.kubernetes.io/component: kube-rbac-proxy
-    app.kubernetes.io/created-by: openmind-space-operator
+    app.kubernetes.io/created-by: space-k8s-operator
     app.kubernetes.io/instance: controller-manager-metrics-service
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: service
-    app.kubernetes.io/part-of: openmind-space-operator
+    app.kubernetes.io/part-of: space-k8s-operator
     control-plane: controller-manager
-  name: openmind-space-operator-controller-manager-metrics-service
-  namespace: openmind-space-operator-system
+  name: space-k8s-operator-controller-manager-metrics-service
+  namespace: space-k8s-operator-system
 spec:
   ports:
   - name: https
@@ -625,16 +1072,18 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: manager
-    app.kubernetes.io/created-by: openmind-space-operator
+    app.kubernetes.io/created-by: space-k8s-operator
     app.kubernetes.io/instance: controller-manager
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: deployment
-    app.kubernetes.io/part-of: openmind-space-operator
+    app.kubernetes.io/part-of: space-k8s-operator
     control-plane: controller-manager
-  name: openmind-space-operator-controller-manager
-  namespace: openmind-space-operator-system
+  name: space-k8s-operator-controller-manager
+  namespace: space-k8s-operator-system
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       control-plane: controller-manager
@@ -705,5 +1154,5 @@ spec:
             - ALL
       securityContext:
         runAsNonRoot: true
-      serviceAccountName: openmind-space-operator-controller-manager
+      serviceAccountName: space-k8s-operator-controller-manager
       terminationGracePeriodSeconds: 10

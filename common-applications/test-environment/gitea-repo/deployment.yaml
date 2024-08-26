@@ -27,7 +27,7 @@ spec:
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/agent-inject-template-app.ini: |  
-          {{- with secret "internal/data/infra-test/gitea-repo-sh" -}}  
+          {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.app }}
           {{- end }}
         vault.hashicorp.com/agent-inject-template-server.crt: |  

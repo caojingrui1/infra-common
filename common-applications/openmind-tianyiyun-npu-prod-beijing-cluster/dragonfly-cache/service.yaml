@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dragonfly-cache-service
+  namespace: dragonfly-cache
+spec:
+  ports:
+    - name: proxy-download-service
+      port: 32001
+      protocol: TCP
+      targetPort: 32001      
+    - name: proxy-proxy-service
+      port: 32002
+      protocol: TCP
+      targetPort: 32002      
+    - name: proxy-upload-service
+      port: 32003
+      protocol: TCP
+      targetPort: 32003      
+  selector:
+    component: dragonfly-cache
+  internalTrafficPolicy: Local
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dragonfly-cache-nodeport-service
+  namespace: dragonfly-cache
+spec:
+  ports:
+    - name: proxy-download-service
+      port: 32001
+      protocol: TCP
+      targetPort: 32001
+      nodePort: 32001
+    - name: proxy-proxy-service
+      port: 32002
+      protocol: TCP
+      targetPort: 32002
+      nodePort: 32002
+    - name: proxy-upload-service
+      port: 32003
+      protocol: TCP
+      targetPort: 32003
+      nodePort: 32003
+  selector:
+    component: dragonfly-cache
+  type: NodePort

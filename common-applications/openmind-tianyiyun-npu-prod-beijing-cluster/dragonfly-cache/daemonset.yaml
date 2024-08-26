@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: dragonfly-cache-daemonset
+  namespace: dragonfly-cache
+spec:
+  selector:
+    matchLabels:
+      component: dragonfly-cache
+      instance: dragonfly-cache-peer
+  template:
+    metadata:
+      labels:
+        component: dragonfly-cache
+        instance: dragonfly-cache-peer
+    spec:
+      initContainers:
+        - name: config-update
+          image: swr.cn-southwest-2.myhuaweicloud.com/modelinfra/alpine:3.19.1-arm
+          env:
+            - name: DRAGONFLY_CACHE_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          command:
+            - /bin/sh
+            - -c
+            - |
+              cp /var/dragonfly/peer.yaml /data2/peer/peer.yaml
+              sed -i "s^_REPLACE_ME_WIATH_REAL_IP_ADDRESS_^$DRAGONFLY_CACHE_POD_IP^g" /data2/peer/peer.yaml
+          volumeMounts:
+            - mountPath: /var/dragonfly/peer.yaml
+              name: config-volume
+              subPath: peer.yaml
+            - mountPath: /data2/peer
+              name: database-volume
+      containers:
+        - image: swr.cn-southwest-2.myhuaweicloud.com/modelinfra/dfdaemon:v2.1.32-arm
+          imagePullPolicy: Always
+          name: dragonfly-cache-server
+          command:
+            - /opt/dragonfly/bin/dfget
+            - daemon
+            - --config
+            - /data2/peer/peer.yaml
+            # used for debug
+            # - /bin/sh
+            # - -c
+            # - |
+            #   sleep 10000
+          resources:
+            requests:
+              cpu: 2000m
+              memory: 4Gi
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+          ports:
+            - containerPort: 32001
+              name: download-port
+              protocol: TCP
+            - containerPort: 32002
+              name: proxy-port
+              protocol: TCP
+            - containerPort: 32003
+              name: upload-port
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /data2/peer
+              name: database-volume
+            - mountPath: /etc/peer/keys/tls.key
+              name: tls-volume
+              subPath: tls.key
+            - mountPath: /etc/peer/keys/tls.crt
+              name: tls-volume
+              subPath: tls.crt
+      volumes:
+        - name: tls-volume
+          secret:
+            secretName: cache-server-secret
+        - name: config-volume
+          configMap:
+            name: dragonfly-config
+        - name: database-volume
+          hostPath:
+            path: /mnt/work/dragonfly
+            type: DirectoryOrCreate

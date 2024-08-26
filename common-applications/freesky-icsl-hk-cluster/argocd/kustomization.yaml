@@ -1,0 +1,7 @@
+resources:
+  - install.yaml
+  - ingress.yaml
+  - secrets.yaml
+  - oauth-proxy.yaml
+namespace: argocd
+

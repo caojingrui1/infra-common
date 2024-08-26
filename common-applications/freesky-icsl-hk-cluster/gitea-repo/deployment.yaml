@@ -5,6 +5,7 @@ metadata:
   name: gitea-repo-deployment
   namespace: gitea-repo-icsl
 spec:
+  replicas: 0
   strategy:
     type: Recreate
   selector:

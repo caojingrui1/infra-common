@@ -331,6 +331,7 @@ data:
     "method": "$request_method", "http_referrer": "$http_referer", "http_user_agent":
     "$http_user_agent"}'
   use-forwarded-headers: "true"
+  custom-http-errors: "503"
 kind: ConfigMap
 metadata:
   labels:
@@ -386,6 +387,37 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/version: 1.8.2
+  name: ingress-nginx-controller-new
+  namespace: ingress-nginx
+spec:
+  ports:
+  - appProtocol: http
+    name: http
+    port: 80
+    nodePort: 30201
+    protocol: TCP
+    targetPort: http
+  - appProtocol: https
+    name: https
+    port: 443
+    nodePort: 30202
+    protocol: TCP
+    targetPort: https
+  selector:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/name: ingress-nginx
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/version: 1.8.2
   name: ingress-nginx-controller-admission
   namespace: ingress-nginx
 spec:
@@ -412,7 +444,7 @@ metadata:
   name: ingress-nginx-controller
   namespace: ingress-nginx
 spec:
-  replicas: 2
+  replicas: 3
   minReadySeconds: 0
   revisionHistoryLimit: 10
   selector:
@@ -438,6 +470,7 @@ spec:
       containers:
       - args:
         - /nginx-ingress-controller
+        - --default-backend-service=$(POD_NAMESPACE)/ingress-nginx-errors
         - --publish-service=$(POD_NAMESPACE)/ingress-nginx-controller
         - --election-id=ingress-nginx-leader
         - --controller-class=k8s.io/ingress-nginx

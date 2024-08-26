@@ -5,9 +5,11 @@ resources:
 - service.yaml
 - namespace.yaml
 - autoscaler.yaml
+- sa.yaml
+- networkpolicy.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: datastat-server
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/datastat/server-test
-  newTag: ljx_test-0907e0
+  newTag: test-462ee4
