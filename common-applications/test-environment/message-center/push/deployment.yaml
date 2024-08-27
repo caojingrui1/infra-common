@@ -67,6 +67,7 @@ spec:
         - --eur-build-config-file=/vault/secrets/eur_build.yaml
         - --gitee-config-file=/vault/secrets/gitee_conf.yaml
         - --meeting-config-file=/vault/secrets/meeting_conf.yaml
+        - --cve-config-file=/vault/secrets/cve.yaml
         resources:
           limits:
             cpu: 2
