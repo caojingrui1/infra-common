@@ -9,7 +9,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test
   newTag: 0830_test-6c62cf
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
-  newTag: 0830_test-300bebb
+  newTag: 0830_test-80e603a
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-autotest
   newTag: master-efb1cd
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-hub
