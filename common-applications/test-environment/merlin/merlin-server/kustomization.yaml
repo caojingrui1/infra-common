@@ -36,3 +36,4 @@ resources:
 - topic-task.yaml
 - sort-job.yaml
 - sync-image-center.yaml
+- calculate-globalscore.yaml
