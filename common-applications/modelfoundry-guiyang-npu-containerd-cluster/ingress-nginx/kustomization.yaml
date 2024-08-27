@@ -1,5 +1,5 @@
 resources:
-- v1.8.2-deployment.yaml
+- deployment.yaml
 - custom-default-backend.yaml
 commonAnnotations:
   kubernetes.ops.cluster: modelfoundry-guiyang-npu-containerd-cluster
