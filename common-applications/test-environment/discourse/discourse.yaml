@@ -162,9 +162,9 @@ spec:
           timeoutSeconds: 5
         imagePullPolicy: IfNotPresent
         volumeMounts:
-        - name: discourse-storage
+        - name: discourse-storage-new
           mountPath: /shared
       volumes:
-      - name: discourse-storage
+      - name: discourse-storage-new
         persistentVolumeClaim:
-          claimName: discourse-share-volume-sfs-turbo
+          claimName: discourse-share-volume-sfs-turbo-new
