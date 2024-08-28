@@ -45,9 +45,7 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
-          httpGet:
-            scheme: HTTPS
-            path: /health_check
+          tcpSocket:
             port: 9015
           timeoutSeconds: 5
         readinessProbe:
@@ -55,11 +53,13 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
-          httpGet:
-            scheme: HTTPS
-            path: /health_check
+          tcpSocket:
             port: 9015
           timeoutSeconds: 5
+        ports:
+          - containerPort: 9015
+            name: http
+            protocol: TCP
         resources:
           limits:
             cpu: 2
