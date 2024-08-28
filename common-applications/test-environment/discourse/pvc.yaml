@@ -16,14 +16,17 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: discourse-share-volume-sfs-turbo
+  name: discourse-share-volume-sfs-turbo-new
   namespace: discourse
+  annotations:
+    everest.io/volume-as: absolute-path
+    everest.io/sfsturbo-share-id: 98c2ee22-d671-4265-8e10-edd9c52529a1
+    everest.io/path: /discourse
+    everest.io/reclaim-policy: retain-volume-only
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-        storage: 500Gi
+        storage: 10Gi
   storageClassName: csi-sfsturbo
-  volumeMode: Filesystem
-  volumeName: pv-efs-turbo-discourse-share
