@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: majun-ai-service
+  namespace: majun-ai
+  annotations:
+    kubernetes.io/elb.id: f127f418-eab2-4b22-b807-bd75e7f07cb7
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
+spec:
+  ports:
+  - name: http-port
+    port: 9015
+    protocol: TCP
+    targetPort: 9015
+  selector:
+    app: majun-ai
+  type: LoadBalancer

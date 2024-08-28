@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: majun-ai-deployment
+  namespace: majun-ai
+spec:
+  selector:
+    matchLabels:
+      app: majun-ai
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/role: 'majun-ai'
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/agent-run-as-user: "1001"
+        vault.hashicorp.com/agent-run-as-group: "1001"
+        vault.hashicorp.com/secret-volume-path: "/framework/config"
+        vault.hashicorp.com/agent-inject-secret-config.yml: 'internal/data/infra-test/majun-ai'
+        vault.hashicorp.com/agent-inject-perms-config.yml: "0400"
+        vault.hashicorp.com/agent-inject-template-config.yml: |  
+          {{- with secret "internal/data/infra-test/majun-ai" -}}  
+          {{ .Data.data.aiConf }}
+          {{- end }}
+      labels:
+        app: majun-ai
+    spec:
+      serviceAccount: majun-ai
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      automountServiceAccountToken: false
+      containers:
+      - name: majun-ai
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/majun/ai-test:master-50d4a7
+        imagePullPolicy: IfNotPresent        
+        args:
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          httpGet:
+            scheme: HTTPS
+            path: /health_check
+            port: 9015
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          httpGet:
+            scheme: HTTPS
+            path: /health_check
+            port: 9015
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 2
+            memory: 32Gi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1001
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token
