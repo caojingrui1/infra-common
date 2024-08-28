@@ -30,3 +30,4 @@ resources:
 - virus-scan.yaml
 - deploy-task.yaml
 - generate-usage.yaml
+- sync-changelog.yaml
