@@ -22,9 +22,9 @@ spec:
         vault.hashicorp.com/agent-run-as-user: "1001"
         vault.hashicorp.com/agent-run-as-group: "1001"
         vault.hashicorp.com/secret-volume-path: "/framework/config"
-        vault.hashicorp.com/agent-inject-secret-config.yml: 'internal/data/infra-test/majun-ai'
-        vault.hashicorp.com/agent-inject-perms-config.yml: "0400"
-        vault.hashicorp.com/agent-inject-template-config.yml: |  
+        vault.hashicorp.com/agent-inject-secret-.env: 'internal/data/infra-test/majun-ai'
+        vault.hashicorp.com/agent-inject-perms-.env: "0400"
+        vault.hashicorp.com/agent-inject-template-.env: |  
           {{- with secret "internal/data/infra-test/majun-ai" -}}  
           {{ .Data.data.aiConf }}
           {{- end }}
