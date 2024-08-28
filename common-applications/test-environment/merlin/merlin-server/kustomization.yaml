@@ -11,7 +11,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
   newTag: main-bebf5eb
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-autotest
-  newTag: master-efb1cd
+  newTag: master-c8b6ee
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openmind-api-hub
   newTag: master-a7189b
 kind: Kustomization
