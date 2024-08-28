@@ -46,7 +46,7 @@ spec:
       timezone: Asia/Shanghai
       start: 30 8 * * *
       end: 55 23 * * *
-      desiredReplicas: "2"
+      desiredReplicas: "3"
 
 ---
 apiVersion: keda.sh/v1alpha1
