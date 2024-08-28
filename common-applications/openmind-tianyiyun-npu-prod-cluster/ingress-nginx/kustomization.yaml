@@ -1,10 +1,12 @@
 resources:
 - deployment.yaml
+- custom-default-backend.yaml
 commonAnnotations:
   kubernetes.ops.cluster: openmind-tianyiyun-npu-prod-cluster
   kubernetes.ops.email: ""
   kubernetes.ops.os.base: "Alpine"
   kubernetes.ops.owner: liuyang
   kubernetes.ops.region: hz
+  common: "true"
 namespace: ingress-nginx
 
