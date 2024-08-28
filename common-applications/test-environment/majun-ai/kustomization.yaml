@@ -13,3 +13,6 @@ resources:
 - autoscaler.yaml
 - namespace.yaml
 - sa.yaml
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/majun/ai-test
+  newTag: master-5fee68
