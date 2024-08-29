@@ -12,4 +12,4 @@ commonAnnotations:
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-icsl
-  newTag: wsy-test-234f6e
+  newTag: wsy-test-3874a1
