@@ -346,6 +346,9 @@ metadata:
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    service.beta.kubernetes.io/ctyun-loadbalancer-address-type: internet
+    service.beta.kubernetes.io/ctyun-loadbalancer-id: "lb-r62f4zx7v5"
   labels:
     app.kubernetes.io/component: controller
     app.kubernetes.io/instance: ingress-nginx
