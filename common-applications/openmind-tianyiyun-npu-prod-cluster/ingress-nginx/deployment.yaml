@@ -348,35 +348,35 @@ kind: Service
 metadata:
   annotations:
     service.beta.kubernetes.io/ctyun-loadbalancer-address-type: internet
-    service.beta.kubernetes.io/ctyun-loadbalancer-id: "lb-r62f4zx7v5"
+    service.beta.kubernetes.io/ctyun-loadbalancer-id: lb-u9d0hscrx5
   labels:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.10.1
-  name: ingress-nginx-controller
+    workloadKind: Deployment
+    workloadName: ingress-nginx-controller
+  name: ingress-nginx-controller-new
   namespace: ingress-nginx
 spec:
-  externalTrafficPolicy: Local
+  allocateLoadBalancerNodePorts: true
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
   ipFamilies:
   - IPv4
-  ipFamilyPolicy: SingleStack
+  ipFamilyPolicy: PreferDualStack
   ports:
-  - appProtocol: http
-    name: http
-    port: 8080
+  - name: http
+    nodePort: 31603
+    port: 18080
     protocol: TCP
-    targetPort: http
-  - appProtocol: https
-    name: https
-    port: 8443
+    targetPort: 80
+  - name: https
+    nodePort: 32622
+    port: 18443
     protocol: TCP
-    targetPort: https
+    targetPort: 443
   selector:
     app.kubernetes.io/component: controller
     app.kubernetes.io/instance: ingress-nginx
     app.kubernetes.io/name: ingress-nginx
+  sessionAffinity: None
   type: LoadBalancer
 ---
 apiVersion: v1
