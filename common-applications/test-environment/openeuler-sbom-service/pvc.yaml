@@ -13,3 +13,22 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: csi-disk
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cce-evs-data
+  namespace: openeuler-sbom-service
+  annotations:
+    everest.io/volume-as: absolute-path
+    everest.io/sfsturbo-share-id: 98c2ee22-d671-4265-8e10-edd9c52529a1
+    everest.io/path: /openeuler-sbom-service
+    everest.io/reclaim-policy: retain-volume-only
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+        storage: 100Gi
+  storageClassName: csi-sfsturbo
