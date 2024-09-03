@@ -43,6 +43,7 @@ spec:
         vault.hashicorp.com/role: majun
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-init-first: "true"
       labels:
         app: majun-website
     spec:
@@ -59,6 +60,14 @@ spec:
         operator: "Equal"
         value: "true"
         effect: "NoSchedule"
+      initContainers:
+      - command:
+        - /bin/bash
+        - -c
+        - chmod 0500 /etc/nginx/cert/; chown -R 1000:1000 /etc/nginx/cert/; chmod g-s /etc/nginx/cert/; ls -ld /etc/nginx/cert/
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler:22.03-lts-sp3
+        imagePullPolicy: IfNotPresent
+        name: init-majun
       containers:
       - name: websitepod
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/majun/website-beta:icsl_beta-866e61
