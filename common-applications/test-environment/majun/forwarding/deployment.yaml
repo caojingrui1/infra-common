@@ -69,7 +69,7 @@ spec:
       - command:
         - /bin/bash
         - -c
-        - chmod 0500 /opt/app/majun/cert; chown -R 1000:1000 /opt/app/majun/cert; chmod g-s /opt/app/majun/cert; ls -ld /opt/app/majun/cert
+        - chmod 0700 /opt/app/majun/cert; chown -R 1000:1000 /opt/app/majun/cert; chmod g-s /opt/app/majun/cert; ls -ld /opt/app/majun/cert
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler:22.03-lts-sp3
         imagePullPolicy: IfNotPresent
         name: init-majun
