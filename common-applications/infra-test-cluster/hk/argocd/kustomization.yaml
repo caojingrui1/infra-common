@@ -1,0 +1,5 @@
+resources:
+  - install.yaml
+  - namespace.yaml
+namespace: argocd
+
