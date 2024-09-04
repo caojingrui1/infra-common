@@ -3,6 +3,10 @@ kind: Service
 metadata:
   name: server-service
   namespace: merlin
+  annotations:
+    kubernetes.io/elb.id: 20df7154-6d9b-48c7-8e62-651b7620e236
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
 spec:
   ports:
   - name: http-port
@@ -11,4 +15,4 @@ spec:
     targetPort: 8080
   selector:
     app: server
-  type: ClusterIP
+  type: LoadBalancer
