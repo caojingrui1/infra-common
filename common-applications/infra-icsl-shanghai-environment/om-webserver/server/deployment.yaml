@@ -18,6 +18,7 @@ spec:
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-init-first: "true"
         vault.hashicorp.com/role: 'om-webserver'
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/agent-run-as-user: "1001"
@@ -47,6 +48,14 @@ spec:
         seccompProfile:
           type: Localhost
           localhostProfile: infra-seccomp.json
+      initContainers:
+      - command:
+        - /bin/bash
+        - -c
+        - chmod 0700 /vault/secrets; chown -R 1001:1001 /vault/secrets; chmod g-s /vault/secrets; ls -ld /vault/secrets
+        image: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-icsl:master-4d255b
+        imagePullPolicy: IfNotPresent
+        name: init-om-webserver
       automountServiceAccountToken: false
       serviceAccountName: om-webserver
       imagePullSecrets:
