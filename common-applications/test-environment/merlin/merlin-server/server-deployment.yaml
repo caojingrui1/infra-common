@@ -22,7 +22,6 @@ spec:
         vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin'
-        vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-compose-config.yml: "0400"
         vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-pqsql.crt: "0400"
@@ -57,6 +56,10 @@ spec:
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-inject-command-compose-config.yml: |
+          RET=$(netstat -anlp | grep 8080| wc -l)
+          if [ $RET -eq 1 ];then rm -rf /vault/secrets/*; echo "delete file";else echo "service not running skip";fi
+        vault.hashicorp.com/template-static-secret-render-interval: 10s
       labels:
         app: server
     spec:
