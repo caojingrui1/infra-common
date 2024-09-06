@@ -92,17 +92,17 @@ spec:
           valueFrom:
             secretKeyRef:
               name: majun-secret
-              key: accesskey7
+              key: accesskey
         - name: servicecomb.credentials.secretKey
           valueFrom:
             secretKeyRef:
               name: majun-secret
-              key: secretkey7
+              key: secretkey
         - name: rootSalt
           valueFrom:
             secretKeyRef:
               name: majun-secret
-              key: rootsalt7
+              key: rootsalt
         - name: X_ARMOR_SECURITY_ENABLE
           valueFrom:
             secretKeyRef:
