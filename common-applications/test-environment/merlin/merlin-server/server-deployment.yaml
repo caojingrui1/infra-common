@@ -56,7 +56,7 @@ spec:
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
-        vault.hashicorp.com/agent-inject-command-abc.txt: |
+        vault.hashicorp.com/agent-inject-command-compose-config.yml: |
           RET=$(netstat -anlp | grep 8080| wc -l)
           if [ $RET -eq 1 ];then rm -rf /vault/secrets/*; echo "delete file";else echo "service not running skip";fi
         vault.hashicorp.com/template-static-secret-render-interval: 10s
