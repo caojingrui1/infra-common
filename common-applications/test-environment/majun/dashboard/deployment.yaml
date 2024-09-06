@@ -17,14 +17,11 @@ spec:
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/role: 'majun'
         vault.hashicorp.com/agent-inject-secret-mongo.crt: 'internal/data/infra-test/majun'
-        vault.hashicorp.com/agent-inject-secret-redis.crt: 'internal/data/infra-test/majun'
+        vault.hashicorp.com/agent-inject-secret-redis.crt: 'internal/data/infra-test/majun'       
         vault.hashicorp.com/agent-inject-secret-kafka.jks: 'internal/data/infra-test/majun'
         vault.hashicorp.com/agent-inject-secret-tcwFile.ks: 'internal/data/infra-test/majun'
         vault.hashicorp.com/agent-inject-secret-tcpFile.ks: 'internal/data/infra-test/majun'
         vault.hashicorp.com/agent-inject-secret-tcsFile.ks: 'internal/data/infra-test/majun'
-        vault.hashicorp.com/agent-inject-secret-servicecomb.credentials.accessKey: 'internal/data/infra-test/majun'
-        vault.hashicorp.com/agent-inject-secret-servicecomb.credentials.secretKey: 'internal/data/infra-test/majun'
-        vault.hashicorp.com/agent-inject-secret-rootSalt: 'internal/data/infra-test/majun'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-mongo.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
@@ -32,9 +29,6 @@ spec:
         vault.hashicorp.com/agent-inject-perms-tcwFile.ks: "0400"
         vault.hashicorp.com/agent-inject-perms-tcpFile.ks: "0400"
         vault.hashicorp.com/agent-inject-perms-tcsFile.ks: "0400"
-        vault.hashicorp.com/agent-inject-perms-servicecomb.credentials.accessKey: "0400"
-        vault.hashicorp.com/agent-inject-perms-servicecomb.credentials.secretKey: "0400"
-        vault.hashicorp.com/agent-inject-perms-rootSalt: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/secret-volume-path: "/opt/app/majun/cert"
@@ -62,21 +56,8 @@ spec:
           {{- with secret "internal/data/infra-test/majun" -}}  
           {{ .Data.data.tcsFile7Ks }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-template-servicecomb.credentials.accessKey: |  
-          {{- with secret "internal/data/infra-test/majun" -}}  
-          {{ .Data.data.accesskey }}
-          {{- end }}
-        vault.hashicorp.com/agent-inject-template-servicecomb.credentials.secretKey: |  
-          {{- with secret "internal/data/infra-test/majun" -}}  
-          {{ .Data.data.secretkey }}
-          {{- end }}
-        vault.hashicorp.com/agent-inject-template-rootSalt: |  
-          {{- with secret "internal/data/infra-test/majun" -}}  
-          {{ .Data.data.rootsalt }}
-          {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
-        vault.hashicorp.com/agent-init-first: "true"
       labels:
         app: dashboard
     spec:
@@ -94,18 +75,25 @@ spec:
         operator: "Equal"
         value: "true"
         effect: "NoSchedule"
-      initContainers:
-      - command:
-        - /bin/bash
-        - -c
-        - chmod 0700 /opt/app/majun/cert; chown -R 1000:1000 /opt/app/majun/cert; chmod g-s /opt/app/majun/cert; ls -ld /opt/app/majun/cert
-        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler:22.03-lts-sp3
-        imagePullPolicy: IfNotPresent
-        name: init-majun
       containers:
       - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/majun/dashboard-beta:icsl_beta-6a3fb2
         imagePullPolicy: IfNotPresent
         env:
+        - name: servicecomb.credentials.accessKey
+          valueFrom:
+            secretKeyRef:
+              name: majun-secret
+              key: accesskey7
+        - name: servicecomb.credentials.secretKey
+          valueFrom:
+            secretKeyRef:
+              name: majun-secret
+              key: secretkey7
+        - name: rootSalt
+          valueFrom:
+            secretKeyRef:
+              name: majun-secret
+              key: rootsalt7
         - name: X_ARMOR_SECURITY_ENABLE
           valueFrom:
             secretKeyRef:
