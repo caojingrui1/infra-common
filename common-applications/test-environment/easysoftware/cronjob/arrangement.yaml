@@ -49,10 +49,10 @@ spec:
               {{- with secret "internal/data/infra-test/easysoftware" -}}  
               {{ .Data.data.rpmForMonitor }}
               {{- end }}
-            vault.hashicorp.com/agent-inject-perms-rpm-for-upstream.txt: "0400"
-            vault.hashicorp.com/secret-volume-path-rpm-for-upstream.txt: " /home/easysoftware/pkg/appver/"
-            vault.hashicorp.com/agent-inject-secret-rpm-for-upstream.txt: 'internal/data/infra-test/easysoftware'
-            vault.hashicorp.com/agent-inject-template-rpm-for-upstream.txt: |  
+            vault.hashicorp.com/agent-inject-perms-upstream.txt: "0400"
+            vault.hashicorp.com/secret-volume-path-upstream.txt: " /home/easysoftware/pkg/appver/"
+            vault.hashicorp.com/agent-inject-secret-upstream.txt: 'internal/data/infra-test/easysoftware'
+            vault.hashicorp.com/agent-inject-template-upstream.txt: |  
               {{- with secret "internal/data/infra-test/easysoftware" -}}  
               {{ .Data.data.inputUpstream }}
               {{- end }}
