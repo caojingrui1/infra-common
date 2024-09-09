@@ -57,8 +57,17 @@ spec:
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
         vault.hashicorp.com/agent-inject-command-compose-config.yml: |
-          RET=$(netstat -anlp | grep 8080| wc -l)
-          if [ $RET -eq 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+          if [ $(netstat -anlp | grep 8080| wc -l) -eq 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-server.crt: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -eq 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-server.key: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -eq 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-redis.crt: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -eq 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-pqsql.crt: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -eq 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-kafka.crt: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -eq 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
         vault.hashicorp.com/template-static-secret-render-interval: 5s
       labels:
         app: git-access
