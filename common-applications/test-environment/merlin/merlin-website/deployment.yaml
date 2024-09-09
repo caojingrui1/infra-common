@@ -51,8 +51,8 @@ spec:
         vault.hashicorp.com/tls-skip-verify: "true"
         vault.hashicorp.com/agent-inject-command-abc.txt: |
           RET=$(netstat -anlp | grep 8080| wc -l)
-          if [ $RET -eq 1 ];then rm -rf /etc/nginx/cert/*; echo "delete file";else echo "service not running skip";fi
-        vault.hashicorp.com/template-static-secret-render-interval: 10s
+          if [ $RET -eq 1 ];then rm -rf /etc/nginx/cert/*;else echo "service not running skip";fi
+        vault.hashicorp.com/template-static-secret-render-interval: 5s
       labels:
         app: merlin-website
     spec:
@@ -104,6 +104,13 @@ spec:
             - name: "Host"
               value: "modelfoundry.test.osinfra.cn"
           timeoutSeconds: 10
+        lifecycle:
+          preStop:
+            exec:
+              command: 
+              - /bin/bash
+              - -c
+              - rm -rf /etc/nginx/cert/*
         resources:
           requests:
             cpu: 1000m
