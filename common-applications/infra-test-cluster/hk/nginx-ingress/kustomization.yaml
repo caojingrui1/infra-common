@@ -2,7 +2,7 @@ resources:
 - ingress-nginx-deploy.yaml
 commonAnnotations:
   kubernetes.ops.cluster: infra-hk-test-cluster-001
-  kubernetes.ops.email: 19522520617@163.com
+  kubernetes.ops.email: ""
   kubernetes.ops.os.base: Alpine
   kubernetes.ops.owner: caoyanan
   kubernetes.ops.region: hk
