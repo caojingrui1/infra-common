@@ -77,7 +77,7 @@ spec:
         args:
         - --port=8080
         - --config-file=/vault/secrets/compose-config.yml
-        - --rm-cfg=false
+        - --rm-cfg=true
         - --cert=/vault/secrets/server.crt
         - --key=/vault/secrets/server.key
         livenessProbe:
