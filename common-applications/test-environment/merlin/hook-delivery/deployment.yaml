@@ -65,7 +65,7 @@ spec:
         args:
         - --port=8080
         - --config-file=/vault/secrets/delivery.yaml
-        - --rm-cfg=false
+        - --rm-cfg=true
         - --cert=/vault/secrets/server.crt
         - --key=/vault/secrets/server.key
         livenessProbe:

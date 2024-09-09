@@ -66,7 +66,7 @@ spec:
         - --config-file=/vault/secrets/config.yml
         - --port=8080
         - --enable_debug=true
-        - --rm-cfg=false
+        - --rm-cfg=true
         - --cert=/vault/secrets/server.crt
         - --key=/vault/secrets/server.key
         livenessProbe:
