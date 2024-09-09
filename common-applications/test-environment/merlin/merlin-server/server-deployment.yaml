@@ -58,8 +58,8 @@ spec:
         vault.hashicorp.com/tls-skip-verify: "true"
         vault.hashicorp.com/agent-inject-command-compose-config.yml: |
           RET=$(netstat -anlp | grep 8080| wc -l)
-          if [ $RET -eq 1 ];then rm -rf /vault/secrets/*; echo "delete file";else echo "service not running skip";fi
-        vault.hashicorp.com/template-static-secret-render-interval: 10s
+          if [ $RET -eq 1 ];then rm -rf /vault/secrets/*;else echo "service not running skip";fi
+        vault.hashicorp.com/template-static-secret-render-interval: 5s
       labels:
         app: server
     spec:
@@ -102,6 +102,13 @@ spec:
             path: /internal/heartbeat
             port: 8080
           timeoutSeconds: 5
+        lifecycle:
+          preStop:
+            exec:
+              command: 
+              - /bin/bash
+              - -c
+              - rm -rf /vault/secrets/*
         resources:
           limits:
             cpu: 500m
