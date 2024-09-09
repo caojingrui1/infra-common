@@ -6,6 +6,7 @@ resources:
   - export-task
   - openmind-owner-project
   - authing-user
+  - gitee-sla
 
 commonAnnotations:
   owner: zhongjun
