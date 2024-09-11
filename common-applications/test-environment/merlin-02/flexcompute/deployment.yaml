@@ -28,7 +28,7 @@ spec:
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/agent-inject-template-config.yaml: |  
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
-          {{ .Data.data.HookDelivery }}
+          {{ .Data.data.flexcomputeConf }}
           {{- end }}
         vault.hashicorp.com/agent-inject-template-server.crt: |  
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
