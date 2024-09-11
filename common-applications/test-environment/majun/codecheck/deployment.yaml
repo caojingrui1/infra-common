@@ -92,7 +92,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: majun-secret
-              key: accesskey2
+              key: accesskey
         - name: servicecomb.credentials.secretKey
           valueFrom:
             secretKeyRef:
