@@ -29,7 +29,7 @@ spec:
         vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-sql.crt: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-docker.json: 'internal/data/infra-test/merlin-sh'
-        vault.hashicorp.com/agent-inject-secret-space-client.yml: 'internal/data/infra-test/merlin-sh'
+        vault.hashicorp.com/agent-inject-secret-client.yml: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-vault.crt: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-config.yaml: "0400"
@@ -44,7 +44,7 @@ spec:
         vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-sql.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-docker.json: "0400"
-        vault.hashicorp.com/agent-inject-perms-space-client.yml: "0400"
+        vault.hashicorp.com/agent-inject-perms-client.yml: "0400"
         vault.hashicorp.com/agent-inject-perms-vault.crt: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
@@ -52,7 +52,7 @@ spec:
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.spaceConf }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-template-space-client.yml: |  
+        vault.hashicorp.com/agent-inject-template-client.yml: |  
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.spaceClientConf }}
           {{- end }}
