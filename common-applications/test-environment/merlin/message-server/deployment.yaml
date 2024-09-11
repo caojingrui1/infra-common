@@ -55,7 +55,6 @@ spec:
         imagePullPolicy: IfNotPresent        
         args:
         - --config-file=/vault/secrets/label.yml
-        - --health-file=/vault/secrets/health.txt
         - --rm-cfg=true
         name: server
         resources:
