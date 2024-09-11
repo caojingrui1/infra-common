@@ -1,0 +1,127 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flexcompute
+  namespace: merlin
+spec:
+  selector:
+    matchLabels:
+      app: flexcompute
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: 'merlin'
+        vault.hashicorp.com/agent-inject-secret-delivery.yaml: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-sql.crt: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
+        vault.hashicorp.com/agent-inject-perms-server.key: "0400"
+        vault.hashicorp.com/agent-inject-perms-delivery.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-sql.crt: "0400"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/agent-inject-template-delivery.yaml: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.HookDelivery }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-server.crt: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.ServerCrt }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-server.key: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.ServerKey }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-sql.crt: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.pgsqlCA }}
+          {{- end }}
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-inject-command-delivery.yaml: |
+          RET=$(netstat -anlp | grep 8125| wc -l)
+          if [ $RET -eq 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/template-static-secret-render-interval: 5s
+      labels:
+        app: flexcompute
+    spec:
+      serviceAccount: merlin
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      securityContext:
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      containers:
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-flexcompute-test:main-ac0c830
+        imagePullPolicy: IfNotPresent        
+        env:
+        - name: CONFIG_FILE
+          value: /vault/secrets/compose-config.yml
+        - name: LOG_PATH
+          value: /var/log/flexcompute-server.log
+        - name: IP
+          value: "0.0.0.0"
+        - name: PORT
+          value: "8123"
+        - name: REMOVE_CONFIG
+          value: "true"
+        - name: ENABLE_DEBUG
+          value: "true"
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          httpGet:
+            scheme: HTTPS
+            path: /
+            port: 8125
+          timeoutSeconds: 5
+        name: flexcompute
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          httpGet:
+            scheme: HTTPS
+            path: /
+            port: 8125
+          timeoutSeconds: 5
+        lifecycle:
+          preStop:
+            exec:
+              command: 
+              - /bin/bash
+              - -c
+              - rm -rf /vault/secrets/*
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token
