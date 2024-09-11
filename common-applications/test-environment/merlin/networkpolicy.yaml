@@ -21,6 +21,27 @@ apiVersion: networking.k8s.io/v1
 ---
 kind: NetworkPolicy
 metadata:
+  name: merlin-blog-policy-01
+  namespace: merlin
+spec:
+  podSelector:
+    matchLabels:
+      app: merlin-blog
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: merlin-website
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
   name: merlin-website-policy-01
   namespace: merlin
 spec:
