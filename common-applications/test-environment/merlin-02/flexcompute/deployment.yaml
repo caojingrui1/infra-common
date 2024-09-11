@@ -119,10 +119,13 @@ spec:
       automountServiceAccountToken: false
       containers:
       - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-flexcompute-test:main-ac0c830
-        imagePullPolicy: IfNotPresent        
+        imagePullPolicy: IfNotPresent   
+        name: flexcompute
         env:
         - name: CONFIG_FILE
           value: /vault/secrets/config.yaml
+        - name: FLEXCOMPUTE_CLIENT_CONFIG_FILE
+          value: /vault/secrets/client.yml
         - name: LOG_PATH
           value: /var/log/flexcompute-server/flexcompute-server.log
         - name: IP
@@ -133,25 +136,22 @@ spec:
           value: "false"
         - name: ENABLE_DEBUG
           value: "true"
+        - name: TZ
+          value: "Asia/Shanghai"
         livenessProbe:
           failureThreshold: 3
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
-          httpGet:
-            scheme: HTTPS
-            path: /
+          tcpSocket:
             port: 8125
           timeoutSeconds: 5
-        name: flexcompute
         readinessProbe:
           failureThreshold: 3
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
-          httpGet:
-            scheme: HTTPS
-            path: /
+          tcpSocket:
             port: 8125
           timeoutSeconds: 5
         lifecycle:
