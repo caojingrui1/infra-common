@@ -13,4 +13,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-website-test
-  newTag: sh-0913-eb8007-sh
+  newTag: sh-0913-2a6718-sh
