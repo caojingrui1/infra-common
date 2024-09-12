@@ -2,22 +2,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: merlin-blog
-  namespace: merlin
+  name: merlin-blogs
+  namespace: merlin-02
 spec:
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 1
   selector:
     matchLabels:
-      app: merlin-blog
+      app: merlin-blogs
   template:
     metadata:
       annotations:
         vault.hashicorp.com/agent-inject: "true"
-        vault.hashicorp.com/role: merlin-website
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/role: merlin-sh
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-server.key: "0400"
         vault.hashicorp.com/agent-inject-perms-abc.txt: "0400"
@@ -25,39 +21,30 @@ spec:
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/secret-volume-path: "/etc/nginx/cert/"
-        vault.hashicorp.com/agent-inject-secret-server.crt: "internal/data/infra-test/merlin-website"
+        vault.hashicorp.com/agent-inject-secret-server.crt: "internal/data/infra-test/merlin-website-sh"
         vault.hashicorp.com/agent-inject-template-server.crt: |
-          {{- with secret "internal/data/infra-test/merlin-website" -}}
+          {{- with secret "internal/data/infra-test/merlin-website-sh" -}}
           {{ .Data.data.ServerCrt }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-secret-server.key: "internal/data/infra-test/merlin-website"
+        vault.hashicorp.com/agent-inject-secret-server.key: "internal/data/infra-test/merlin-website-sh"
         vault.hashicorp.com/agent-inject-template-server.key: |
-          {{- with secret "internal/data/infra-test/merlin-website" -}}
+          {{- with secret "internal/data/infra-test/merlin-website-sh" -}}
           {{ .Data.data.ServerKey }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-secret-abc.txt: "internal/data/infra-test/merlin-website"
+        vault.hashicorp.com/agent-inject-secret-abc.txt: "internal/data/infra-test/merlin-sh"
         vault.hashicorp.com/agent-inject-template-abc.txt: |
-          {{- with secret "internal/data/infra-test/merlin-website" -}}
+          {{- with secret "internal/data/infra-test/merlin-sh" -}}
           {{ .Data.data.certificatePassword }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-secret-dhparam.pem: "internal/data/infra-test/merlin-website"
+        vault.hashicorp.com/agent-inject-secret-dhparam.pem: "internal/data/infra-test/merlin-sh"
         vault.hashicorp.com/agent-inject-template-dhparam.pem: |
-          {{- with secret "internal/data/infra-test/merlin-website" -}}
+          {{- with secret "internal/data/infra-test/merlin-sh" -}}
           {{ .Data.data.dhparamPem }}
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
-        vault.hashicorp.com/agent-inject-command-abc.txt: |
-          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
-        vault.hashicorp.com/agent-inject-command-server.crt: |
-          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
-        vault.hashicorp.com/agent-inject-command-server.key: |
-          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
-        vault.hashicorp.com/agent-inject-command-dhparam.pem: |
-          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
-        vault.hashicorp.com/template-static-secret-render-interval: 5s
       labels:
-        app: merlin-blog
+        app: merlin-blogs
     spec:
       serviceAccount: merlin
       imagePullSecrets:
@@ -68,12 +55,12 @@ spec:
           localhostProfile: infra-seccomp.json
       automountServiceAccountToken: false
       containers:
-      - name: merlin-blog
-        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-blog-test:staging-0363b4
+      - name: merlin-blogs
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-blogs-test:main-c59b26
         imagePullPolicy: IfNotPresent
         env:
         - name: DET_URL
-          value: https://modelfoundry-blog.test.osinfra.cn/blogs/
+          value: https://openmind.test.osinfra.cn/blogs/
         ports:
         - containerPort: 8080
           name: http
@@ -98,13 +85,6 @@ spec:
             path: /404.html
             port: 8080
           timeoutSeconds: 10
-        lifecycle:
-          preStop:
-            exec:
-              command: 
-              - /bin/bash
-              - -c
-              - rm -rf /etc/nginx/cert/*
         resources:
           requests:
             cpu: 500m
@@ -115,9 +95,6 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1000
-          capabilities:
-            drop:
-              - ALL
       volumes:
       - name: token-vol
         projected:
