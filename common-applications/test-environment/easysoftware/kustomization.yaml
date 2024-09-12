@@ -15,4 +15,4 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-input-test
   newTag: master-cd360
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-test
-  newTag: master-648b6f
+  newTag: security-617f7a
