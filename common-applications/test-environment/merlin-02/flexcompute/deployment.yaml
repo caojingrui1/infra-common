@@ -50,11 +50,11 @@ spec:
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/agent-inject-template-config.yaml: |  
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
-          {{ .Data.data.spaceConf }}
+          {{ .Data.data.flexcomputeConf }}
           {{- end }}
         vault.hashicorp.com/agent-inject-template-client.yml: |  
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
-          {{ .Data.data.spaceClientConf }}
+          {{ .Data.data.flexcomputeClientConf }}
           {{- end }}
         vault.hashicorp.com/agent-inject-template-server.crt: |  
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
