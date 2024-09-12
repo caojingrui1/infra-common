@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: merlin-blog
+  name: merlin-blogs
   namespace: merlin
 spec:
   strategy:
@@ -12,7 +12,7 @@ spec:
       maxSurge: 1
   selector:
     matchLabels:
-      app: merlin-blog
+      app: merlin-blogs
   template:
     metadata:
       annotations:
@@ -57,7 +57,7 @@ spec:
           if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
         vault.hashicorp.com/template-static-secret-render-interval: 5s
       labels:
-        app: merlin-blog
+        app: merlin-blogs
     spec:
       serviceAccount: merlin
       imagePullSecrets:
@@ -68,7 +68,7 @@ spec:
           localhostProfile: infra-seccomp.json
       automountServiceAccountToken: false
       containers:
-      - name: merlin-blog
+      - name: merlin-blogs
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-blog-test:staging-0363b4
         imagePullPolicy: IfNotPresent
         env:
