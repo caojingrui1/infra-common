@@ -4,6 +4,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
   name: openeuler-usercenter-ingress
   namespace: openeuler-usercenter
 spec:
@@ -17,7 +18,7 @@ spec:
         paths:
         - backend:
             serviceName: openeuler-usercenter-service
-            servicePort: 80
+            servicePort: 8080
           path: /
 
 ---
