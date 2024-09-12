@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: merlin-blogs-service
-  namespace: merlin-icsl
+  namespace: merlin-02
 spec:
   ports:
   - name: https-port
