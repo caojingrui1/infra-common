@@ -13,4 +13,4 @@ resources:
 - pvc.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-label-test
-  newTag: test0930-46228d
+  newTag: test0930-ed259c
