@@ -13,4 +13,4 @@ resources:
 - autoscaler.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-flexcompute-test
-  newTag: dlv-bbcc67
+  newTag: main-a94263
