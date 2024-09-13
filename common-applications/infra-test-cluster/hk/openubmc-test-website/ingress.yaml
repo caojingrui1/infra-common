@@ -1,8 +1,6 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  annotations:
-    kubernetes.io/ingress.class: nginx
   name: openubmc-website-ingress
   namespace: openubmc
 spec:
@@ -10,10 +8,14 @@ spec:
   - host: openubmc.test.osinfra.cn
     http:
       paths:
-      - backend:
-          serviceName: openubmc-website-service
-          servicePort: 8080
-        path: /
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: openubmc-website-service
+            port:
+              number: 8080
+  ingressClassName: nginx
   tls:
   - hosts:
     - openubmc.test.osinfra.cn
