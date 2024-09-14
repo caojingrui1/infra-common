@@ -109,7 +109,7 @@ spec:
               command: 
               - /bin/bash
               - -c
-              - rm -rf /vault/secrets/app.ini; rm -rf /vault/secrets/*.crt; rm -rf /vault/secrets/*.key
+              - rm -rf /vault/secrets/*
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1000
