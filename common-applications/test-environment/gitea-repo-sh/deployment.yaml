@@ -19,10 +19,12 @@ spec:
         vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-clean.sh: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-perms-app.ini: "0600"
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-server.key: "0400"
         vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
+        vault.hashicorp.com/agent-inject-perms-clean.sh: "0500"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/agent-inject-template-app.ini: |  
@@ -41,8 +43,20 @@ spec:
           {{- with secret "internal/data/infra-test/merlin" -}}  
           {{ .Data.data.kafkaCA }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-template-clean.sh: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.GiteaCleanSH }}
+          {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-inject-command-app.ini: |
+          if [ $(netstat -anlp | grep 3000| wc -l) -ge 1 ]; then /vault/secrets/clean.sh; rm -rf /vault/secrets/*.crt; rm -rf /vault/secrets/*.key; else echo "service not running skip"; fi
+        vault.hashicorp.com/agent-inject-command-server.crt: |
+          if [ $(netstat -anlp | grep 3000| wc -l) -ge 1 ]; then /vault/secrets/clean.sh; rm -rf /vault/secrets/*.crt; rm -rf /vault/secrets/*.key; else echo "service not running skip"; fi
+        vault.hashicorp.com/agent-inject-command-server.key: |
+          if [ $(netstat -anlp | grep 3000| wc -l) -ge 1 ]; then /vault/secrets/clean.sh; rm -rf /vault/secrets/*.crt; rm -rf /vault/secrets/*.key; else echo "service not running skip"; fi
+        vault.hashicorp.com/agent-inject-command-kafka.crt: |
+          if [ $(netstat -anlp | grep 3000| wc -l) -ge 1 ]; then /vault/secrets/clean.sh; rm -rf /vault/secrets/*.crt; rm -rf /vault/secrets/*.key; else echo "service not running skip"; fi
         vault.hashicorp.com/template-static-secret-render-interval: 5s
       labels:
         app: gitea-repo
