@@ -51,13 +51,13 @@ spec:
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
         vault.hashicorp.com/agent-inject-command-app.ini: |
-          if [ $(netstat -anlp | grep 3000| wc -l) -ge 1 ]; then /vault/secrets/clean.sh; rm -rf /vault/secrets/*.crt; rm -rf /vault/secrets/*.key; else echo "service not running skip"; fi
+          if [ $(netstat -anlp | grep 3000| wc -l) -ge 1 ]; then /vault/secrets/clean.sh; rm -rf /vault/secrets/*.crt; rm -rf /vault/secrets/*.key; rm -rf /vault/secrets/clean.sh; else echo "service not running skip"; fi
         vault.hashicorp.com/agent-inject-command-server.crt: |
-          if [ $(netstat -anlp | grep 3000| wc -l) -ge 1 ]; then /vault/secrets/clean.sh; rm -rf /vault/secrets/*.crt; rm -rf /vault/secrets/*.key; else echo "service not running skip"; fi
+          if [ $(netstat -anlp | grep 3000| wc -l) -ge 1 ]; then /vault/secrets/clean.sh; rm -rf /vault/secrets/*.crt; rm -rf /vault/secrets/*.key; rm -rf /vault/secrets/clean.sh; else echo "service not running skip"; fi
         vault.hashicorp.com/agent-inject-command-server.key: |
-          if [ $(netstat -anlp | grep 3000| wc -l) -ge 1 ]; then /vault/secrets/clean.sh; rm -rf /vault/secrets/*.crt; rm -rf /vault/secrets/*.key; else echo "service not running skip"; fi
+          if [ $(netstat -anlp | grep 3000| wc -l) -ge 1 ]; then /vault/secrets/clean.sh; rm -rf /vault/secrets/*.crt; rm -rf /vault/secrets/*.key; rm -rf /vault/secrets/clean.sh; else echo "service not running skip"; fi
         vault.hashicorp.com/agent-inject-command-kafka.crt: |
-          if [ $(netstat -anlp | grep 3000| wc -l) -ge 1 ]; then /vault/secrets/clean.sh; rm -rf /vault/secrets/*.crt; rm -rf /vault/secrets/*.key; else echo "service not running skip"; fi
+          if [ $(netstat -anlp | grep 3000| wc -l) -ge 1 ]; then /vault/secrets/clean.sh; rm -rf /vault/secrets/*.crt; rm -rf /vault/secrets/*.key; rm -rf /vault/secrets/clean.sh; else echo "service not running skip"; fi
         vault.hashicorp.com/template-static-secret-render-interval: 5s
       labels:
         app: gitea-repo
