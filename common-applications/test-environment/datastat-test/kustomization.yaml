@@ -10,3 +10,6 @@ resources:
 namespace: datastat-test
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/datastat-backend-test
+  newTag: develop_test-66942f
