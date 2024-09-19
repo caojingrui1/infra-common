@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: china-cid-website
+  namespace: china-cid-website
+spec:
+  ports:
+  - name: http-port
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: china-cid-website
+  type: ClusterIP
