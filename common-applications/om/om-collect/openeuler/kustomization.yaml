@@ -54,6 +54,7 @@ resources:
   - hub-oepkgs
   - gitee-feature
   - software-repo-maintain
+  - gitee-filter
 commonAnnotations:
   owner: zhongjun
   email: "jun.zhongjun2@gmail.com"
