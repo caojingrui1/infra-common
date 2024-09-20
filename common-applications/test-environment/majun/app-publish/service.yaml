@@ -4,16 +4,12 @@ kind: Service
 metadata:
   name: app-publish-service
   namespace: majun
-  annotations:
-    kubernetes.io/elb.id: 37630ae5-2a47-4753-b781-332b659274e2
-    kubernetes.io/elb.class: union
-    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
 spec:
   ports:
   - name: httpport
     protocol: TCP
-    port: 8888
+    port: 8080
     targetPort: 8080
   selector:
     app: post-publish
-  type: LoadBalancer
+  type: ClusterIP

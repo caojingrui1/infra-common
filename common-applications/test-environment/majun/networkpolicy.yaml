@@ -436,7 +436,7 @@ spec:
       from:
         - podSelector:
             matchLabels:
-              app: post-publish
+              app: majun-website
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
