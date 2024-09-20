@@ -168,18 +168,15 @@ metadata:
   name: om-webserver-opengauss-ingress
   namespace: om-webserver-test
 spec:
-  rules:
-  - host: omapi-revision.test.osinfra.cn
-    http:
-      paths:
-      - backend:
-          service:
-            name: om-webserver-opengauss-service
-            port:
-              number: 8080
-        path: /
-        pathType: Prefix
   tls:
-  - hosts:
-    - omapi-revision.test.osinfra.cn
-    secretName: tls-secrets
+    - hosts:
+        - omapi-revision.test.osinfra.cn
+      secretName: tls-secrets
+  rules:
+    - host: omapi-revision.test.osinfra.cn
+      http:
+        paths:
+          - backend:
+              serviceName: om-webserver-opengauss-service
+              servicePort: 8080
+            path: /
