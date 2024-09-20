@@ -13,6 +13,6 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-autoupgrade-test
   newTag: main-71c0ec
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-input-test
-  newTag: master-cd360
+  newTag: master-3866a
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-test
   newTag: master-cfd9bd
