@@ -1,0 +1,133 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-publish-deployment
+  namespace: majun
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: post-publish
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: 'majun'
+        vault.hashicorp.com/agent-inject-secret-tcwFile.ks: 'internal/data/infra-test/majun'
+        vault.hashicorp.com/agent-inject-secret-tcpFile.ks: 'internal/data/infra-test/majun'
+        vault.hashicorp.com/agent-inject-secret-tcsFile.ks: 'internal/data/infra-test/majun'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/agent-inject-perms-tcwFile.ks: "0400"
+        vault.hashicorp.com/agent-inject-perms-tcpFile.ks: "0400"
+        vault.hashicorp.com/agent-inject-perms-tcsFile.ks: "0400"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/secret-volume-path: "/usr/local/publish/cert"
+        vault.hashicorp.com/agent-inject-template-tcwFile.ks: |  
+          {{- with secret "internal/data/infra-test/majun" -}}  
+          {{ .Data.data.tcwFile9Ks }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-tcpFile.ks: |  
+          {{- with secret "internal/data/infra-test/majun" -}}  
+          {{ .Data.data.tcpFile9Ks }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-tcsFile.ks: |  
+          {{- with secret "internal/data/infra-test/majun" -}}  
+          {{ .Data.data.tcsFile9Ks }}
+          {{- end }}
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-init-first: "true"
+      labels:
+        app: post-publish
+    spec:
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      serviceAccount: majun
+      securityContext:
+        fsGroup: 1000
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      tolerations:
+      - key: "majun-icsl"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+      initContainers:
+      - command:
+        - /bin/bash
+        - -c
+        - chmod 0700 /usr/local/publish/cert; chown -R 1000:1000 /usr/local/publish/cert; chmod g-s /usr/local/publish/cert; ls -ld /usr/local/publish/cert
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler:22.03-lts-sp3
+        imagePullPolicy: IfNotPresent
+        name: init-majun
+      containers:
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/repo-post-verification-test:b28d7034dfdc1264e659e43a465d21b08ed25df9
+        imagePullPolicy: Always
+        name: app-publish
+        env:
+        - name: accessToken
+          valueFrom:
+            secretKeyRef:
+              key: accesstoken
+              name: majun-secret
+        - name: rootSalt
+          valueFrom:
+            secretKeyRef:
+              key: rootSalt
+              name: majun-secret
+        - name: secretKey
+          valueFrom:
+            secretKeyRef:
+              key: secretKey
+              name: majun-secret
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 1000Mi
+          limits:
+            cpu: 1000m
+            memory: 4000Mi
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 25
+          periodSeconds: 3
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /publish/heartbeat
+            port: 8080
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 25
+          periodSeconds: 3
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /publish/heartbeat
+            port: 8080
+          timeoutSeconds: 5
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          runAsGroup: 1000
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token

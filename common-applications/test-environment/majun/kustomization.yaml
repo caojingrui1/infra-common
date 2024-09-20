@@ -13,6 +13,7 @@ resources:
 - vulnerability-view
 - website
 - servicecomb
+- app-publish
 namespace: majun
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
