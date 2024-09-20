@@ -82,12 +82,12 @@ spec:
         - name: rootSalt
           valueFrom:
             secretKeyRef:
-              key: rootSalt
+              key: rootsalt9
               name: majun-secret
         - name: secretKey
           valueFrom:
             secretKeyRef:
-              key: secretKey
+              key: secretkey9
               name: majun-secret
         resources:
           requests:
