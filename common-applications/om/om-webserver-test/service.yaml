@@ -12,3 +12,19 @@ spec:
   selector:
     app: om-webserver
   type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: om-webserver-opengauss-service
+  namespace: om-webserver-test
+spec:
+  ports:
+    - name: srv
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: om-webserver-opengauss
+  type: ClusterIP
