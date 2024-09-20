@@ -29,34 +29,6 @@ spec:
       app: post-verification
   template:
     metadata:
-      annotations:
-        vault.hashicorp.com/agent-inject: 'true'
-        vault.hashicorp.com/role: 'openeuler-devops'
-        vault.hashicorp.com/agent-inject-secret-tcwFile.ks: 'internal/data/infra-test/openeuler-devops'
-        vault.hashicorp.com/agent-inject-secret-tcpFile.ks: 'internal/data/infra-test/openeuler-devops'
-        vault.hashicorp.com/agent-inject-secret-tcsFile.ks: 'internal/data/infra-test/openeuler-devops'
-        vault.hashicorp.com/agent-pre-populate-only: "true"
-        vault.hashicorp.com/agent-inject-perms-tcwFile.ks: "0400"
-        vault.hashicorp.com/agent-inject-perms-tcpFile.ks: "0400"
-        vault.hashicorp.com/agent-inject-perms-tcsFile.ks: "0400"
-        vault.hashicorp.com/agent-run-as-user: "1000"
-        vault.hashicorp.com/agent-run-as-group: "1000"
-        vault.hashicorp.com/secret-volume-path: "/usr/local/publish/cert"
-        vault.hashicorp.com/agent-inject-template-tcwFile.ks: |  
-          {{- with secret "internal/data/infra-test/openeuler-devops" -}}  
-          {{ .Data.data.tcwFileKs }}
-          {{- end }}
-        vault.hashicorp.com/agent-inject-template-tcpFile.ks: |  
-          {{- with secret "internal/data/infra-test/openeuler-devops" -}}  
-          {{ .Data.data.tcpFileKs }}
-          {{- end }}
-        vault.hashicorp.com/agent-inject-template-tcsFile.ks: |  
-          {{- with secret "internal/data/infra-test/openeuler-devops" -}}  
-          {{ .Data.data.tcsFileKs }}
-          {{- end }}
-        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
-        vault.hashicorp.com/tls-skip-verify: "true"
-        vault.hashicorp.com/agent-init-first: "true"
       labels:
         app: post-verification
     spec:
@@ -64,14 +36,6 @@ spec:
       - name: huawei-swr-image-pull-secret
       nodeSelector:
         autoscaler: "true"
-      initContainers:
-      - command:
-        - /bin/bash
-        - -c
-        - chmod 0700 /usr/local/publish/cert; chown -R 1000:1000 /usr/local/publish/cert; chmod g-s /usr/local/publish/cert; ls -ld /usr/local/publish/cert
-        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler:22.03-lts-sp3
-        imagePullPolicy: IfNotPresent
-        name: init-app-publish
       containers:
       - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/repo-post-verification-test:b28d7034dfdc1264e659e43a465d21b08ed25df9
         imagePullPolicy: Always
@@ -107,17 +71,22 @@ spec:
         volumeMounts:
         - mountPath: /var/log
           name: log-data-volume
+        - mountPath: /usr/local/primary/ocpFile.ks
+          name: secret
+          subPath: primary-ks
+        - mountPath: /usr/local/standby/tcsFile.ks
+          name: secret
+          subPath: standby-ks
+        - mountPath: /usr/local/work/tcwFile.ks
+          name: secret
+          subPath: work-ks
       volumes:
-      - name: token-vol
-        projected:
-          sources:
-          - serviceAccountToken:
-              audience: api
-              expirationSeconds: 600
-              path: token
       - name: log-data-volume
         persistentVolumeClaim:
           claimName: openeuler-data-volume
+      - name: secret
+        secret:
+          secretName: openeuler-repo-post-secrets
 
 ---
 apiVersion: v1
