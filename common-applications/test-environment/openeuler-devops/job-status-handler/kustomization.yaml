@@ -7,7 +7,7 @@ commonAnnotations:
   kubernetes.ops.region: shanghai
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-devops/job_status_handler
-  newTag: master-00d11c
+  newTag: master-a05151
 kind: Kustomization
 namespace: openeuler-devops
 resources:
