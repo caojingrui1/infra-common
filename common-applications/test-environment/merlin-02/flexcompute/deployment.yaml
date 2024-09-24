@@ -20,31 +20,31 @@ spec:
         vault.hashicorp.com/agent-inject-secret-config.yaml: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/merlin-sh'
-        vault.hashicorp.com/agent-inject-secret-hw-guiyang-cci-test-config.yml: 'internal/data/infra-test/merlin-sh'
-        vault.hashicorp.com/agent-inject-secret-hw-guiyang-cci-prod-config.yml: 'internal/data/infra-test/merlin-sh'
-        vault.hashicorp.com/agent-inject-secret-hw-guiyang-k8s-test-config.yml: 'internal/data/infra-test/merlin-sh'
-        vault.hashicorp.com/agent-inject-secret-hw-guiyang-k8s-prod-config.yml: 'internal/data/infra-test/merlin-sh'
-        vault.hashicorp.com/agent-inject-secret-telecom-hangzhou-k8s-test-config.yml: 'internal/data/infra-test/merlin-sh'
-        vault.hashicorp.com/agent-inject-secret-telecom-beijing-k8s-prod-config.yml: 'internal/data/infra-test/merlin-sh'
+        vault.hashicorp.com/agent-inject-secret-hw-guiyang-cci-test-config.yaml: 'internal/data/infra-test/merlin-sh'
+        vault.hashicorp.com/agent-inject-secret-hw-guiyang-cci-prod-config.yaml: 'internal/data/infra-test/merlin-sh'
+        vault.hashicorp.com/agent-inject-secret-hw-guiyang-k8s-test-config.yaml: 'internal/data/infra-test/merlin-sh'
+        vault.hashicorp.com/agent-inject-secret-hw-guiyang-k8s-prod-config.yaml: 'internal/data/infra-test/merlin-sh'
+        vault.hashicorp.com/agent-inject-secret-telecom-hangzhou-k8s-test-config.yaml: 'internal/data/infra-test/merlin-sh'
+        vault.hashicorp.com/agent-inject-secret-telecom-beijing-k8s-prod-config.yaml: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-sql.crt: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-docker.json: 'internal/data/infra-test/merlin-sh'
-        vault.hashicorp.com/agent-inject-secret-client.yml: 'internal/data/infra-test/merlin-sh'
+        vault.hashicorp.com/agent-inject-secret-felxcompute-client.yaml: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-vault.crt: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-config.yaml: "0400"
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-server.key: "0400"
-        vault.hashicorp.com/agent-inject-perms-hw-guiyang-cci-test-config.yml: "0400"
-        vault.hashicorp.com/agent-inject-perms-hw-guiyang-cci-prod-config.yml: "0400"
-        vault.hashicorp.com/agent-inject-perms-hw-guiyang-k8s-test-config.yml: "0400"
-        vault.hashicorp.com/agent-inject-perms-hw-guiyang-k8s-prod-config.yml: "0400"
-        vault.hashicorp.com/agent-inject-perms-telecom-hangzhou-k8s-test-config.yml: "0400"
-        vault.hashicorp.com/agent-inject-perms-telecom-beijing-k8s-prod-config.yml: "0400"
+        vault.hashicorp.com/agent-inject-perms-hw-guiyang-cci-test-config.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-hw-guiyang-cci-prod-config.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-hw-guiyang-k8s-test-config.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-hw-guiyang-k8s-prod-config.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-telecom-hangzhou-k8s-test-config.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-telecom-beijing-k8s-prod-config.yaml: "0400"
         vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-sql.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-docker.json: "0400"
-        vault.hashicorp.com/agent-inject-perms-client.yml: "0400"
+        vault.hashicorp.com/agent-inject-perms-felxcompute-client.yaml: "0400"
         vault.hashicorp.com/agent-inject-perms-vault.crt: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
@@ -52,7 +52,7 @@ spec:
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.flexcomputeConf }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-template-client.yml: |  
+        vault.hashicorp.com/agent-inject-template-felxcompute-client.yaml: |  
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.flexcomputeClientConf }}
           {{- end }}
@@ -64,19 +64,19 @@ spec:
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.ServerKey }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-template-hw-guiyang-cci-test-config.yml: |  
+        vault.hashicorp.com/agent-inject-template-hw-guiyang-cci-test-config.yaml: |  
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.cciConf }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-template-hw-guiyang-cci-prod-config.yml: |  
+        vault.hashicorp.com/agent-inject-template-hw-guiyang-cci-prod-config.yaml: |  
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.cciConf }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-template-hw-guiyang-k8s-test-config.yml: |  
+        vault.hashicorp.com/agent-inject-template-hw-guiyang-k8s-test-config.yaml: |  
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.k8sConf }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-template-hw-guiyang-k8s-prod-config.yml: |  
+        vault.hashicorp.com/agent-inject-template-hw-guiyang-k8s-prod-config.yaml: |  
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.k8sConfProd }}
           {{- end }}
@@ -96,11 +96,11 @@ spec:
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.vaultCA }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-template-telecom-hangzhou-k8s-test-config.yml: |  
+        vault.hashicorp.com/agent-inject-template-telecom-hangzhou-k8s-test-config.yaml: |  
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.k8sConfTianyiyun }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-template-telecom-beijing-k8s-prod-config.yml: |  
+        vault.hashicorp.com/agent-inject-template-telecom-beijing-k8s-prod-config.yaml: |  
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.k8sConfTianyiyunBeijing }}
           {{- end }}
@@ -125,7 +125,7 @@ spec:
         - name: CONFIG_FILE
           value: /vault/secrets/config.yaml
         - name: FLEXCOMPUTE_CLIENT_CONFIG_FILE
-          value: /vault/secrets/client.yml
+          value: /vault/secrets/felxcompute-client.yaml
         - name: LOG_PATH
           value: /var/log/flexcompute-server/flexcompute-server.log
         - name: IP

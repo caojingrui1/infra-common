@@ -1,34 +1,57 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flexcompute
-  namespace: merlin
+  name: felxcompute-deployment
+  namefelxcompute: merlin
 spec:
   selector:
     matchLabels:
-      app: flexcompute
+      app: felxcompute
   strategy:
-    rollingUpdate:
-      maxUnavailable: 1
-    type: RollingUpdate
+    type: Recreate
   template:
     metadata:
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/role: 'merlin'
-        vault.hashicorp.com/agent-inject-secret-delivery.yaml: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-containers: 'felxcompute'
+        vault.hashicorp.com/agent-inject-secret-config.yaml: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-hw-guiyang-cci-test-config.yaml: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-hw-guiyang-cci-prod-config.yaml: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-hw-guiyang-k8s-test-config.yaml: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-hw-guiyang-k8s-prod-config.yaml: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-telecom-hangzhou-k8s-test-config.yaml: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-telecom-beijing-k8s-prod-config.yaml: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-sql.crt: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-docker.json: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-felxcompute-client.yaml: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-secret-vault.crt: 'internal/data/infra-test/merlin'
+        vault.hashicorp.com/agent-inject-perms-config.yaml: "0400"
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-server.key: "0400"
-        vault.hashicorp.com/agent-inject-perms-delivery.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-hw-guiyang-cci-test-config.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-hw-guiyang-cci-prod-config.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-hw-guiyang-k8s-test-config.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-hw-guiyang-k8s-prod-config.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-telecom-hangzhou-k8s-test-config.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-telecom-beijing-k8s-prod-config.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-sql.crt: "0400"
+        vault.hashicorp.com/agent-inject-perms-docker.json: "0400"
+        vault.hashicorp.com/agent-inject-perms-felxcompute-client.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-vault.crt: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
-        vault.hashicorp.com/agent-inject-template-delivery.yaml: |  
+        vault.hashicorp.com/agent-inject-template-config.yaml: |  
           {{- with secret "internal/data/infra-test/merlin" -}}  
-          {{ .Data.data.HookDelivery }}
+          {{ .Data.data.felxcomputeConf }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-felxcompute-client.yaml: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.felxcomputeClientConf }}
           {{- end }}
         vault.hashicorp.com/agent-inject-template-server.crt: |  
           {{- with secret "internal/data/infra-test/merlin" -}}  
@@ -38,18 +61,67 @@ spec:
           {{- with secret "internal/data/infra-test/merlin" -}}  
           {{ .Data.data.ServerKey }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-template-hw-guiyang-cci-test-config.yaml: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.cciConf }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-hw-guiyang-cci-prod-config.yaml: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.cciConf }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-hw-guiyang-k8s-test-config.yaml: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.k8sConf }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-hw-guiyang-k8s-prod-config.yaml: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.k8sConfProd }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-kafka.crt: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.kafkaCA }}
+          {{- end }}
         vault.hashicorp.com/agent-inject-template-sql.crt: |  
           {{- with secret "internal/data/infra-test/merlin" -}}  
           {{ .Data.data.pgsqlCA }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-template-docker.json: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.felxcomputeSwrLogin }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-vault.crt: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.vaultCA }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-telecom-hangzhou-k8s-test-config.yaml: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.k8sConfTianyiyun }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-telecom-beijing-k8s-prod-config.yaml: |  
+          {{- with secret "internal/data/infra-test/merlin" -}}  
+          {{ .Data.data.k8sConfTianyiyunBeijing }}
+          {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
-        vault.hashicorp.com/agent-inject-command-delivery.yaml: |
-          RET=$(netstat -anlp | grep 8125| wc -l)
-          if [ $RET -eq 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-config.yaml: |
+          if [ $(netstat -anlp | grep 8123 | grep LISTEN | wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-server.crt: |
+          if [ $(netstat -anlp | grep 8123 | grep LISTEN | wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-server.key: |
+          if [ $(netstat -anlp | grep 8123 | grep LISTEN | wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-felxcompute-client.yaml: |
+          if [ $(netstat -anlp | grep 8123 | grep LISTEN | wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-kafka.crt: |
+          if [ $(netstat -anlp | grep 8123 | grep LISTEN | wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-sql.crt: |
+          if [ $(netstat -anlp | grep 8123 | grep LISTEN | wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-docker.json: |
+          if [ $(netstat -anlp | grep 8123 | grep LISTEN | wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-vault.crt: |
+          if [ $(netstat -anlp | grep 8123 | grep LISTEN | wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
         vault.hashicorp.com/template-static-secret-render-interval: 5s
       labels:
-        app: flexcompute
+        app: felxcompute
     spec:
       serviceAccount: merlin
       imagePullSecrets:
@@ -60,40 +132,40 @@ spec:
           localhostProfile: infra-seccomp.json
       automountServiceAccountToken: false
       containers:
-      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-flexcompute-test:main-ac0c830
-        imagePullPolicy: IfNotPresent        
+      - name: felxcompute 
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-felxcompute-test:main-5a3d7e
+        imagePullPolicy: IfNotPresent
         env:
         - name: CONFIG_FILE
-          value: /vault/secrets/compose-config.yml
+          value: /vault/secrets/config.yaml
+        - name: FLEXCOMPUTE_CLIENT_CONFIG_FILE
+          value: /vault/secrets/client.yaml
         - name: LOG_PATH
-          value: /var/log/flexcompute-server.log
+          value: /var/log/flexcompute-server/flexcompute-server.log
         - name: IP
           value: "0.0.0.0"
         - name: PORT
-          value: "8123"
+          value: "8125"
         - name: REMOVE_CONFIG
-          value: "true"
+          value: "false"
         - name: ENABLE_DEBUG
           value: "true"
+        - name: TZ
+          value: "Asia/Shanghai"
         livenessProbe:
           failureThreshold: 3
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
-          httpGet:
-            scheme: HTTPS
-            path: /
+          tcpSocket:
             port: 8125
           timeoutSeconds: 5
-        name: flexcompute
         readinessProbe:
           failureThreshold: 3
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
-          httpGet:
-            scheme: HTTPS
-            path: /
+          tcpSocket:
             port: 8125
           timeoutSeconds: 5
         lifecycle:
@@ -113,7 +185,6 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1000
-          readOnlyRootFilesystem: true
           capabilities:
             drop:
               - ALL
