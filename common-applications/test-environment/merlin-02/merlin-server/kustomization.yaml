@@ -10,8 +10,6 @@ images:
   newTag: test0930-af1b72
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
   newTag: test0930-81bfa7
-- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/server-cronjob
-  newTag: main-fd10d5
 kind: Kustomization
 namespace: merlin-02
 resources:
@@ -29,5 +27,5 @@ resources:
 - moderation-video.yaml
 - virus-scan.yaml
 - deploy-task.yaml
-- generate-usage.yaml
+- sync-image-center.yaml
 - sync-changelog.yaml
