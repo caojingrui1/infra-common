@@ -29,7 +29,7 @@ spec:
         vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-sql.crt: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-docker.json: 'internal/data/infra-test/merlin-sh'
-        vault.hashicorp.com/agent-inject-secret-felxcompute-client.yaml: 'internal/data/infra-test/merlin-sh'
+        vault.hashicorp.com/agent-inject-secret-flexcompute-client.yaml: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-vault.crt: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-config.yaml: "0400"
@@ -44,7 +44,7 @@ spec:
         vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-sql.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-docker.json: "0400"
-        vault.hashicorp.com/agent-inject-perms-felxcompute-client.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-flexcompute-client.yaml: "0400"
         vault.hashicorp.com/agent-inject-perms-vault.crt: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
@@ -52,7 +52,7 @@ spec:
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.flexcomputeConf }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-template-felxcompute-client.yaml: |  
+        vault.hashicorp.com/agent-inject-template-flexcompute-client.yaml: |  
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.flexcomputeClientConf }}
           {{- end }}
@@ -125,7 +125,7 @@ spec:
         - name: CONFIG_FILE
           value: /vault/secrets/config.yaml
         - name: FLEXCOMPUTE_CLIENT_CONFIG_FILE
-          value: /vault/secrets/felxcompute-client.yaml
+          value: /vault/secrets/flexcompute-client.yaml
         - name: LOG_PATH
           value: /var/log/flexcompute-server/flexcompute-server.log
         - name: IP
