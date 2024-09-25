@@ -7,4 +7,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/message-center/message-manager-test
-  newTag: hrz-dev-08d5b5
+  newTag: hrz-dev-137bd0
