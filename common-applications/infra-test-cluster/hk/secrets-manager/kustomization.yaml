@@ -1,0 +1,13 @@
+resources:
+- crd.yaml
+- secrets-manager.yaml
+- namespace.yaml
+commonAnnotations:
+  kubernetes.ops.cluster: infra-test-cluster
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: apline
+  kubernetes.ops.owner: husheng
+  kubernetes.ops.region: sh
+namespace: secrets-manager
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
