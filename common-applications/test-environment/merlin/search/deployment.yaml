@@ -27,8 +27,7 @@ spec:
           {{ .Data.data.searchConf }}
           {{- end }}
         vault.hashicorp.com/agent-inject-command-application.yml: |
-          RET=$(netstat -anlp | grep 8080| wc -l)
-          if [ $RET -eq 1 ];then rm -rf /vault/secrets/*;else echo "service not running skip";fi
+          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
         vault.hashicorp.com/template-static-secret-render-interval: 5s
       labels:
         app: search

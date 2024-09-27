@@ -30,7 +30,6 @@ spec:
         vault.hashicorp.com/agent-inject-secret-docker.json: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-space-client.yml: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-vault.crt: 'internal/data/infra-test/merlin-sh'
-        vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-compose-config.yml: "0400"
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-server.key: "0400"
@@ -105,6 +104,23 @@ spec:
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-inject-command-compose-config.yml: |
+          if [ $(netstat -anlp | grep 8123 | grep LISTEN | wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-server.crt: |
+          if [ $(netstat -anlp | grep 8123 | grep LISTEN | wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-server.key: |
+          if [ $(netstat -anlp | grep 8123 | grep LISTEN | wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-space-client.yml: |
+          if [ $(netstat -anlp | grep 8123 | grep LISTEN | wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-kafka.crt: |
+          if [ $(netstat -anlp | grep 8123 | grep LISTEN | wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-sql.crt: |
+          if [ $(netstat -anlp | grep 8123 | grep LISTEN | wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-docker.json: |
+          if [ $(netstat -anlp | grep 8123 | grep LISTEN | wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/agent-inject-command-vault.crt: |
+          if [ $(netstat -anlp | grep 8123 | grep LISTEN | wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/template-static-secret-render-interval: 5s
       labels:
         app: space
     spec:
@@ -132,7 +148,7 @@ spec:
         - name: PORT
           value: "8123"
         - name: REMOVE_CONFIG
-          value: "false"
+          value: "true"
         - name: ENABLE_DEBUG
           value: "true"
         livenessProbe:
@@ -151,6 +167,13 @@ spec:
           tcpSocket:
             port: 8123
           timeoutSeconds: 5
+        lifecycle:
+          preStop:
+            exec:
+              command: 
+              - /bin/bash
+              - -c
+              - rm -rf /vault/secrets/*
         resources:
           limits:
             cpu: "4"

@@ -16,7 +16,6 @@ spec:
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/tls-skip-verify: "true"
-        vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/role: 'merlin-sh'
         vault.hashicorp.com/agent-run-as-user: "1001"
@@ -27,6 +26,9 @@ spec:
           {{- with secret "internal/data/infra-test/merlin-sh" -}}  
           {{ .Data.data.searchConf }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-command-application.yml: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/template-static-secret-render-interval: 5s
       labels:
         app: search
     spec:
@@ -69,6 +71,13 @@ spec:
             path: /error
             port: 8080
           timeoutSeconds: 5
+        lifecycle:
+          preStop:
+            exec:
+              command: 
+              - /bin/bash
+              - -c
+              - rm -rf /vault/secrets/*
         resources:
           limits:
             cpu: 500m
