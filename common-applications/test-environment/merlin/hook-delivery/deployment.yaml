@@ -20,7 +20,6 @@ spec:
         vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin'
-        vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-server.key: "0400"
         vault.hashicorp.com/agent-inject-perms-delivery.yaml: "0400"
@@ -45,6 +44,10 @@ spec:
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-inject-command-delivery.yaml: |
+          RET=$(netstat -anlp | grep 8080| wc -l)
+          if [ $RET -ge 1 ];then rm -rf /vault/secrets/*; else echo "service not running skip";fi
+        vault.hashicorp.com/template-static-secret-render-interval: 5s
       labels:
         app: hook-delivery
     spec:
@@ -62,7 +65,7 @@ spec:
         args:
         - --port=8080
         - --config-file=/vault/secrets/delivery.yaml
-        - --rm-cfg=false
+        - --rm-cfg=true
         - --cert=/vault/secrets/server.crt
         - --key=/vault/secrets/server.key
         livenessProbe:
@@ -86,6 +89,13 @@ spec:
             path: /
             port: 8080
           timeoutSeconds: 5
+        lifecycle:
+          preStop:
+            exec:
+              command: 
+              - /bin/bash
+              - -c
+              - rm -rf /vault/secrets/*
         resources:
           limits:
             cpu: 500m

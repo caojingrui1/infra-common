@@ -46,10 +46,18 @@ spec:
           {{- with secret "internal/data/infra-test/merlin-website" -}}
           {{ .Data.data.dhparamPem }}
           {{- end }}
-        vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/role: merlin-website
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-inject-command-abc.txt: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
+        vault.hashicorp.com/agent-inject-command-server.crt: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
+        vault.hashicorp.com/agent-inject-command-server.key: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
+        vault.hashicorp.com/agent-inject-command-dhparam.pem: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
+        vault.hashicorp.com/template-static-secret-render-interval: 5s
       labels:
         app: merlin-website
     spec:
@@ -101,6 +109,13 @@ spec:
             - name: "Host"
               value: "modelfoundry.test.osinfra.cn"
           timeoutSeconds: 10
+        lifecycle:
+          preStop:
+            exec:
+              command: 
+              - /bin/bash
+              - -c
+              - rm -rf /etc/nginx/cert/*
         resources:
           requests:
             cpu: 1000m

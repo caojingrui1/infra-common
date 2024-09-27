@@ -1,0 +1,18 @@
+---
+apiVersion: secrets-manager.tuenti.io/v1alpha1
+kind: SecretDefinition
+metadata:
+  name: china-cid-website-tls
+  namespace: china-cid-website
+spec:
+  name: china-cid-website-tls
+  keysMap:
+    ca.crt:
+      path: secrets/data/infra-common/osinfra-cn
+      key: server.crt
+    tls.crt:
+      path: secrets/data/infra-common/osinfra-cn
+      key: server.crt
+    tls.key:
+      path: secrets/data/infra-common/osinfra-cn
+      key: server.key

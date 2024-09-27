@@ -419,3 +419,24 @@ spec:
   policyTypes:
     - Ingress
 apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: app-publish-policy-01
+  namespace: majun
+spec:
+  podSelector:
+    matchLabels:
+      app: post-publish
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: majun-website
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1

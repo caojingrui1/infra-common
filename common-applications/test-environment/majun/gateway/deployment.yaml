@@ -18,17 +18,21 @@ spec:
         vault.hashicorp.com/role: 'majun'
         vault.hashicorp.com/agent-inject-secret-mongo.crt: 'internal/data/infra-test/majun'
         vault.hashicorp.com/agent-inject-secret-redis.crt: 'internal/data/infra-test/majun'
-        vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/majun'
         vault.hashicorp.com/agent-inject-secret-kafka.jks: 'internal/data/infra-test/majun'
         vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/domain-tls'
         vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/domain-tls'
+        vault.hashicorp.com/agent-inject-secret-tcwFile.ks: 'internal/data/infra-test/majun'
+        vault.hashicorp.com/agent-inject-secret-tcpFile.ks: 'internal/data/infra-test/majun'
+        vault.hashicorp.com/agent-inject-secret-tcsFile.ks: 'internal/data/infra-test/majun'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-mongo.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
-        vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-kafka.jks: "0400"
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-server.key: "0400"
+        vault.hashicorp.com/agent-inject-perms-tcwFile.ks: "0400"
+        vault.hashicorp.com/agent-inject-perms-tcpFile.ks: "0400"
+        vault.hashicorp.com/agent-inject-perms-tcsFile.ks: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/secret-volume-path: "/opt/app/majun/cert"
@@ -39,10 +43,6 @@ spec:
         vault.hashicorp.com/agent-inject-template-redis.crt: |  
           {{- with secret "internal/data/infra-test/majun" -}}  
           {{ .Data.data.redisCrt }}
-          {{- end }}
-        vault.hashicorp.com/agent-inject-template-kafka.crt: |  
-          {{- with secret "internal/data/infra-test/majun" -}}  
-          {{ .Data.data.kafkaCrt }}
           {{- end }}
         vault.hashicorp.com/agent-inject-template-kafka.jks: |  
           {{- with secret "internal/data/infra-test/majun" -}}  
@@ -56,8 +56,21 @@ spec:
           {{- with secret "internal/data/infra-test/domain-tls" -}}  
           {{ .Data.data.ServerKey }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-template-tcwFile.ks: |  
+          {{- with secret "internal/data/infra-test/majun" -}}  
+          {{ .Data.data.tcwFile1Ks }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-tcpFile.ks: |  
+          {{- with secret "internal/data/infra-test/majun" -}}  
+          {{ .Data.data.tcpFile1Ks }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-tcsFile.ks: |  
+          {{- with secret "internal/data/infra-test/majun" -}}  
+          {{ .Data.data.tcsFile1Ks }}
+          {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-init-first: "true"
       labels:
         app: gateway
     spec:
@@ -75,6 +88,14 @@ spec:
         operator: "Equal"
         value: "true"
         effect: "NoSchedule"
+      initContainers:
+      - command:
+        - /bin/bash
+        - -c
+        - chmod 0700 /opt/app/majun/cert; chown -R 1000:1000 /opt/app/majun/cert; chmod g-s /opt/app/majun/cert; ls -ld /opt/app/majun/cert
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler:22.03-lts-sp3
+        imagePullPolicy: IfNotPresent
+        name: init-majun
       containers:
       - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/majun/gateway-beta:icsl_beta-855a13
         imagePullPolicy: IfNotPresent
@@ -88,12 +109,12 @@ spec:
           valueFrom:
             secretKeyRef:
               name: majun-secret
-              key: secretkey
+              key: secretkey1
         - name: rootSalt
           valueFrom:
             secretKeyRef:
               name: majun-secret
-              key: rootsalt
+              key: rootsalt1
         - name: X_ARMOR_SECURITY_ENABLE
           valueFrom:
             secretKeyRef:
@@ -129,16 +150,6 @@ spec:
             secretKeyRef:
               name: majun-secret
               key: X_ARMOR_BACKEND_TENANT_ID
-        volumeMounts:
-        - mountPath: /opt/app/work/tcwFile.ks
-          name: majun-secret
-          subPath: tcwFile1-ks
-        - mountPath: /opt/app/primary/ocpFile.ks
-          name: majun-secret
-          subPath: tcpFile1-ks
-        - mountPath: /opt/app/standby/tcsFile.ks
-          name: majun-secret
-          subPath: tcsFile1-ks
         livenessProbe:
           failureThreshold: 3
           initialDelaySeconds: 25
@@ -175,10 +186,6 @@ spec:
             drop:
               - ALL
       volumes:
-      - name: majun-secret
-        secret:
-          defaultMode: 256
-          secretName: majun-secret
       - name: token-vol
         projected:
           sources:

@@ -626,13 +626,7 @@ spec:
               nameNginx:
                 description: NameNginx is the name of the Nginx container.
                 type: string
-              pvcProvisioner:
-                type: string
               pvcPath:
-                type: string
-              pvcSize:
-                type: string
-              pvcStoreClassName:
                 type: string
             required:
             - name
@@ -784,20 +778,8 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: manager-role
+  name: space-k8s-operator-manager-role
 rules:
-- apiGroups:
-  - ""
-  resources:
-  - persistentvolumeclaims
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
 - apiGroups:
   - ""
   resources:

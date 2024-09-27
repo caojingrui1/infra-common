@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: openubmc-website-ingress
+  namespace: openubmc
+spec:
+  rules:
+  - host: openubmc.test.osinfra.cn
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: openubmc-website-service
+            port:
+              number: 8080
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - openubmc.test.osinfra.cn
+    secretName: openubmc-website-tls

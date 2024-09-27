@@ -65,6 +65,9 @@ spec:
             - mountPath: /etc/copr/copr-be.conf
               name: copr-secrets
               subPath: backend_copr-be.conf
+            - mountPath: /etc/copr/kafka.crt
+              name: copr-secrets
+              subPath: kafka.crt
             - mountPath: /var/lib/copr/public_html/stats
               name: copr-backend-stats-data
         - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/copr/backend-test:v1.0.20230310164803
@@ -79,6 +82,9 @@ spec:
             - mountPath: /etc/copr/copr-be.conf
               name: copr-secrets
               subPath: backend_copr-be.conf
+            - mountPath: /etc/copr/kafka.crt
+              name: copr-secrets
+              subPath: kafka.crt
             - mountPath: /var/lib/copr/public_html/results
               name: copr-backend-data
             - mountPath: /var/lib/copr/public_html/stats
@@ -115,6 +121,9 @@ spec:
             - mountPath: /etc/copr/copr-be.conf
               name: copr-secrets
               subPath: backend_copr-be.conf
+            - mountPath: /etc/copr/kafka.crt
+              name: copr-secrets
+              subPath: kafka.crt
             - mountPath: /var/lib/copr/public_html/stats
               name: copr-backend-stats-data
             - mountPath: /home/copr/server.key

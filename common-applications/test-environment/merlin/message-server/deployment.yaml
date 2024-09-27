@@ -19,7 +19,6 @@ spec:
         vault.hashicorp.com/agent-inject-secret-label.yml: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin'
         vault.hashicorp.com/agent-inject-secret-redis.crt: 'internal/data/infra-test/merlin'
-        vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-label.yml: "0400"
         vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
@@ -39,6 +38,13 @@ spec:
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-inject-command-label.yml: |
+          if [ -f "/vault/secrets/health.txt" ]; then rm -rf /vault/secrets/*.yml; rm -rf /vault/secrets/*.crt; else echo "service not running skip"; fi
+        vault.hashicorp.com/agent-inject-command-kafka.crt: |
+          if [ -f "/vault/secrets/health.txt" ]; then rm -rf /vault/secrets/*.yml; rm -rf /vault/secrets/*.crt; else echo "service not running skip"; fi
+        vault.hashicorp.com/agent-inject-command-redis.crt: |
+          if [ -f "/vault/secrets/health.txt" ]; then rm -rf /vault/secrets/*.yml; rm -rf /vault/secrets/*.crt; else echo "service not running skip"; fi
+        vault.hashicorp.com/template-static-secret-render-interval: 5s
       labels:
         app: label
     spec:
@@ -55,7 +61,7 @@ spec:
         imagePullPolicy: IfNotPresent        
         args:
         - --config-file=/vault/secrets/label.yml
-        - --rm-cfg=false
+        - --rm-cfg=true
         name: server
         resources:
           limits:
@@ -64,6 +70,19 @@ spec:
           requests:
             cpu: 500m
             memory: 500Mi
+        livenessProbe:
+          exec:
+            command:
+            - ls
+            - /vault/secrets/health.txt
+          initialDelaySeconds: 5
+        lifecycle:
+          preStop:
+            exec:
+              command: 
+              - /bin/bash
+              - -c
+              - rm -rf /vault/secrets/*
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1000

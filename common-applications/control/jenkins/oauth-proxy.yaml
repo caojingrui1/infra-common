@@ -26,9 +26,7 @@ spec:
           - --redirect-url=https://jenkins.osinfra.cn/oauth2/callback
           - --oidc-issuer-url=https://infra-jenkins.authing.cn/oidc
           # for jenkins job or views and their resource to to loaded
-          - --skip-auth-regex=^/job/
           - --skip-auth-regex=^/queue/
-          - --skip-auth-regex=^/view/
           - --skip-auth-regex=^/static/
           - --skip-auth-regex=^/adjuncts/
           - --skip-auth-regex=^/images/

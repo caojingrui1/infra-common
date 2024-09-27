@@ -1,0 +1,9 @@
+resources:
+- deployment.yaml
+- namespace.yaml
+- rbac.yaml
+- image-pull-secret-src.yaml
+commonLabels:
+  common-app: imagepullsecret-patcher
+namespace: imagepullsecret-patcher
+

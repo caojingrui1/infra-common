@@ -16,6 +16,8 @@ resources:
 - moderation-server
 - moderation-service
 - ci-adapter
+- flexcompute
+- merlin-blog
 namespace: merlin-02
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization

@@ -58,6 +58,7 @@ spec:
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-init-first: "true"
       labels:
         app: dashboard
     spec:
@@ -75,6 +76,14 @@ spec:
         operator: "Equal"
         value: "true"
         effect: "NoSchedule"
+      initContainers:
+      - command:
+        - /bin/bash
+        - -c
+        - chmod 0700 /opt/app/majun/cert; chown -R 1000:1000 /opt/app/majun/cert; chmod g-s /opt/app/majun/cert; ls -ld /opt/app/majun/cert
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler:22.03-lts-sp3
+        imagePullPolicy: IfNotPresent
+        name: init-majun
       containers:
       - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/majun/dashboard-beta:icsl_beta-6a3fb2
         imagePullPolicy: IfNotPresent
@@ -88,12 +97,12 @@ spec:
           valueFrom:
             secretKeyRef:
               name: majun-secret
-              key: secretkey
+              key: secretkey7
         - name: rootSalt
           valueFrom:
             secretKeyRef:
               name: majun-secret
-              key: rootsalt
+              key: rootsalt7
         - name: X_ARMOR_SECURITY_ENABLE
           valueFrom:
             secretKeyRef:

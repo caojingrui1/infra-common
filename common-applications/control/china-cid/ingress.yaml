@@ -1,0 +1,25 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: china-cid-ingress
+  namespace: china-cid-website
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  tls:
+  - hosts:
+    - china-cid.osinfra.cn
+    secretName: china-cid-website-tls
+  rules:
+  - host: china-cid.osinfra.cn
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: china-cid-website
+            port:
+              number: 8080
+  ingressClassName: nginx

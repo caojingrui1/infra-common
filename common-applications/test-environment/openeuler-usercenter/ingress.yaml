@@ -3,21 +3,21 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
   name: openeuler-usercenter-ingress
   namespace: openeuler-usercenter
 spec:
   tls:
     - hosts:
       - openeuler-usercenter.test.osinfra.cn
-      secretName: openeuler-usercenter-tls
+      secretName: test-osinfra-cn-tls
   rules:
     - host: openeuler-usercenter.test.osinfra.cn
       http:
         paths:
         - backend:
             serviceName: openeuler-usercenter-service
-            servicePort: 80
+            servicePort: 8080
           path: /
 
 ---
@@ -26,7 +26,6 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/configuration-snippet: |
       add_header X-Content-Type-Options "nosniff";
       add_header X-Frame-Options "DENY";
@@ -38,7 +37,7 @@ spec:
   tls:
     - hosts:
       - id-opengauss.test.osinfra.cn
-      secretName: opengauss-usercenter-new-tls
+      secretName: test-osinfra-cn-tls
   rules:
     - host: id-opengauss.test.osinfra.cn
       http:
@@ -54,14 +53,13 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt-prod
   name: openeuler-oneid-server-ingress
   namespace: openeuler-usercenter
 spec:
   tls:
     - hosts:
       - oneid-server.test.osinfra.cn
-      secretName: oneid-server-tls
+      secretName: test-osinfra-cn-tls
   rules:
     - host: oneid-server.test.osinfra.cn
       http:
