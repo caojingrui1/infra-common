@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openeuler-infra-ai-service-deployment
+  namespace: openeuler-infra-ai-service
+spec:
+  selector:
+    matchLabels:
+      app: openeuler-infra-ai-service
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:        
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/role: 'openeuler-infra-ai-service'
+        # vault.hashicorp.com/agent-run-as-user: "1000"
+        # vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/secret-volume-path: "/app"
+        vault.hashicorp.com/agent-inject-secret-.env: 'internal/data/infra-test/openeuler-infra-ai-service'
+        vault.hashicorp.com/agent-inject-perms-.env: "0400"
+        vault.hashicorp.com/agent-inject-template-.env: |  
+          {{- with secret "internal/data/infra-test/openeuler-infra-ai-service" -}}  
+          {{ .Data.data.env }}
+          {{- end }}
+      labels:
+        app: openeuler-infra-ai-service
+    spec:
+      serviceAccount: openeuler-infra-ai-service
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      securityContext:
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      containers:
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/infra-ai-service-test:main-567dc08
+        imagePullPolicy: IfNotPresent        
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          successThreshold: 1
+          httpGet:
+            scheme: HTTPS
+            path: 
+            port: 8000
+          timeoutSeconds: 5
+        name: openeuler-infra-ai-service
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          successThreshold: 1
+          httpGet:
+            scheme: HTTPS
+            path: 
+            port: 8000
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+        volumeMounts:
+          - mountPath: /opt/docker/aiservice/log/
+            name: data-volume
+        securityContext:
+          allowPrivilegeEscalation: false
+          #runAsUser: 1000
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: aiservice-log-volume
