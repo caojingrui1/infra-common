@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: om-collect
+  name: community-tracker-om-collect
+  namespace: openeuler-kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: om-collect
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: om-collect
+    spec:
+      containers:
+      - image: swr.cn-north-4.myhuaweicloud.com/om/om-kafka:0.0.53
+        imagePullPolicy: IfNotPresent
+        name: om-collect
+        ports:
+        - containerPort: 3306
+          name: om-collect
+          protocol: TCP
+        resources:
+          requests:
+            memory: 500Mi
+        volumeMounts:
+        - mountPath: /opt/config/conf.properties
+          name: om-collect-secrets-volume
+          subPath: credentials_cfg
+      volumes:
+      - name: om-collect-secrets-volume
+        secret:
+          defaultMode: 420
+          secretName: community-tracker-secrets
