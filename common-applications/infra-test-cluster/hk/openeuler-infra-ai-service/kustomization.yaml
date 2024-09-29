@@ -15,3 +15,6 @@ resources:
 - namespace.yaml
 - ingress.yaml
 - secrets.yaml
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/infra-ai-service-test
+  newTag: fix_k8s-bb172c5
