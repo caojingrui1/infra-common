@@ -12,4 +12,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/majun/basic-beta
-  newTag: icsl_beta-421106
+  newTag: icsl_beta-d75c5b
