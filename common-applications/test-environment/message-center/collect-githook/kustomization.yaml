@@ -7,4 +7,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/message-center/message-collect-githook-test
-  newTag: hrz-930-4b7e08
+  newTag: 930-20bbe9
