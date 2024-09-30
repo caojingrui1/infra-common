@@ -12,4 +12,4 @@ kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/om/om-webserver
   newName: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-test
-  newTag: master-6b879d
+  newTag: master-047b6d
