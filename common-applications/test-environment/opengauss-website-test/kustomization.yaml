@@ -16,4 +16,4 @@ kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/opengauss/test_opengauss_website
   newName: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/opengauss/test_opengauss_website
-  newTag: v2-9ed24
+  newTag: v2-40d18
