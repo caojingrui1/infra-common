@@ -19,8 +19,8 @@ spec:
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/role: 'openeuler-infra-ai-service'
-        # vault.hashicorp.com/agent-run-as-user: "1000"
-        # vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/secret-volume-path: "/app"
         vault.hashicorp.com/agent-inject-secret-.env: 'internal/data/infra-test/openeuler-infra-ai-service'
         vault.hashicorp.com/agent-inject-perms-.env: "0400"
@@ -48,7 +48,7 @@ spec:
           periodSeconds: 30
           successThreshold: 1
           httpGet:
-            scheme: HTTPS
+            scheme: HTTP
             path: 
             port: 8000
           timeoutSeconds: 5
@@ -59,7 +59,7 @@ spec:
           periodSeconds: 30
           successThreshold: 1
           httpGet:
-            scheme: HTTPS
+            scheme: HTTP
             path: 
             port: 8000
           timeoutSeconds: 5
@@ -75,7 +75,7 @@ spec:
             name: data-volume
         securityContext:
           allowPrivilegeEscalation: false
-          #runAsUser: 1000
+          runAsUser: 1000
           readOnlyRootFilesystem: true
           capabilities:
             drop:
