@@ -62,6 +62,8 @@ spec:
           value: /vault/secrets/server.crt
         - name: TLS_KEY_PATH
           value: /vault/secrets/server.key
+        - name: KAFKA_CRT_PATH
+          value: /vault/secrets/kafka.crt
         image: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/openeuler/meetingserver:master-6148c8
         imagePullPolicy: IfNotPresent
         livenessProbe:
