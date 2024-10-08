@@ -23,7 +23,7 @@ images:
   newTag: v1.0.20240930151751
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-usercenter-test
   newName: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/openeuler/openeuler-usercenter-test
-  newTag: ea885c806323ff41ea339f83b6b72838ea3bc68f
+  newTag: 5d390fb20a13ff47ee51edefdfdc6d05e60ed99e
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/opengauss/opengauss-usercenter-test
   newName: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/opengauss/opengauss-usercenter-test
   newTag: 26d68d9cf6a7dd7ad25d0cdcc94e365d9f88a4f0
