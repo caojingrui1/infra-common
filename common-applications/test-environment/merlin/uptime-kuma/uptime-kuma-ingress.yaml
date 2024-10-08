@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: uptime-kuma-ingress
+  namespace: uptime-kuma
+spec:
+  tls:
+  - hosts:
+    - status-modelers.test.osinfra.cn
+    secretName: uptime-kuma-tls
+  rules:
+  - host: status-modelers.test.osinfra.cn
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: uptime-kuma-service
+            port:
+              number: 80
+  ingressClassName: nginx
