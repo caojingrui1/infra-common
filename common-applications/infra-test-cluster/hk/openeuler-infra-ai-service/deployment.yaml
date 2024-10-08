@@ -49,7 +49,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: 
+            path: /api/v1/status/status
             port: 8000
           timeoutSeconds: 5
         name: openeuler-infra-ai-service
@@ -60,7 +60,7 @@ spec:
           successThreshold: 1
           httpGet:
             scheme: HTTP
-            path: 
+            path: /api/v1/status/status
             port: 8000
           timeoutSeconds: 5
         resources:
@@ -76,7 +76,6 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1000
-          readOnlyRootFilesystem: true
           capabilities:
             drop:
               - ALL
