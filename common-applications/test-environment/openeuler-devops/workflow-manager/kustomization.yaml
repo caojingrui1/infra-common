@@ -7,7 +7,7 @@ commonAnnotations:
   kubernetes.ops.region: shanghai
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-devops/workflow_manager
-  newTag: v1.0.20241009162130
+  newTag: v1.0.20241009162745
 kind: Kustomization
 namespace: openeuler-devops
 resources:
