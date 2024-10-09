@@ -296,6 +296,27 @@ apiVersion: networking.k8s.io/v1
 ---
 kind: NetworkPolicy
 metadata:
+  name: merlin-server-sh-policy-08
+  namespace: merlin-02
+spec:
+  podSelector:
+    matchLabels:
+      app: server
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: sync-image-center
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
   name: merlin-space-sh-policy-02
   namespace: merlin-02
 spec:
