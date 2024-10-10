@@ -9,7 +9,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-devops/even_selector
   newTag: master-118a1e
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-devops/event_selector
-  newTag: v1.0.20241010112149
+  newTag: v1.0.20241010113833
 kind: Kustomization
 namespace: openeuler-devops
 resources:
