@@ -7,7 +7,7 @@ commonAnnotations:
   kubernetes.ops.region: shanghai
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-devops/exec_updator
-  newTag: v1.0.20241010151136
+  newTag: v1.0.20241010155035
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-devops/exec_watcher
   newTag: master-c3caa5
 kind: Kustomization
