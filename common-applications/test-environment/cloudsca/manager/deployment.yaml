@@ -5,7 +5,7 @@ metadata:
   name: manager
   namespace: sca
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: manager
