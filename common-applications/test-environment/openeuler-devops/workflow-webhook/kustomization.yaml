@@ -9,7 +9,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-devops/chronos_scheduler
   newTag: v1.0.20240201091705
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-devops/workflow_webhook
-  newTag: v1.0.20241009162745
+  newTag: v1.0.20241010112149
 kind: Kustomization
 namespace: openeuler-devops
 resources:
