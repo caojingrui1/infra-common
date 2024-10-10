@@ -7,6 +7,8 @@ resources:
   - openmind-owner-project
   - authing-user
   - gitee-sla
+  - docker-hub
+  - polymerization-download
 
 commonAnnotations:
   owner: zhongjun
