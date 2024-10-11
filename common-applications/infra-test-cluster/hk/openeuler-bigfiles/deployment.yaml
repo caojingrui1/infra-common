@@ -51,7 +51,10 @@ spec:
       containers:
       - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler-bigfiles/server-test:modify-dockerfile-91a5a6
         name: openeuler-bigfiles
-        imagePullPolicy: IfNotPresent        
+        imagePullPolicy: IfNotPresent    
+        args:
+        - --port=5000
+        - --config-file=/vault/secrets/config.yaml
         livenessProbe:
           failureThreshold: 3
           initialDelaySeconds: 10
