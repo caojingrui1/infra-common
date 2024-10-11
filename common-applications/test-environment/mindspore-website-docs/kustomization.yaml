@@ -7,7 +7,7 @@ commonAnnotations:
   kubernetes.ops.region: hk
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/mindspore/mindspore-website-docs
-  newTag: v1.0.20241010120116
+  newTag: v1.0.20241011120015
 kind: Kustomization
 namespace: mindspore-website-docs
 resources:
