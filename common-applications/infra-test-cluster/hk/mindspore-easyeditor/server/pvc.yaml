@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: easyeditor-data
+  namespace: mindspore-easyeditor
+  annotations:
+    everest.io/disk-volume-type: SSD
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: csi-disk
+  volumeMode: Filesystem
+
