@@ -53,7 +53,6 @@ spec:
         name: openeuler-bigfiles
         imagePullPolicy: IfNotPresent    
         args:
-        - --port=5000
         - --config-file=/vault/secrets/config.yaml
         livenessProbe:
           failureThreshold: 3
