@@ -15,3 +15,6 @@ resources:
 - namespace.yaml
 - ingress.yaml
 - secrets.yaml
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler-bigfiles/server-test
+  newTag: modify-dockerfile-b1c1bb
