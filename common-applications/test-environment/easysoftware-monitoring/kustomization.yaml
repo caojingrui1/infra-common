@@ -16,4 +16,4 @@ resources:
 - namespace.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easysoftware/easysoftware-monitoring-test
-  newTag: master-7c1eee
+  newTag: master-bda385
