@@ -6,8 +6,8 @@ commonAnnotations:
   kubernetes.ops.owner: caoyanan
   kubernetes.ops.region: hk
 images:
-- name: swr.ap-southeast-1.myhuaweicloud.com/openubmc/openubmc-test-website
-  newTag: main-02d2f4
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openubmc-website
+  newTag: main-fc9f99
 kind: Kustomization
 namespace: openubmc
 resources:
@@ -16,3 +16,4 @@ resources:
 - service.yaml
 - deployment.yaml
 - sa.yaml
+- secret.yaml

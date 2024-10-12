@@ -47,6 +47,7 @@ spec:
         vault.hashicorp.com/role: openubmc-website
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-command-abc.txt: |
           if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
         vault.hashicorp.com/agent-inject-command-server.crt: |
@@ -69,7 +70,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: websitepod
-        image: swr.ap-southeast-1.myhuaweicloud.com/openubmc/openubmc-test-website:main-02d2f4
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openubmc-website:main-fc9f99
         imagePullPolicy: IfNotPresent
         env:
         - name: DET_URL
