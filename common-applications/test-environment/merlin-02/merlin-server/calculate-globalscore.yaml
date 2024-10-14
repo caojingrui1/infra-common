@@ -1,0 +1,103 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: calculate-globalscore
+  namespace: merlin-02
+  labels:
+    app: calculate-globalscore
+spec:
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 180
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            vault.hashicorp.com/agent-inject: 'true'
+            vault.hashicorp.com/role: 'merlin-sh'
+            vault.hashicorp.com/agent-inject-secret-compose-config.yml: 'internal/data/infra-test/merlin-sh'
+            vault.hashicorp.com/agent-inject-secret-redis.crt: 'internal/data/infra-test/merlin-sh'
+            vault.hashicorp.com/agent-inject-secret-pqsql.crt: 'internal/data/infra-test/merlin-sh'
+            vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/merlin-sh'
+            vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/merlin-sh'
+            vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin-sh'
+            vault.hashicorp.com/agent-pre-populate-only: "true"
+            vault.hashicorp.com/agent-inject-perms-compose-config.yml: "0400"
+            vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
+            vault.hashicorp.com/agent-inject-perms-pqsql.crt: "0400"
+            vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
+            vault.hashicorp.com/agent-inject-perms-server.key: "0400"
+            vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
+            vault.hashicorp.com/agent-run-as-user: "1000"
+            vault.hashicorp.com/agent-run-as-group: "1000"
+            vault.hashicorp.com/agent-inject-template-compose-config.yml: |  
+              {{- with secret "internal/data/infra-test/merlin-sh" -}}  
+              {{ .Data.data.label }}
+              {{- end }}
+            vault.hashicorp.com/agent-inject-template-redis.crt: |  
+              {{- with secret "internal/data/infra-test/merlin-sh" -}}  
+              {{ .Data.data.redisCA }}
+              {{- end }}
+            vault.hashicorp.com/agent-inject-template-pqsql.crt: |  
+              {{- with secret "internal/data/infra-test/merlin-sh" -}}  
+              {{ .Data.data.pqsqlCA }}
+              {{- end }}
+            vault.hashicorp.com/agent-inject-template-server.crt: |  
+              {{- with secret "internal/data/infra-test/merlin-sh" -}}  
+              {{ .Data.data.ServerCrt }}
+              {{- end }}
+            vault.hashicorp.com/agent-inject-template-server.key: |  
+              {{- with secret "internal/data/infra-test/merlin-sh" -}}  
+              {{ .Data.data.ServerKey }}
+              {{- end }}
+            vault.hashicorp.com/agent-inject-template-kafka.crt: |  
+              {{- with secret "internal/data/infra-test/merlin-sh" -}}  
+              {{ .Data.data.kafkaCA }}
+              {{- end }}
+            vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+            vault.hashicorp.com/tls-skip-verify: "true"
+          labels:
+            app: calculate-globalscore
+        spec:
+          serviceAccount: merlin
+          restartPolicy: OnFailure
+          imagePullSecrets:
+          - name: huawei-swr-image-pull-secret
+          securityContext:
+            seccompProfile:
+              type: Localhost
+              localhostProfile: infra-seccomp.json
+          automountServiceAccountToken: false
+          containers:
+          - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test:audit_cancel-0cf121
+            imagePullPolicy: IfNotPresent 
+            args:
+            - --config-file=/vault/secrets/compose-config.yml   
+            - --job-type=calculate-globalscore
+            name: calculate-globalscore
+            resources:
+              limits:
+                cpu: 500m
+                memory: 500Mi
+              requests:
+                cpu: 500m
+                memory: 500Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              runAsUser: 1000
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+          volumes:
+          - name: token-vol
+            projected:
+              sources:
+              - serviceAccountToken:
+                  audience: api
+                  expirationSeconds: 600
+                  path: token
+
+              
