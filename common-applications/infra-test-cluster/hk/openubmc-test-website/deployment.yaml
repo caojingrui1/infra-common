@@ -15,48 +15,6 @@ spec:
       maxSurge: 1
   template:
     metadata:
-      annotations:
-        vault.hashicorp.com/agent-inject: "true"
-        vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
-        vault.hashicorp.com/agent-inject-perms-server.key: "0400"
-        vault.hashicorp.com/agent-inject-perms-abc.txt: "0400"
-        vault.hashicorp.com/agent-inject-perms-dhparam.pem: "0400"
-        vault.hashicorp.com/agent-run-as-user: "1000"
-        vault.hashicorp.com/agent-run-as-group: "1000"
-        vault.hashicorp.com/secret-volume-path: "/etc/nginx/cert/"
-        vault.hashicorp.com/agent-inject-secret-server.crt: "internal/data/infra-test/openubmc-website"
-        vault.hashicorp.com/agent-inject-template-server.crt: |
-          {{- with secret "internal/data/infra-test/openubmc-website" -}}
-          {{ .Data.data.ServerCrt }}
-          {{- end }}
-        vault.hashicorp.com/agent-inject-secret-server.key: "internal/data/infra-test/openubmc-website"
-        vault.hashicorp.com/agent-inject-template-server.key: |
-          {{- with secret "internal/data/infra-test/openubmc-website" -}}
-          {{ .Data.data.ServerKey }}
-          {{- end }}
-        vault.hashicorp.com/agent-inject-secret-abc.txt: "internal/data/infra-test/openubmc-website"
-        vault.hashicorp.com/agent-inject-template-abc.txt: |
-          {{- with secret "internal/data/infra-test/openubmc-website" -}}
-          {{ .Data.data.certificatePassword }}
-          {{- end }}
-        vault.hashicorp.com/agent-inject-secret-dhparam.pem: "internal/data/infra-test/openubmc-website"
-        vault.hashicorp.com/agent-inject-template-dhparam.pem: |
-          {{- with secret "internal/data/infra-test/openubmc-website" -}}
-          {{ .Data.data.dhparamPem }}
-          {{- end }}
-        vault.hashicorp.com/role: openubmc-website
-        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
-        vault.hashicorp.com/tls-skip-verify: "true"
-        vault.hashicorp.com/agent-pre-populate-only: "true"
-        vault.hashicorp.com/agent-inject-command-abc.txt: |
-          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
-        vault.hashicorp.com/agent-inject-command-server.crt: |
-          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
-        vault.hashicorp.com/agent-inject-command-server.key: |
-          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
-        vault.hashicorp.com/agent-inject-command-dhparam.pem: |
-          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
-        vault.hashicorp.com/template-static-secret-render-interval: 5s
       labels:
         app: openubmc-website
     spec:
@@ -70,13 +28,10 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: websitepod
-        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openubmc-website:main-fc9f99
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openubmc-website:huangshijun-e32fea
         imagePullPolicy: IfNotPresent
-        env:
-        - name: DET_URL
-          value: https://openubmc.test.osinfra.cn
         ports:
-        - containerPort: 8080
+        - containerPort: 3000
           name: http
           protocol: TCP
         readinessProbe:
@@ -85,9 +40,9 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           httpGet:
-            scheme: HTTPS
+            scheme: HTTP
             path: /
-            port: 8080
+            port: 3000
             httpHeaders:
             - name: "Host"
               value: "openubmc.test.osinfra.cn"
@@ -98,20 +53,13 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           httpGet:
-            scheme: HTTPS
+            scheme: HTTP
             path: /
-            port: 8080
+            port: 3000
             httpHeaders:
             - name: "Host"
               value: "openubmc.test.osinfra.cn"
           timeoutSeconds: 10
-        lifecycle:
-          preStop:
-            exec:
-              command: 
-              - /bin/bash
-              - -c
-              - rm -rf /etc/nginx/cert/*
         resources:
           requests:
             cpu: 1000m
