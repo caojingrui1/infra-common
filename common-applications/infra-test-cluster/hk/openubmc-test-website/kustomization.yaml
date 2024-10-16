@@ -7,7 +7,7 @@ commonAnnotations:
   kubernetes.ops.region: hk
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openubmc-website
-  newTag: main-fc9f99
+  newTag: huangshijun-e32fea
 kind: Kustomization
 namespace: openubmc
 resources:
