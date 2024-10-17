@@ -6,4 +6,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/message-center/message-transfer-test
-  newTag: hrz-930-e15553
+  newTag: hrz-930-0713e2
