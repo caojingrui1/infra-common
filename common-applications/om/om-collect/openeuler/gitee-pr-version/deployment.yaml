@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: om-gitee-pr-version
-          image: swr.cn-north-4.myhuaweicloud.com/om/om-collection:0.5.30
+          image: swr.cn-north-4.myhuaweicloud.com/om/om-collection:0.6.5
           volumeMounts:
             - mountPath: /var/lib/om/config.ini
               subPath: credentials_cfg

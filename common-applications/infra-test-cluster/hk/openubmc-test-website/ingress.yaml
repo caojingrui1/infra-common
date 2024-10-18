@@ -3,8 +3,6 @@ kind: Ingress
 metadata:
   name: openubmc-website-ingress
   namespace: openubmc
-  annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   rules:
   - host: openubmc.test.osinfra.cn
@@ -16,7 +14,7 @@ spec:
           service:
             name: openubmc
             port:
-              number: 8080
+              number: 3000
   ingressClassName: nginx
   tls:
   - hosts:

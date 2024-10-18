@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: om-commit-log-enterprise
-          image: swr.cn-north-4.myhuaweicloud.com/om/om-collection:0.5.80
+          image: swr.cn-north-4.myhuaweicloud.com/om/om-collection:0.6.6
           volumeMounts:
             - mountPath: /var/lib/om/config.ini
               subPath: credentials_cfg
