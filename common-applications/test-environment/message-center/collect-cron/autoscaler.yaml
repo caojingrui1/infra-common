@@ -1,0 +1,15 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: collect-cron-deployment-autoscaler
+  namespace: message-center
+spec:
+  scaleTargetRef:
+    name: collect-cron-deployment
+  triggers:
+  - type: cron
+    metadata:
+      timezone: Asia/Shanghai
+      start: 35 8 * * *
+      end: 55 23 * * *
+      desiredReplicas: "1"

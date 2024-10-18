@@ -3,6 +3,7 @@ resources:
 - sa.yaml
 # - networkpolicy.yaml
 - collect
+- collect-cron
 - collect-githook
 - manager
 - manager-website
