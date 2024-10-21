@@ -80,6 +80,7 @@ spec:
         - --gitee-config-file=/vault/secrets/gitee_conf.yaml
         - --meeting-config-file=/vault/secrets/meeting_conf.yaml
         - --cve-config-file=/vault/secrets/cve.yaml
+        - --forum-config-file=/vault/secrets/forum_conf.yaml
         resources:
           limits:
             cpu: 2
