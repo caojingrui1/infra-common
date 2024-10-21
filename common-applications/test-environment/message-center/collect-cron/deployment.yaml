@@ -50,7 +50,7 @@ spec:
       - name: server
         args:
         - --config-file=/vault/secrets/conf.yaml
-        - --forum-config-file=//vault/secrets/forum_conf.yaml
+        - --forum-config-file=/vault/secrets/forum_conf.yaml
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/message-center/message-collect-cron-test:main-d1625d
         imagePullPolicy: IfNotPresent
         resources:
