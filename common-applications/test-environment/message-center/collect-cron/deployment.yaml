@@ -33,11 +33,11 @@ spec:
           {{- with secret "internal/data/infra-test/message-center" -}}  
           {{ .Data.data.cronForumConf }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-perms-kafka-cn4.crt: "0400"
-        vault.hashicorp.com/agent-inject-secret-kafka-cn4.crt: 'internal/data/infra-test/message-center'
-        vault.hashicorp.com/agent-inject-template-kafka-cn4.crt: |  
+        vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
+        vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/message-center'
+        vault.hashicorp.com/agent-inject-template-kafka.crt: |  
           {{- with secret "internal/data/infra-test/message-center" -}}  
-          {{ .Data.data.kafkaCn4Crt }}
+          {{ .Data.data.kafkaCrt }}
           {{- end }}
       labels:
         app: collect-cron
