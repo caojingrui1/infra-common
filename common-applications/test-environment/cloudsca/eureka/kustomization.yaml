@@ -6,4 +6,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/sca-eureka
-  newTag: 0da38df06c20a1a176a25319cd30ec320d667010
+  newTag: c4a66747dec28083d5624398da6a2a3338cb33ae
