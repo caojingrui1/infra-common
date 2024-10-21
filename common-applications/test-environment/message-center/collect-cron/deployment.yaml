@@ -27,9 +27,9 @@ spec:
           {{- with secret "internal/data/infra-test/message-center" -}}  
           {{ .Data.data.cronConf }}
           {{- end }}
-        vault.hashicorp.com/agent-inject-perms-eur_build_conf.yaml: "0400"
-        vault.hashicorp.com/agent-inject-secret-eur_build_conf.yaml: 'internal/data/infra-test/message-center'
-        vault.hashicorp.com/agent-inject-template-eur_build_conf.yaml: |  
+        vault.hashicorp.com/agent-inject-perms-forum_conf.yaml: "0400"
+        vault.hashicorp.com/agent-inject-secret-forum_conf.yaml: 'internal/data/infra-test/message-center'
+        vault.hashicorp.com/agent-inject-template-forum_conf.yaml: |  
           {{- with secret "internal/data/infra-test/message-center" -}}  
           {{ .Data.data.cronForumConf }}
           {{- end }}
