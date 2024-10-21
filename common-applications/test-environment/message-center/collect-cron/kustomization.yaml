@@ -6,4 +6,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/message-center/message-collect-cron-test
-  newTag: test-3dfd6f
+  newTag: test-ec4a4c
