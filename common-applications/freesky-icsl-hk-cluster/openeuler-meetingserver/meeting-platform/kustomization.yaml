@@ -1,0 +1,15 @@
+resources:
+- service.yaml
+- deployment.yaml
+namespace: openeuler-meetingserver
+commonAnnotations:
+  kubernetes.ops.cluster: test
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: openeuler
+  kubernetes.ops.owner: zhuchao
+  kubernetes.ops.region: shanghai
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/meeting/meeting-platform
+  newTag: main-7133cc
