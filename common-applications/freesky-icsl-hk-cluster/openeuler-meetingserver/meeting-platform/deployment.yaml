@@ -1,30 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: meetingserver-deployment
+  name: meeting-platform
   namespace: openeuler-meetingserver
 spec:
   selector:
     matchLabels:
-      app: meetingserver
+      app: meeting-platform
   strategy:
     type: Recreate
   template:
     metadata:
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
-        vault.hashicorp.com/role: 'openeuler-meeting'
         vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/role: 'openeuler-meeting'
         vault.hashicorp.com/agent-inject-perms-secrets.yaml: "0400"
         vault.hashicorp.com/agent-inject-perms-ca.pem: "0400"
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-server.key: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/secret-volume-path: "/vault/secrets"
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/agent-inject-secret-secrets.yaml: 'internal/data/infra-test/openeuler-meeting'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-template-secrets.yaml: |  
           {{- with secret "internal/data/infra-test/openeuler-meeting" -}}  
-          {{ .Data.data.config }}
+          {{ .Data.data.platformconfig }}
           {{- end }}
         vault.hashicorp.com/agent-inject-secret-ca.pem: 'internal/data/infra-test/openeuler-meeting'
         vault.hashicorp.com/agent-inject-template-ca.pem: |  
@@ -42,58 +45,57 @@ spec:
           {{ .Data.data.serverkey }}
           {{- end }}
       labels:
-        app: meetingserver
+        app: meeting-platform
     spec:
-      tolerations:
-      - key: "icsl"
-        operator: "Equal"
-        value: "true"
-        effect: "NoSchedule"
-      securityContext:
-        seccompProfile:
-          type: RuntimeDefault
+      serviceAccount: openeuler-meeting
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      automountServiceAccountToken: false
       containers:
-      - env:
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/meeting/meeting-platform:main-7133cc
+        imagePullPolicy: IfNotPresent
+        env:
         - name: TZ
           value: Asia/Shanghai
         - name: CONFIG_PATH
           value: /vault/secrets/secrets.yaml
-        - name: MYSQL_TLS_PEM_PATH
-          value: /vault/secrets/ca.pem
-        - name: TLS_CRT_PATH
-          value: /vault/secrets/server.crt
-        - name: TLS_KEY_PATH
-          value: /vault/secrets/server.key
-        image: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/openeuler/meetingserver:master-167460
-        imagePullPolicy: IfNotPresent
+        - name: VAULT_PATH
+          value: /vault/secrets/secrets.yaml
         livenessProbe:
           failureThreshold: 3
-          initialDelaySeconds: 20
-          periodSeconds: 20
+          initialDelaySeconds: 30
+          periodSeconds: 30
           successThreshold: 1
-          tcpSocket:
+          tcpSocket: 
             port: 8080
           timeoutSeconds: 5
-        name: meetingserver
+        name: meeting-platform
         readinessProbe:
           failureThreshold: 3
-          initialDelaySeconds: 10
-          periodSeconds: 10
+          initialDelaySeconds: 30
+          periodSeconds: 30 
           successThreshold: 1
-          tcpSocket:
+          tcpSocket: 
             port: 8080
           timeoutSeconds: 5
         resources:
           limits:
-            cpu: "1"
-            memory: 1000Mi
+            cpu: 2
+            memory: 4Gi
           requests:
             cpu: 500m
             memory: 500Mi
-      dnsPolicy: ClusterFirst
-      imagePullSecrets:
-      - name: huawei-swr-image-pull-secret
-      serviceAccountName: openeuler-meeting
-      restartPolicy: Always
-      schedulerName: default-scheduler
-      terminationGracePeriodSeconds: 30
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token       
