@@ -9,6 +9,7 @@ resources:
   - gitee-sla
   - docker-hub
   - polymerization-download
+  - repo-download
 
 commonAnnotations:
   owner: zhongjun
