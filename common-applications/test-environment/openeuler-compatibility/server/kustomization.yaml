@@ -13,4 +13,4 @@ resources:
 - autoscaler.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler-compatibility-test-backend
-  newTag: main-e97796
+  newTag: dev-d7b201
