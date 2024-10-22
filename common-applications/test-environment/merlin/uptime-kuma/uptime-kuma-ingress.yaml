@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: uptime-kuma-ingress
   namespace: uptime-kuma
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   tls:
   - hosts:
@@ -12,7 +14,20 @@ spec:
   - host: status-modelers.test.osinfra.cn
     http:
       paths:
-      - path: /
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: uptime-kuma-service
+            port:
+              number: 80
+      - path: /(.*)\.(jso|svg)
+        backend:
+          service:
+            name: uptime-kuma-service
+            port:
+              number: 80
+      - path: /assets
         pathType: Prefix
         backend:
           service:
