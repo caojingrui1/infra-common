@@ -10,6 +10,7 @@ resources:
   - docker-hub
   - polymerization-download
   - repo-download
+  - download-data
 
 commonAnnotations:
   owner: zhongjun
