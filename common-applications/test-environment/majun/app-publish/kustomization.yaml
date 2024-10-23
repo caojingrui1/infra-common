@@ -8,4 +8,4 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/cloudsca-test-reproducible-backend
   newTag: 38fa3bf346cf9d924bcdd7c75dae944087d75b14
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/repo-post-verification-test
-  newTag: 5e2b00ec8b083df4a395bbc605df8251253277bd
+  newTag: 7d24d1d4ea1bdc0ecbc8c04cbb0ac8e0893b5e61
