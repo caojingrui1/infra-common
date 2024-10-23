@@ -15,4 +15,4 @@ resources:
 - sa.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/majun/ai-test
-  newTag: master-417915
+  newTag: master-57ac35
