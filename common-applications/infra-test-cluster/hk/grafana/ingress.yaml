@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-service
+  namespace: grafana
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: grafana.test.osinfra.cn
+    http:
+      paths:
+      - backend:
+          service:
+            name: grafana-service
+            port:
+              number: 3000
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - grafana.test.osinfra.cn
+    secretName: tls-secrets

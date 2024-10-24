@@ -1,0 +1,90 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: grafana
+  labels:
+    app: grafana
+spec:
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      securityContext:
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      containers:
+      - name: grafana
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/grafana:latest
+        env:
+        - name: GF_PANELS_DISABLE_SANITIZE_HTML
+          valueFrom:
+            secretKeyRef:
+              key: san_html
+              name: grafana-secrets
+        - name: GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS
+          valueFrom:
+            secretKeyRef:
+              key: allow_plugins
+              name: grafana-secrets
+        - name: GF_SECURITY_ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: grafana-secrets
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: grafana-secrets
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /api/health
+            port: 3000
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        ports:
+        - containerPort: 3000
+          name: grafana
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: /api/health
+            port: 3000
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 30
+        resources:
+          requests:
+            cpu: "1"
+            memory: 5Gi
+        volumeMounts:
+        - mountPath: /var/lib/grafana
+          name: storage
+          subPath: grafana
+        - mountPath: /etc/grafana/grafana.ini
+          name: grafana-secrets-volume
+          readOnly: true
+          subPath: grafana_ini
+      volumes:
+      - name: grafana-secrets-volume
+        secret:
+          defaultMode: 420
+          secretName: grafana-secrets
+      - name: storage
+        persistentVolumeClaim:
+          claimName: grafana
