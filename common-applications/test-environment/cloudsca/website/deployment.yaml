@@ -95,9 +95,6 @@ spec:
             path: /
             port: 8077
           timeoutSeconds: 10
-        securityContext:
-          allowPrivilegeEscalation: false
-          runAsUser: 1000
         resources:
           requests:
             cpu: 500m
@@ -105,5 +102,20 @@ spec:
           limits:
             cpu: 500m
             memory: 4G
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          runAsGroup: 1000
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token
 
 
