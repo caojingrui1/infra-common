@@ -99,11 +99,6 @@ spec:
             value: 512m
           - name: CMS_IOF
             value: "75"
-          - name: majun.access.token
-            valueFrom:
-              secretKeyRef:
-                name: sca-secret
-                key: majun_access_token
           - name: rootSalt
             valueFrom:
               secretKeyRef:
@@ -157,10 +152,10 @@ spec:
         resources:
           requests:
             cpu: 200m
-            memory: 1G
+            memory: 4G
           limits:
             cpu: 800m
-            memory: 1G
+            memory: 4G
         readinessProbe:
           failureThreshold: 3
           initialDelaySeconds: 15
