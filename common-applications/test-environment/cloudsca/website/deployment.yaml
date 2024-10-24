@@ -41,7 +41,7 @@ spec:
           {{ .Data.data.dhparamPem }}
           {{- end }}
         vault.hashicorp.com/agent-pre-populate-only: "true"
-        vault.hashicorp.com/role: sca
+        vault.hashicorp.com/role: 'sca'
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
         vault.hashicorp.com/agent-init-first: "true"
