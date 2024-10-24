@@ -77,11 +77,6 @@ spec:
           value: 256m
         - name: CMS_IOF
           value: "75"
-        - name: majun.access.token
-          valueFrom:
-            secretKeyRef:
-              name: sca-secret
-              key: majun_access_token
         - name: X_ARMOR_SECURITY_ENABLE
           valueFrom:
             secretKeyRef:
@@ -120,10 +115,10 @@ spec:
         resources:
           requests:
             cpu: 200m
-            memory: 500Mi
+            memory: 4G
           limits:
             cpu: 500m
-            memory: 600Mi
+            memory: 4G
         readinessProbe:
           failureThreshold: 3
           initialDelaySeconds: 15

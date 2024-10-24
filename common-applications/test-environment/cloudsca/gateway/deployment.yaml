@@ -17,10 +17,16 @@ spec:
         vault.hashicorp.com/agent-inject-secret-mongo.crt: 'internal/data/infra-test/sca'
         vault.hashicorp.com/agent-inject-secret-redis.crt: 'internal/data/infra-test/sca'
         vault.hashicorp.com/agent-inject-secret-mysql.crt: 'internal/data/infra-test/sca'
+        vault.hashicorp.com/agent-inject-secret-tcwFile.ks: 'internal/data/infra-test/sca'
+        vault.hashicorp.com/agent-inject-secret-tcpFile.ks: 'internal/data/infra-test/sca'
+        vault.hashicorp.com/agent-inject-secret-tcsFile.ks: 'internal/data/infra-test/sca'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-mongo.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-mysql.crt: "0400"
+        vault.hashicorp.com/agent-inject-perms-tcwFile.ks: "0400"
+        vault.hashicorp.com/agent-inject-perms-tcpFile.ks: "0400"
+        vault.hashicorp.com/agent-inject-perms-tcsFile.ks: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/secret-volume-path: "/opt/app/sca/cert"
@@ -36,8 +42,21 @@ spec:
           {{- with secret "internal/data/infra-test/sca" -}}  
           {{ .Data.data.mysqlCA }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-template-tcwFile.ks: |  
+          {{- with secret "internal/data/infra-test/sca" -}}  
+          {{ .Data.data.tcwFile1Ks }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-tcpFile.ks: |  
+          {{- with secret "internal/data/infra-test/sca" -}}  
+          {{ .Data.data.tcpFile1Ks }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-tcsFile.ks: |  
+          {{- with secret "internal/data/infra-test/sca" -}}  
+          {{ .Data.data.tcsFile1Ks }}
+          {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-init-first: "true"
       labels:
         app: sca-gateway
     spec:
@@ -50,6 +69,14 @@ spec:
           type: Localhost
           localhostProfile: infra-seccomp.json
       automountServiceAccountToken: false
+      initContainers:
+      - command:
+        - /bin/bash
+        - -c
+        - chmod 0700 /opt/app/sca/cert; chown -R 1000:1000 /opt/app/sca/cert; chmod g-s /opt/app/sca/cert; ls -ld /opt/app/sca/cert
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler:22.03-lts-sp3
+        imagePullPolicy: IfNotPresent
+        name: init-sca
       containers:
       - name: sca-gateway
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/sca-gateway:3723c13e4ab63aa1b56d768bc80a18632abc8dc0
@@ -72,11 +99,6 @@ spec:
             value: 512m
           - name: CMS_IOF
             value: "75"
-          - name: majun.access.token
-            valueFrom:
-              secretKeyRef:
-                name: sca-secret
-                key: majun_access_token
           - name: rootSalt
             valueFrom:
               secretKeyRef:
@@ -130,10 +152,10 @@ spec:
         resources:
           requests:
             cpu: 200m
-            memory: 1024Mi
+            memory: 4G
           limits:
             cpu: 800m
-            memory: 2G
+            memory: 4G
         readinessProbe:
           failureThreshold: 3
           initialDelaySeconds: 15
@@ -161,20 +183,7 @@ spec:
           capabilities:
             drop:
               - ALL
-        volumeMounts:
-        - mountPath: /work/work.ks
-          name: secret-volume
-          subPath: work_ks
-        - mountPath: /primary/primary.ks
-          name: secret-volume
-          subPath: primary_ks
-        - mountPath: /standby/standby.ks
-          name: secret-volume
-          subPath: standby_ks
       volumes:
-      - name: secret-volume
-        secret:
-          secretName: sca-secret
       - name: token-vol
         projected:
           sources:
