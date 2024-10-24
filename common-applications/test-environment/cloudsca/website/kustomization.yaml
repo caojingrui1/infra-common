@@ -6,4 +6,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/sca-web
-  newTag: 06dd18384a068e3c13b2044ed3628e48f7f75254
+  newTag: c1f1c767bc326797a0f36995802fe882b09e00cb
