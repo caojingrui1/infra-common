@@ -47,6 +47,9 @@ spec:
             env:
             - name: APPLICATION_PATH
               value: /vault/secrets/application.yaml
+            volumeMounts:
+            - mountPath: /tmp/
+              name: data-volume
             name: autoupgrade
             resources:
               limits:
@@ -70,5 +73,8 @@ spec:
                   audience: api
                   expirationSeconds: 600
                   path: token
+          - name: data-volume
+            persistentVolumeClaim:
+              claimName: autoupgrade-data-volume
 
               
