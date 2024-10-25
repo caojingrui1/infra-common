@@ -1,0 +1,23 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-mindspore-repo
+  namespace: mindspore-repo
+spec:
+  tls:
+  - hosts:
+    - mindspore-repo.test.osinfra.cn
+    secretName: mindspore-repo-tls
+  rules:
+  - host: mindspore-repo.test.osinfra.cn
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mindspore-repo-service
+            port:
+              number: 8080
+  ingressClassName: nginx
