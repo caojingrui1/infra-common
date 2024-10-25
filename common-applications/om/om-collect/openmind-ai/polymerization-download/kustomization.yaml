@@ -12,5 +12,5 @@ patchesStrategicMerge:
 images:
   - name: swr.cn-north-4.myhuaweicloud.com/om/om-collect
     newName: swr.cn-north-4.myhuaweicloud.com/om/om-collection
-    newTag: 0.6.6
+    newTag: 0.6.11
 namePrefix: polymerization-download-
