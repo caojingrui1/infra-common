@@ -154,10 +154,10 @@ spec:
         resources:
           requests:
             cpu: 200m
-            memory: 2G
+            memory: 3G
           limits:
             cpu: 800m
-            memory: 2G
+            memory: 3G
         readinessProbe:
           failureThreshold: 3
           initialDelaySeconds: 15

@@ -87,7 +87,7 @@ spec:
             memory: 1000Mi
           limits:
             cpu: 1000m
-            memory: 4000Mi
+            memory: 3000Mi
         livenessProbe:
           failureThreshold: 3
           initialDelaySeconds: 25
