@@ -11,17 +11,60 @@ spec:
       app: sca-web
   template:
     metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
+        vault.hashicorp.com/agent-inject-perms-server.key: "0400"
+        vault.hashicorp.com/agent-inject-perms-abc.txt: "0400"
+        vault.hashicorp.com/agent-inject-perms-dhparam.pem: "0400"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/secret-volume-path: "/etc/nginx/cert/"
+        vault.hashicorp.com/agent-inject-secret-server.crt: "internal/data/infra-test/sca"
+        vault.hashicorp.com/agent-inject-template-server.crt: |
+          {{- with secret "internal/data/infra-test/sca" -}}
+          {{ .Data.data.ServerCrt }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-server.key: "internal/data/infra-test/sca"
+        vault.hashicorp.com/agent-inject-template-server.key: |
+          {{- with secret "internal/data/infra-test/sca" -}}
+          {{ .Data.data.ServerKey }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-abc.txt: "internal/data/infra-test/sca"
+        vault.hashicorp.com/agent-inject-template-abc.txt: |
+          {{- with secret "internal/data/infra-test/sca" -}}
+          {{ .Data.data.certificatePassword }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-dhparam.pem: "internal/data/infra-test/sca"
+        vault.hashicorp.com/agent-inject-template-dhparam.pem: |
+          {{- with secret "internal/data/infra-test/sca" -}}
+          {{ .Data.data.dhparamPem }}
+          {{- end }}
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/role: 'sca'
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-init-first: "true"
       labels:
         app: sca-web
     spec:
       imagePullSecrets:
         - name: huawei-swr-image-pull-secret
+      serviceAccount: sca
       securityContext:
         fsGroup: 1000
         seccompProfile:
           type: Localhost
           localhostProfile: infra-seccomp.json
       automountServiceAccountToken: false
+      initContainers:
+      - command:
+        - /bin/bash
+        - -c
+        - chmod 0700 /etc/nginx/cert/; chown -R 1000:1000 /etc/nginx/cert/; chmod g-s /etc/nginx/cert/; ls -ld /etc/nginx/cert/
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler:22.03-lts-sp3
+        imagePullPolicy: IfNotPresent
+        name: init-sca
       containers:
       - name: sca-web
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/sca-web:9124cc61c05476a4362fba9ce9668d6b6d7df1d2
@@ -38,7 +81,7 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           httpGet:
-            scheme: HTTP
+            scheme: HTTPS
             path: /
             port: 8077
           timeoutSeconds: 10
@@ -48,19 +91,31 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           httpGet:
-            scheme: HTTP
+            scheme: HTTPS
             path: /
             port: 8077
           timeoutSeconds: 10
-        securityContext:
-          allowPrivilegeEscalation: false
-          runAsUser: 1000
         resources:
           requests:
             cpu: 500m
-            memory: 1000Mi
+            memory: 4G
           limits:
             cpu: 500m
-            memory: 1000Mi
+            memory: 4G
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          runAsGroup: 1000
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token
 
 

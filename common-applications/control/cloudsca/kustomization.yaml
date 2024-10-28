@@ -18,6 +18,8 @@ namespace: sca
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/cloudsca-test-reproducible-backend
+  newTag: fd39cada56572d0c058ac19550ff668b2418cfb4
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/sca-analysis
   newTag: fb8135d0c45164bf7c70a988e32a2c89ac0801a4
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/sca-api-gateway

@@ -12,39 +12,11 @@ spec:
       app: eureka
   template:
     metadata:
-      annotations:
-        vault.hashicorp.com/agent-inject: 'true'
-        vault.hashicorp.com/role: 'sca'
-        vault.hashicorp.com/agent-inject-secret-mongo.crt: 'internal/data/infra-test/sca'
-        vault.hashicorp.com/agent-inject-secret-redis.crt: 'internal/data/infra-test/sca'
-        vault.hashicorp.com/agent-inject-secret-mysql.crt: 'internal/data/infra-test/sca'
-        vault.hashicorp.com/agent-pre-populate-only: "true"
-        vault.hashicorp.com/agent-inject-perms-mongo.crt: "0400"
-        vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
-        vault.hashicorp.com/agent-inject-perms-mysql.crt: "0400"
-        vault.hashicorp.com/agent-run-as-user: "1000"
-        vault.hashicorp.com/agent-run-as-group: "1000"
-        vault.hashicorp.com/secret-volume-path: "/opt/app/sca/cert"
-        vault.hashicorp.com/agent-inject-template-mongo.crt: |  
-          {{- with secret "internal/data/infra-test/sca" -}}  
-          {{ .Data.data.mongoCA }}
-          {{- end }}
-        vault.hashicorp.com/agent-inject-template-redis.crt: |  
-          {{- with secret "internal/data/infra-test/sca" -}}  
-          {{ .Data.data.redisCA }}
-          {{- end }}
-        vault.hashicorp.com/agent-inject-template-mysql.crt: |  
-          {{- with secret "internal/data/infra-test/sca" -}}  
-          {{ .Data.data.mysqlCA }}
-          {{- end }}
-        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
-        vault.hashicorp.com/tls-skip-verify: "true"
       labels:
         app: eureka
     spec:
       imagePullSecrets:
         - name: huawei-swr-image-pull-secret
-      serviceAccount: sca
       securityContext:
         fsGroup: 1000
         seccompProfile:
@@ -77,11 +49,6 @@ spec:
           value: 256m
         - name: CMS_IOF
           value: "75"
-        - name: majun.access.token
-          valueFrom:
-            secretKeyRef:
-              name: sca-secret
-              key: majun_access_token
         - name: X_ARMOR_SECURITY_ENABLE
           valueFrom:
             secretKeyRef:
@@ -120,10 +87,10 @@ spec:
         resources:
           requests:
             cpu: 200m
-            memory: 500Mi
+            memory: 4G
           limits:
             cpu: 500m
-            memory: 600Mi
+            memory: 4G
         readinessProbe:
           failureThreshold: 3
           initialDelaySeconds: 15
@@ -151,25 +118,4 @@ spec:
           capabilities:
             drop:
               - ALL
-        volumeMounts:
-        - mountPath: /work.ks
-          name: secret-volume
-          subPath: work_ks
-        - mountPath: /primary.ks
-          name: secret-volume
-          subPath: primary_ks
-        - mountPath: /standby.ks
-          name: secret-volume
-          subPath: standby_ks
-      volumes:
-      - name: secret-volume
-        secret:
-          secretName: sca-secret
-      - name: token-vol
-        projected:
-          sources:
-          - serviceAccountToken:
-              audience: api
-              expirationSeconds: 600
-              path: token
 
