@@ -10,3 +10,24 @@ spec:
   resources:
     requests:
       storage: 10Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    everest.io/path: /radia-test/pkglist-data-share
+    everest.io/reclaim-policy: retain-volume-only
+    everest.io/sfsturbo-share-id: 1e932f42-343a-4dd6-995b-4ce464db4a50
+    everest.io/volume-as: absolute-path
+    volume.beta.kubernetes.io/storage-provisioner: everest-csi-provisioner
+  name: pkglist-data-share-volume-new
+  namespace: radia-test
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: csi-sfsturbo
+  volumeMode: Filesystem
