@@ -57,11 +57,8 @@ spec:
           type: Localhost
           localhostProfile: infra-seccomp.json
       automountServiceAccountToken: false
-      tolerations:
-      - key: "majun-icsl"
-        operator: "Equal"
-        value: "true"
-        effect: "NoSchedule"
+      nodeSeletor:
+        icsl: "true"
       initContainers:
       - command:
         - /bin/bash

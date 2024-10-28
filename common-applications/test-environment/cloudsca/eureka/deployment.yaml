@@ -23,11 +23,8 @@ spec:
           type: Localhost
           localhostProfile: infra-seccomp.json
       automountServiceAccountToken: false
-      tolerations:
-      - key: "majun-icsl"
-        operator: "Equal"
-        value: "true"
-        effect: "NoSchedule"
+      nodeSeletor:
+        icsl: "true"
       containers:
       - name: eureka
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/sca-eureka:5c413af9c086cb18b86a8e49b70160caa2da2a29
