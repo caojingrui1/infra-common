@@ -93,13 +93,13 @@ spec:
           claimName: radiatest-server-volume
       - name: radiatest-server
         persistentVolumeClaim:
-          claimName: radiatest-tmp-share-volume
+          claimName: radiatest-tmp-share-volume-new
       - name: messengers-certifi-storage
         persistentVolumeClaim:
           claimName: radiatest-message-certifi-volume
       - name: pkglist-storage
         persistentVolumeClaim:
-          claimName: radiatest-pkg-volume
+          claimName: radiatest-pkg-volume-new
       - name: token-vol
         projected:
           sources:
