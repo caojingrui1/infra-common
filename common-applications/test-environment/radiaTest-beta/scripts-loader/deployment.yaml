@@ -73,7 +73,7 @@ spec:
       volumes:
       - name: script-loader-share
         persistentVolumeClaim:
-          claimName: radiatest-tmp-share-volume
+          claimName: cms-share-data-volume-new
       - name: token-vol
         projected:
           sources:

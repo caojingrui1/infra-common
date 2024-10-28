@@ -1,17 +1,3 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: radiatest-tmp-share-volume
-  namespace: radia-test-beta
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 10Gi
-  storageClassName: csi-nas
-  volumeMode: Filesystem
-
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -68,8 +54,12 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   annotations:
-    everest.io/disk-volume-type: SAS
-  name: radiatest-pkg-volume
+    everest.io/path: /radiatest/tmp-share
+    everest.io/reclaim-policy: retain-volume-only
+    everest.io/sfsturbo-share-id: 1e932f42-343a-4dd6-995b-4ce464db4a50
+    everest.io/volume-as: absolute-path
+    volume.beta.kubernetes.io/storage-provisioner: everest-csi-provisioner
+  name: radiatest-tmp-share-volume-new
   namespace: radia-test-beta
 spec:
   accessModes:
@@ -77,5 +67,26 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  storageClassName: csi-nas
+  storageClassName: csi-sfsturbo
+  volumeMode: Filesystem
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    everest.io/path: /radiatest/pkglist
+    everest.io/reclaim-policy: retain-volume-only
+    everest.io/sfsturbo-share-id: 1e932f42-343a-4dd6-995b-4ce464db4a50
+    everest.io/volume-as: absolute-path
+    volume.beta.kubernetes.io/storage-provisioner: everest-csi-provisioner
+  name: radiatest-pkg-volume-new
+  namespace: radia-test-beta
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: csi-sfsturbo
   volumeMode: Filesystem
