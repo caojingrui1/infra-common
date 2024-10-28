@@ -57,7 +57,7 @@ spec:
           type: Localhost
           localhostProfile: infra-seccomp.json
       automountServiceAccountToken: false
-      nodeSeletor:
+      nodeSelector:
         icsl: "true"
       initContainers:
       - command:
