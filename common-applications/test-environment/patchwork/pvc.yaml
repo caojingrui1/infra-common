@@ -1,14 +1,20 @@
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: patchwork-file-data
+  annotations:
+    everest.io/path: /patchwork/file-data
+    everest.io/reclaim-policy: retain-volume-only
+    everest.io/sfsturbo-share-id: 1e932f42-343a-4dd6-995b-4ce464db4a50
+    everest.io/volume-as: absolute-path
+    volume.beta.kubernetes.io/storage-provisioner: everest-csi-provisioner
+  name: patchwork-file-data-new
   namespace: patchwork
 spec:
   accessModes:
-    - ReadWriteMany
+  - ReadWriteMany
   resources:
     requests:
-      storage: 50Gi
-  storageClassName: nfs-rw
+      storage: 1Gi
+  storageClassName: csi-sfsturbo
   volumeMode: Filesystem
-

@@ -203,7 +203,7 @@ spec:
       volumes:
         - name: patchwork-file-volume
           persistentVolumeClaim:
-            claimName: patchwork-file-data
+            claimName: patchwork-file-data-new
         - configMap:
             defaultMode: 420
             name: patchwork-configmap
