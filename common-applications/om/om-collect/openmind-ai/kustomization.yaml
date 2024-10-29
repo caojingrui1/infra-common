@@ -11,6 +11,7 @@ resources:
   - polymerization-download
   - repo-download
   - download-data
+  - image-download-combine
 
 commonAnnotations:
   owner: zhongjun
