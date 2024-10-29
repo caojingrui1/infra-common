@@ -48,4 +48,4 @@ spec:
               path: token
       - name: data-volume
         persistentVolumeClaim:
-          claimName: clam-data-volume
+          claimName: clam-data-volume-new
