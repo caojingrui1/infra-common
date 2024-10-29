@@ -16,4 +16,4 @@ kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/mindspore/website-test
   newName: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/mindspore/website-test
-  newTag: v1.0.20241028182703
+  newTag: v1.0.20241029103231
