@@ -14,3 +14,19 @@ spec:
       storage: 100Gi
   storageClassName: csi-nas
   volumeMode: Filesystem
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    everest.io/disk-volume-type: ssd
+  name: clam-data-volume-new
+  namespace: merlin
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: csi-disk
+  volumeMode: Filesystem
