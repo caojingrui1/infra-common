@@ -16,4 +16,4 @@ kind: Kustomization
 namespace: mindspore-repo
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/mindspore/repo-test
-  newTag: 02988d
+  newTag: 9a7935
