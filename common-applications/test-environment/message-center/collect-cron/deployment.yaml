@@ -39,6 +39,12 @@ spec:
           {{- with secret "internal/data/infra-test/message-center" -}}  
           {{ .Data.data.kafkaCrt }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
+        vault.hashicorp.com/agent-inject-secret-redis.crt: 'internal/data/infra-test/message-center'
+        vault.hashicorp.com/agent-inject-template-redis.crt: |  
+          {{- with secret "internal/data/infra-test/message-center" -}}  
+          {{ .Data.data.redisCrt }}
+          {{- end }}
       labels:
         app: collect-cron
     spec:
