@@ -112,4 +112,4 @@ spec:
       volumes:
         - name: mailman-core-volume
           persistentVolumeClaim:
-            claimName: config-vol
+            claimName: config-volume
