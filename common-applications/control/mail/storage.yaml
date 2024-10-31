@@ -3,15 +3,18 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: config-vol
+  name: config-volume
   namespace: mail
+  labels:
+    failure-domain.beta.kubernetes.io/region: ap-southeast-1
+    failure-domain.beta.kubernetes.io/zone: ap-southeast-1a
 spec:
   accessModes:
-  - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 500Gi
-  storageClassName: csi-nas
+  storageClassName: csi-disk
   volumeMode: Filesystem
 
 ---
