@@ -12,4 +12,4 @@ commonAnnotations:
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-icsl
-  newTag: tfh_stable_1027-e2e0d2
+  newTag: tfh_stable_1027-d021a0
