@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  name: openeuler-infra-ai-service
+  namespace: openeuler-infra-ai-service
+spec:
+  rules:
+  - host: infraiservice.test.osinfra.cn
+    http:
+      paths:
+      - backend:
+          service:
+            name: openeuler-infra-ai-service
+            port:
+              number: 8000
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - infraiservice.test.osinfra.cn
+    secretName: tls-secrets

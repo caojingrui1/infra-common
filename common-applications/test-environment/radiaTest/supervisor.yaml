@@ -85,10 +85,10 @@ spec:
           claimName: cce-evs-radiatest-ssl
       - name: gunicorn-share
         persistentVolumeClaim:
-          claimName: cce-sfs-gunicorn-share
+          claimName: cce-sfs-gunicorn-share-new
       - name: pkglist-storage
         persistentVolumeClaim:
-          claimName: pkglist-data-share-volume
+          claimName: pkglist-data-share-volume-new
       - configMap:
           defaultMode: 420
           name: supervisor-radiatest-configmap
@@ -143,7 +143,7 @@ spec:
         name: database-updator-configure
       - name: database-updator-share
         persistentVolumeClaim:
-          claimName: cce-sfs-gunicorn-share
+          claimName: cce-sfs-gunicorn-share-new
 
 ---
 apiVersion: apps/v1
@@ -190,7 +190,7 @@ spec:
         name: casefile-resolver-configure
       - name: casefile-resolver-share
         persistentVolumeClaim:
-          claimName: cce-sfs-gunicorn-share
+          claimName: cce-sfs-gunicorn-share-new
 
 ---
 apiVersion: apps/v1
@@ -282,7 +282,7 @@ spec:
         name: periodic-worker-configure
       - name: periodic-worker-share
         persistentVolumeClaim:
-          claimName: cce-sfs-gunicorn-share
+          claimName: cce-sfs-gunicorn-share-new
       - name: periodic-worker-secret
         secret:
           secretName: radia-test-secret
@@ -333,7 +333,7 @@ spec:
         name: script-loader-configure
       - name: script-loader-share
         persistentVolumeClaim:
-          claimName: cce-sfs-gunicorn-share
+          claimName: cce-sfs-gunicorn-share-new
 
 ---
 apiVersion: apps/v1
@@ -382,10 +382,10 @@ spec:
         name: root-resolver-configure
       - name: root-resolver-share
         persistentVolumeClaim:
-          claimName: cce-sfs-gunicorn-share
+          claimName: cce-sfs-gunicorn-share-new
       - name: pkglist-share
         persistentVolumeClaim:
-          claimName: pkglist-data-share-volume
+          claimName: pkglist-data-share-volume-new
 
 ---
 apiVersion: apps/v1

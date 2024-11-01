@@ -7,9 +7,9 @@ commonAnnotations:
   kubernetes.ops.region: shanghai
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-cronjob-test
-  newTag: test0930-af1b72
+  newTag: test1030-a4b66b
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/gitea/merlin-server-test
-  newTag: main-4802db
+  newTag: model_env0924-534b37
 kind: Kustomization
 namespace: merlin-02
 resources:
@@ -29,3 +29,4 @@ resources:
 - deploy-task.yaml
 - sync-image-center.yaml
 - sync-changelog.yaml
+- calculate-globalscore.yaml

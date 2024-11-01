@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mindspore-repo-service
+  namespace: openeuler-repo-mirror
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: mindspore-repo
+  sessionAffinity: None
+  type: ClusterIP

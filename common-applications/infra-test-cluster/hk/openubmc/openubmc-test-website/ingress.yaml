@@ -12,9 +12,9 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: openubmc-website-service
+            name: openubmc
             port:
-              number: 8080
+              number: 3000
   ingressClassName: nginx
   tls:
   - hosts:

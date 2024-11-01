@@ -45,11 +45,23 @@ spec:
           {{- with secret "internal/data/infra-test/message-center" -}}  
           {{ .Data.data.transferMeetingConf }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-perms-forum_conf.yaml: "0400"
+        vault.hashicorp.com/agent-inject-secret-forum_conf.yaml: 'internal/data/infra-test/message-center'
+        vault.hashicorp.com/agent-inject-template-forum_conf.yaml: |  
+          {{- with secret "internal/data/infra-test/message-center" -}}  
+          {{ .Data.data.transferForumConf }}
+          {{- end }}
         vault.hashicorp.com/agent-inject-perms-cve.yaml: "0400"
         vault.hashicorp.com/agent-inject-secret-cve.yaml: 'internal/data/infra-test/message-center'
         vault.hashicorp.com/agent-inject-template-cve.yaml: |  
           {{- with secret "internal/data/infra-test/message-center" -}}  
           {{ .Data.data.transferCveConf }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
+        vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/message-center'
+        vault.hashicorp.com/agent-inject-template-kafka.crt: |  
+          {{- with secret "internal/data/infra-test/message-center" -}}  
+          {{ .Data.data.kafkaCrt }}
           {{- end }}
       labels:
         app: transfer
@@ -68,6 +80,7 @@ spec:
         - --gitee-config-file=/vault/secrets/gitee_conf.yaml
         - --meeting-config-file=/vault/secrets/meeting_conf.yaml
         - --cve-config-file=/vault/secrets/cve.yaml
+        - --forum-config-file=/vault/secrets/forum_conf.yaml
         resources:
           limits:
             cpu: 2

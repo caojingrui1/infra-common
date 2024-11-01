@@ -16,6 +16,7 @@ spec:
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/role: 'merlin-sh'
         vault.hashicorp.com/agent-inject-containers: 'space'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-secret-compose-config.yml: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/merlin-sh'
@@ -30,7 +31,6 @@ spec:
         vault.hashicorp.com/agent-inject-secret-docker.json: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-space-client.yml: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-vault.crt: 'internal/data/infra-test/merlin-sh'
-        vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-compose-config.yml: "0400"
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-server.key: "0400"

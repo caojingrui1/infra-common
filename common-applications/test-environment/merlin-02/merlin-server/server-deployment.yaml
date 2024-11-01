@@ -9,7 +9,8 @@ spec:
       app: server
   strategy:
     rollingUpdate:
-      maxUnavailable: 1
+      maxUnavailable: 0
+      maxSurge: 1
     type: RollingUpdate
   template:
     metadata:
@@ -22,7 +23,6 @@ spec:
         vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/merlin-sh'
         vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/merlin-sh'
-        vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-compose-config.yml: "0400"
         vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-pqsql.crt: "0400"
@@ -57,6 +57,19 @@ spec:
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-inject-command-compose-config.yml: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /vault/secrets/*; else echo "service not running skip"; fi
+        vault.hashicorp.com/agent-inject-command-redis.crt: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /vault/secrets/*; else echo "service not running skip"; fi
+        vault.hashicorp.com/agent-inject-command-pqsql.crt: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /vault/secrets/*; else echo "service not running skip"; fi
+        vault.hashicorp.com/agent-inject-command-server.crt: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /vault/secrets/*; else echo "service not running skip"; fi
+        vault.hashicorp.com/agent-inject-command-server.key: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /vault/secrets/*; else echo "service not running skip"; fi
+        vault.hashicorp.com/agent-inject-command-kafka.crt: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /vault/secrets/*; else echo "service not running skip"; fi
+        vault.hashicorp.com/template-static-secret-render-interval: 5s
       labels:
         app: server
     spec:
@@ -75,7 +88,7 @@ spec:
         - --port=8080
         - --config-file=/vault/secrets/compose-config.yml
         - --enable_debug=true
-        - --rm-cfg=false
+        - --rm-cfg=true
         - --cert=/vault/secrets/server.crt
         - --key=/vault/secrets/server.key
         livenessProbe:
@@ -99,6 +112,13 @@ spec:
             path: /internal/heartbeat
             port: 8080
           timeoutSeconds: 5
+        lifecycle:
+          preStop:
+            exec:
+              command: 
+              - /bin/bash
+              - -c
+              - rm -rf /vault/secrets/*
         resources:
           limits:
             cpu: 500m
@@ -109,6 +129,10 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1000
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
       volumes:
       - name: token-vol
         projected:

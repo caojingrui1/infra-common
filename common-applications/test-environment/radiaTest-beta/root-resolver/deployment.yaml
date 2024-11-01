@@ -75,10 +75,10 @@ spec:
       volumes:
       - name: root-resolver-share
         persistentVolumeClaim:
-          claimName: radiatest-tmp-share-volume
+          claimName: radiatest-tmp-share-volume-new
       - name: pkglist-share
         persistentVolumeClaim:
-          claimName: radiatest-pkg-volume
+          claimName: radiatest-pkg-volume-new
       - name: token-vol
         projected:
           sources:

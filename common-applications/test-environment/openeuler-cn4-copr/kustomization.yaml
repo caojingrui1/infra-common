@@ -15,7 +15,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/copr/backend-test
-  newTag: v1.0.20240924203234
+  newTag: v1.0.20241010170351
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/copr/backend_httpd-test
   newTag: v1.0.20231017100439
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/copr/distgit-test

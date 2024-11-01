@@ -14,6 +14,7 @@ spec:
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/role: 'openeuler-meeting'
+        vault.hashicorp.com/tls-skip-verify: "true"
         vault.hashicorp.com/agent-inject-perms-secrets.yaml: "0400"
         vault.hashicorp.com/agent-inject-perms-ca.pem: "0400"
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"

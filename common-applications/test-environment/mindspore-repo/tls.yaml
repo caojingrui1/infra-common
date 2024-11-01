@@ -1,0 +1,18 @@
+---
+apiVersion: secrets-manager.tuenti.io/v1alpha1
+kind: SecretDefinition
+metadata:
+  name: mindspore-repo-tls
+  namespace: mindspore-repo
+spec:
+  name: mindspore-repo-tls
+  keysMap:
+    ca.crt:
+      path: secrets/data/infra-test/domain-tls
+      key: tls.cert
+    tls.crt:
+      path: secrets/data/infra-test/domain-tls
+      key: tls.cert
+    tls.key:
+      path: secrets/data/infra-test/domain-tls
+      key: tls.key

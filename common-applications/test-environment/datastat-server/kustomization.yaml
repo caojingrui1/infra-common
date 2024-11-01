@@ -12,4 +12,4 @@ kind: Kustomization
 namespace: datastat-server
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/datastat/server-test
-  newTag: ljx_test-86e4a1
+  newTag: ljx_test-327c74

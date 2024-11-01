@@ -16,4 +16,4 @@ resources:
 - secret.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/mindspore/usercenter-website
-  newTag: test-72fb8e
+  newTag: test-eea646

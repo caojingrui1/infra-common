@@ -9,7 +9,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-devops/exec_updator
   newTag: master-c3caa5
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-devops/exec_watcher
-  newTag: master-ab6cae
+  newTag: v1.0.20241010161709
 kind: Kustomization
 namespace: openeuler-devops
 resources:

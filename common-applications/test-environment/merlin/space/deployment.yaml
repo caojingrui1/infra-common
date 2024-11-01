@@ -147,7 +147,7 @@ spec:
         - name: PORT
           value: "8123"
         - name: REMOVE_CONFIG
-          value: "true"
+          value: "false"
         - name: ENABLE_DEBUG
           value: "true"
         livenessProbe:

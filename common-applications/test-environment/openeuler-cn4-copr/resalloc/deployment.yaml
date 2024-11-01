@@ -19,12 +19,11 @@ spec:
         - /bin/sh
         - -c
         - 'chmod 550 /home/resalloc/provision/local-* /home/resalloc/provision/check-pod;
-          install -m 400 /root/.ssh/id_rsa-ro
-          /root/.ssh/id_rsa; ln -sf /dev/stdout /var/log/resallocserver/main.log;
-          exec /usr/bin/resalloc-server; '
+          install -m 400 /root/.ssh/id_rsa-ro /root/.ssh/id_rsa; ln -sf /dev/stdout
+          /var/log/resallocserver/main.log; exec /usr/bin/resalloc-server; '
         env:
         - name: BUILDER_SHA256
-          value: swr.cn-north-4.myhuaweicloud.com/opensourceway/copr/builder:v1.0.20231009175839
+          value: swr.cn-north-4.myhuaweicloud.com/opensourceway/copr/builder:v1.0.20241008194735
         - name: BUILDER_CPU
           value: '1'
         - name: BUILDER_MEM

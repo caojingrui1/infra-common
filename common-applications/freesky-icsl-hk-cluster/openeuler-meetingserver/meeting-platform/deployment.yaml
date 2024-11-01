@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meeting-platform
+  namespace: openeuler-meetingserver
+spec:
+  selector:
+    matchLabels:
+      app: meeting-platform
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/role: 'openeuler-meeting'
+        vault.hashicorp.com/agent-inject-perms-secrets.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-ca.pem: "0400"
+        vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
+        vault.hashicorp.com/agent-inject-perms-server.key: "0400"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/secret-volume-path: "/vault/secrets"
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/agent-inject-secret-secrets.yaml: 'internal/data/infra-test/openeuler-meeting'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/agent-inject-template-secrets.yaml: |  
+          {{- with secret "internal/data/infra-test/openeuler-meeting" -}}  
+          {{ .Data.data.platformconfig }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-ca.pem: 'internal/data/infra-test/openeuler-meeting'
+        vault.hashicorp.com/agent-inject-template-ca.pem: |  
+          {{- with secret "internal/data/infra-test/openeuler-meeting" -}}  
+          {{ .Data.data.MysqlCA }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/infra-test/openeuler-meeting'
+        vault.hashicorp.com/agent-inject-template-server.crt: |  
+          {{- with secret "internal/data/infra-test/openeuler-meeting" -}}  
+          {{ .Data.data.servercrt }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/infra-test/openeuler-meeting'
+        vault.hashicorp.com/agent-inject-template-server.key: |  
+          {{- with secret "internal/data/infra-test/openeuler-meeting" -}}  
+          {{ .Data.data.serverkey }}
+          {{- end }}
+      labels:
+        app: meeting-platform
+    spec:
+      serviceAccount: openeuler-meeting
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      automountServiceAccountToken: false
+      containers:
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/meeting/meeting-platform:main-7133cc
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: TZ
+          value: Asia/Shanghai
+        - name: CONFIG_PATH
+          value: /vault/secrets/secrets.yaml
+        - name: VAULT_PATH
+          value: /vault/secrets/secrets.yaml
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          successThreshold: 1
+          tcpSocket: 
+            port: 8080
+          timeoutSeconds: 5
+        name: meeting-platform
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 30 
+          successThreshold: 1
+          tcpSocket: 
+            port: 8080
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 2
+            memory: 4Gi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token       

@@ -5,5 +5,7 @@ namespace: majun
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/cloudsca-test-reproducible-backend
+  newTag: 38fa3bf346cf9d924bcdd7c75dae944087d75b14
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/repo-post-verification-test
-  newTag: 921e11a1dc714d37233ff1a2d5a0a78df4a34708
+  newTag: fd16680e787996fdd003d7fac1ad6fac708c028a

@@ -73,7 +73,7 @@ spec:
       volumes:
       - name: database-updator-share
         persistentVolumeClaim:
-          claimName: radiatest-tmp-share-volume
+          claimName: radiatest-tmp-share-volume-new
       - name: token-vol
         projected:
           sources:

@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: collect-cron-deployment
+  namespace: message-center
+spec:
+  selector:
+    matchLabels:
+      app: collect-cron
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/role: 'message-center'
+        vault.hashicorp.com/agent-inject-perms-conf.yaml: "0400"
+        vault.hashicorp.com/agent-inject-secret-conf.yaml: 'internal/data/infra-test/message-center'
+        vault.hashicorp.com/agent-inject-template-conf.yaml: |  
+          {{- with secret "internal/data/infra-test/message-center" -}}  
+          {{ .Data.data.cronConf }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-perms-forum_conf.yaml: "0400"
+        vault.hashicorp.com/agent-inject-secret-forum_conf.yaml: 'internal/data/infra-test/message-center'
+        vault.hashicorp.com/agent-inject-template-forum_conf.yaml: |  
+          {{- with secret "internal/data/infra-test/message-center" -}}  
+          {{ .Data.data.cronForumConf }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-perms-kafka.crt: "0400"
+        vault.hashicorp.com/agent-inject-secret-kafka.crt: 'internal/data/infra-test/message-center'
+        vault.hashicorp.com/agent-inject-template-kafka.crt: |  
+          {{- with secret "internal/data/infra-test/message-center" -}}  
+          {{ .Data.data.kafkaCrt }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
+        vault.hashicorp.com/agent-inject-secret-redis.crt: 'internal/data/infra-test/message-center'
+        vault.hashicorp.com/agent-inject-template-redis.crt: |  
+          {{- with secret "internal/data/infra-test/message-center" -}}  
+          {{ .Data.data.redisCrt }}
+          {{- end }}
+      labels:
+        app: collect-cron
+    spec:
+      serviceAccount: message-center
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      automountServiceAccountToken: false
+      containers:
+      - name: server
+        args:
+        - --config-file=/vault/secrets/conf.yaml
+        - --forum-config-file=/vault/secrets/forum_conf.yaml
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/message-center/message-collect-cron-test:main-d1625d
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 2
+            memory: 8Gi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token

@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+commonAnnotations:
+  kubernetes.ops.cluster: shanghai-test-cluster
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: alpine
+  kubernetes.ops.owner: caoyanan
+  kubernetes.ops.region: shanghai
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/uptime-kuma
+  newTag: master-e1083f
+kind: Kustomization
+namespace: uptime-kuma
+resources:
+- namespace.yaml
+- uptime-kuma-service.yaml
+- uptime-kuma-pvc-0.yaml
+- uptime-kuma-deployment.yaml
+- uptime-kuma-ingress.yaml
+- secret.yaml

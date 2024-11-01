@@ -5,6 +5,11 @@ metadata:
   name: merlin-blogs
   namespace: merlin-02
 spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
       app: merlin-blogs
@@ -12,7 +17,6 @@ spec:
     metadata:
       annotations:
         vault.hashicorp.com/agent-inject: "true"
-        vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/role: merlin-sh
         vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-server.key: "0400"
@@ -43,6 +47,15 @@ spec:
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-inject-command-abc.txt: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
+        vault.hashicorp.com/agent-inject-command-server.crt: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
+        vault.hashicorp.com/agent-inject-command-server.key: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
+        vault.hashicorp.com/agent-inject-command-dhparam.pem: |
+          if [ $(netstat -anlp | grep 8080| wc -l) -ge 1 ]; then rm -rf /etc/nginx/cert/*; else echo "service not running skip"; fi
+        vault.hashicorp.com/template-static-secret-render-interval: 5s
       labels:
         app: merlin-blogs
     spec:
@@ -85,6 +98,13 @@ spec:
             path: /404.html
             port: 8080
           timeoutSeconds: 10
+        lifecycle:
+          preStop:
+            exec:
+              command: 
+              - /bin/bash
+              - -c
+              - rm -rf /etc/nginx/cert/*
         resources:
           requests:
             cpu: 500m
@@ -95,6 +115,9 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1000
+          capabilities:
+            drop:
+              - ALL
       volumes:
       - name: token-vol
         projected:

@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openeuler-bigfiles-deployment
+  namespace: openeuler-bigfiles
+spec:
+  selector:
+    matchLabels:
+      app: openeuler-bigfiles
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:        
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/role: 'openeuler-bigfiles'
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
+        vault.hashicorp.com/agent-inject-secret-config.yaml: 'internal/data/infra-test/openeuler-bigfiles'
+        vault.hashicorp.com/agent-inject-perms-config.yaml: "0400"
+        vault.hashicorp.com/agent-inject-template-config.yaml: |  
+          {{- with secret "internal/data/infra-test/openeuler-bigfiles" -}}  
+          {{ .Data.data.config }}
+          {{- end }}
+      labels:
+        app: openeuler-bigfiles
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - openeuler-bigfiles
+            topologyKey: kubernetes.io/hostname
+      serviceAccount: openeuler-bigfiles
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      securityContext:
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      containers:
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler-bigfiles/server-test:modify-dockerfile-91a5a6
+        name: openeuler-bigfiles
+        imagePullPolicy: IfNotPresent    
+        args:
+        - --config-file=/vault/secrets/config.yaml
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 20
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: 5000
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 20
+          successThreshold: 1
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: 5000
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 2
+            memory: 8Gi
+          requests:
+            cpu: 1
+            memory: 4Gi
+        volumeMounts:
+          - mountPath: /home/log
+            name: data-volume
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: bigfiles-log-volume

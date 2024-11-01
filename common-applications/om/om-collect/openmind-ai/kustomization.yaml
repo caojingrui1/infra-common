@@ -8,6 +8,11 @@ resources:
   - authing-user
   - gitee-sla
   - pypi-download
+  - docker-hub
+  - polymerization-download
+  - repo-download
+  - download-data
+  - image-download-combine
 
 commonAnnotations:
   owner: zhongjun
