@@ -51,7 +51,7 @@ spec:
         args:
         - --port=8888
         - --handle-path=gitcode-hook
-        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/robot/robot-universal-welcome:develop-v0-6dbdce
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/robot-universal-welcome:develop-v0-ab8c17
         resources:
           limits:
             cpu: 1
