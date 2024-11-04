@@ -1,0 +1,22 @@
+---
+kind: NetworkPolicy
+metadata:
+  name: robot-universal-welcome-policy-01
+  namespace: robot-openubmc
+spec:
+  podSelector:
+    matchLabels:
+      app: robot-universal-welcome
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8888
+      from:
+        - podSelector:
+            matchLabels:
+              app: robot-universal-access
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+

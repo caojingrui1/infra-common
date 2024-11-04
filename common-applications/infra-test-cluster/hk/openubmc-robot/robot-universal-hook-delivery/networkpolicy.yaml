@@ -1,0 +1,24 @@
+---
+kind: NetworkPolicy
+metadata:
+  name: robot-universal-hook-delivery-policy-01
+  namespace: robot-openubmc
+spec:
+  podSelector:
+    matchLabels:
+      app: robot-universal-hook-delivery
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8888
+      from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: ingress-nginx
+          namespaceSelector:
+            matchLabels:
+              app.kubernetes.io/name: ingress-nginx
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
