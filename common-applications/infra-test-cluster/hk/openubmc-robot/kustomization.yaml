@@ -1,7 +1,7 @@
 resources:
 - namespace.yaml
 - sa.yaml
-- secrets.yaml
+- secret.yaml
 - robot-hook-dispatcher
 - robot-universal-access
 - robot-universal-hook-delivery
