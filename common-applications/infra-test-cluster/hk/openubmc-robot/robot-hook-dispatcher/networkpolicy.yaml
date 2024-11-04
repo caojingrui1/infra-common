@@ -1,0 +1,19 @@
+kind: NetworkPolicy
+metadata:
+  name: robot-hook-dispatcher-policy-01
+  namespace: robot-openubmc
+spec:
+  podSelector:
+    matchLabels:
+      app: robot-hook-dispatcher
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8888
+      from:
+        - podSelector:
+            matchLabels:
+              app: robot-hook-dispatcher
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
