@@ -39,6 +39,7 @@ spec:
         - name: TZ
           value: Asia/Shanghai
         - name: JAVA_OPTS
+          value: -Xms5g -Xmx6g
         - name: JENKINS_OPTS
         - name: JENKINS_SLAVE_AGENT_PORT
           value: "50000"
@@ -84,11 +85,11 @@ spec:
           timeoutSeconds: 5
         resources:
           limits:
-            cpu: "4"
-            memory: 4Gi
+            cpu: "8"
+            memory: 10Gi
           requests:
-            cpu: "2"
-            memory: 2Gi
+            cpu: "8"
+            memory: 10Gi
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         volumeMounts:
