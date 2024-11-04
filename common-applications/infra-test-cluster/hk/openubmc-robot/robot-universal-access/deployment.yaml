@@ -6,7 +6,7 @@ metadata:
   labels:
     app: robot-universal-access
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: Recreate
   selector:
@@ -42,11 +42,7 @@ spec:
       - name: huawei-swr-image-pull-secret
       containers:
       - name: robot-universal-access
-        args:
-        - --port=8888
-        - --config-file=/vault/secrets/config
-        - --handle-path=gitcode-hook
-        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/robot-universal-access:main-e58a92
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/robot-universal-access:develop-v1-b00735
         resources:
           limits:
             cpu: 1
