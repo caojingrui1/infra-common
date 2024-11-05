@@ -17,4 +17,4 @@ resources:
 - secrets.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler-bigfiles/server-test
-  newTag: hwcloud-8cc3778
+  newTag: master-1c7ec28
