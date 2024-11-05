@@ -1,0 +1,142 @@
+kind: NetworkPolicy
+metadata:
+  name: gateway-policy-01
+  namespace: sca
+spec:
+  podSelector:
+    matchLabels:
+      app: sca-gateway
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        - podSelector:
+            matchLabels:
+              app: sca-web
+        - podSelector:
+            matchLabels:
+              app: eureka
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: eureka-policy-01
+  namespace: sca
+spec:
+  podSelector:
+    matchLabels:
+      app: eureka
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 9000
+      from:
+        - podSelector:
+            matchLabels:
+              app: sca-analysis
+        - podSelector:
+            matchLabels:
+              app: sca-dm
+        - podSelector:
+            matchLabels:
+              app: sca-gateway
+        - podSelector:
+            matchLabels:
+              app: manager
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: dm-policy-01
+  namespace: sca
+spec:
+  podSelector:
+    matchLabels:
+      app: sca-dm
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 7979
+      from:
+        - podSelector:
+            matchLabels:
+              app: sca-analysis
+        - podSelector:
+            matchLabels:
+              app: eureka
+        - podSelector:
+            matchLabels:
+              app: sca-gateway
+        - podSelector:
+            matchLabels:
+              app: manager
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: manager-policy-01
+  namespace: sca
+spec:
+  podSelector:
+    matchLabels:
+      app: manager
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 7978
+      from:
+        - podSelector:
+            matchLabels:
+              app: sca-analysis
+        - podSelector:
+            matchLabels:
+              app: eureka
+        - podSelector:
+            matchLabels:
+              app: sca-gateway
+        - podSelector:
+            matchLabels:
+              app: sca-dm
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
+
+---
+kind: NetworkPolicy
+metadata:
+  name: analysis-policy-01
+  namespace: sca
+spec:
+  podSelector:
+    matchLabels:
+      app: sca-analysis
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8015
+      from:
+        - podSelector:
+            matchLabels:
+              app: sca-dm
+        - podSelector:
+            matchLabels:
+              app: eureka
+        - podSelector:
+            matchLabels:
+              app: sca-gateway
+        - podSelector:
+            matchLabels:
+              app: manager
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1
