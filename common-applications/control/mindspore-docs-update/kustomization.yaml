@@ -7,7 +7,7 @@ commonAnnotations:
   kubernetes.ops.region: hk
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/mindspore/docs-whl
-  newTag: v1.0.20241105092000
+  newTag: v1.0.20241105100010
 kind: Kustomization
 namespace: mindspore-docs-update
 resources:
