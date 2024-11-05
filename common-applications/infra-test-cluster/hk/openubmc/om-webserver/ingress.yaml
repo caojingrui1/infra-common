@@ -1,0 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/limit-connections: "400"
+    nginx.ingress.kubernetes.io/limit-rps: "400"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      add_header X-XSS-Protection "1; mode=block";
+      add_header Strict-Transport-Security "max-age=31536000";
+      add_header Content-Security-Policy "script-src 'self' *.baidu.com *.googleapis.com ers.baidu.com 'unsafe-eval' 'unsafe-inline';object-src 'none';frame-ancestors 'self'";
+    nginx.ingress.kubernetes.io/server-snippet: |
+      rewrite ^/query/all                                               https://dsapi.osinfra.cn/query/all                       redirect;
+      rewrite ^/query/company/contribute                                https://dsapi.osinfra.cn/query/company/contribute        redirect;
+      rewrite ^/query/user/contribute                                   https://dsapi.osinfra.cn/query/user/contribute           redirect;
+      rewrite ^/query/TC/sigs                                           https://dsapi.osinfra.cn/query/TC/sigs                   redirect;
+      rewrite ^/query/sig/usercontribute                                https://dsapi.osinfra.cn/query/sig/usercontribute        redirect;
+      rewrite ^/query/sig/score                                         https://dsapi.osinfra.cn/query/sig/score                 redirect;
+      rewrite ^/query/sig/radarscore                                    https://dsapi.osinfra.cn/query/sig/radarscore            redirect;
+      rewrite ^/query/sig/company/contribute                            https://dsapi.osinfra.cn/query/sig/company/contribute    redirect;
+      rewrite ^/query/userlist                                          https://dsapi.osinfra.cn/query/userlist                  redirect;
+      rewrite ^/query/user/ownertype                                    https://dsapi.osinfra.cn/query/user/ownertype            redirect;
+      rewrite ^/query/user/sigcontribute                                https://dsapi.osinfra.cn/query/user/sigcontribute        redirect;
+      rewrite ^/query/company/sigs                                      https://dsapi.osinfra.cn/query/company/sigs              redirect;
+      rewrite ^/query/company/sigdetails                                https://dsapi.osinfra.cn/query/company/sigdetails        redirect;
+      rewrite ^/query/company/users                                     https://dsapi.osinfra.cn/query/company/users             redirect;
+      rewrite ^/query/company/usercontribute                            https://dsapi.osinfra.cn/query/company/usercontribute    redirect;
+      rewrite ^/query/company/sigcontribute                             https://dsapi.osinfra.cn/query/company/sigcontribute     redirect;
+      rewrite ^/query/company/name                                      https://dsapi.osinfra.cn/query/company/name              redirect;
+  name: om-webserver-ingress
+  namespace: openubmc
+spec:
+  rules:
+  - host: omapi.openubmc.test.osinfra.cn
+    http:
+      paths:
+      - backend:
+          service:
+            name: om-webserver-service
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - omapi.openubmc.test.osinfra.cn
+    secretName: openubmc-beta-domain-tls
