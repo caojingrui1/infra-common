@@ -13,6 +13,7 @@ resources:
 - autoscaler.yaml
 - namespace.yaml
 - sa.yaml
+- pvc.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/majun/ai-test
   newTag: v1.0.20241101151949
