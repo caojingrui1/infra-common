@@ -5,3 +5,6 @@ resources:
 namespace: robot-openubmc
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/robot-hook-dispatcher
+  newTag: main-e52d0e
