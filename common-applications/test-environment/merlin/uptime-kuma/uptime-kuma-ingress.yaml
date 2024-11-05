@@ -14,20 +14,7 @@ spec:
   - host: status-modelers.test.osinfra.cn
     http:
       paths:
-      - path: /api
-        pathType: Prefix
-        backend:
-          service:
-            name: uptime-kuma-service
-            port:
-              number: 80
-      - path: /(.*)\.(jso|svg)
-        backend:
-          service:
-            name: uptime-kuma-service
-            port:
-              number: 80
-      - path: /assets
+      - path: /
         pathType: Prefix
         backend:
           service:
