@@ -73,6 +73,9 @@ spec:
           capabilities:
             drop:
               - ALL
+        volumeMounts:
+          - mountPath: /framework/tmp
+            name: data-volume
       volumes:
       - name: token-vol
         projected:
@@ -81,3 +84,6 @@ spec:
               audience: api
               expirationSeconds: 600
               path: token
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: majun-ai-volume
