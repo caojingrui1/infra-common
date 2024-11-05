@@ -18,4 +18,4 @@ commonAnnotations:
 namespace: discourse
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/discourse
-  newTag: v1.5.1
+  newTag: v1.7.1
