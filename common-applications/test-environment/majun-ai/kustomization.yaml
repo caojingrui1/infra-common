@@ -16,4 +16,4 @@ resources:
 - pvc.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/majun/ai-test
-  newTag: v1.0.20241106180951
+  newTag: v1.0.20241106183240
