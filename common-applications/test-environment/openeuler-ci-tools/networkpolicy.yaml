@@ -1,0 +1,20 @@
+---
+kind: NetworkPolicy
+metadata:
+  name: server-policy-01
+  namespace: openeuler-ci-tools
+spec:
+  podSelector:
+    matchLabels:
+      app: citoolwebsite
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 80
+      from:
+        - podSelector:
+            matchLabels:
+              app: citoolwebsite
+  policyTypes:
+    - Ingress
+apiVersion: networking.k8s.io/v1

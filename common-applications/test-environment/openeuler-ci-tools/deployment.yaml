@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: robot-openeuler-ci-tools
+  namespace: openeuler-ci-tools
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: citoolwebsite
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/agent-inject-perms-gitee_personal_token.json: "0400"
+        vault.hashicorp.com/agent-inject-secret-gitee_personal_token.json: "internal/data/infra-test/openeuler-ci-tools"
+        vault.hashicorp.com/agent-inject-template-gitee_personal_token.json: |
+          {{- with secret "internal/data/infra-test/openeuler-ci-tools" -}}
+          {{ .Data.data.GiteeToken }}
+          {{- end }}
+        vault.hashicorp.com/role: openeuler-ci-tools
+        vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
+        vault.hashicorp.com/tls-skip-verify: "true"
+      labels:
+        app: citoolwebsite
+    spec:
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      serviceAccount: openeuler-ci-tools
+      securityContext:
+        seccompProfile:
+          type: Localhost
+          localhostProfile: infra-seccomp.json
+      automountServiceAccountToken: false
+      containers:
+        - name: robot-openeuler-ci-tools
+          image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/robot-openeuler-ci-tools:v0.0.1
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 500m
+              memory: 500Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
+          ports:
+            - containerPort: 80
+              name: http
+              protocol: TCP
+          command:
+            - /bin/sh
+            - -c
+            - |
+              exec uwsgi --ini /work/robot-openeuler-ci-tools/deploy/production/uwsgi.ini
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              add:
+                - NET_BIND_SERVICE
+              drop:
+                - ALL
+      volumes:
+      - name: token-vol
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 600
+              path: token
