@@ -65,7 +65,6 @@ spec:
               path: /health
               port: 80
             timeoutSeconds: 5
-          name: server
           readinessProbe:
             failureThreshold: 3
             initialDelaySeconds: 5
