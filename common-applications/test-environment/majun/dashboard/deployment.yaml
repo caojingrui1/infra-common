@@ -22,6 +22,7 @@ spec:
         vault.hashicorp.com/agent-inject-secret-tcwFile.ks: 'internal/data/infra-test/majun'
         vault.hashicorp.com/agent-inject-secret-tcpFile.ks: 'internal/data/infra-test/majun'
         vault.hashicorp.com/agent-inject-secret-tcsFile.ks: 'internal/data/infra-test/majun'
+        vault.hashicorp.com/agent-inject-secret-server.pfx: 'internal/data/infra-test/majun'
         vault.hashicorp.com/agent-pre-populate-only: "true"
         vault.hashicorp.com/agent-inject-perms-mongo.crt: "0400"
         vault.hashicorp.com/agent-inject-perms-redis.crt: "0400"
@@ -29,6 +30,7 @@ spec:
         vault.hashicorp.com/agent-inject-perms-tcwFile.ks: "0400"
         vault.hashicorp.com/agent-inject-perms-tcpFile.ks: "0400"
         vault.hashicorp.com/agent-inject-perms-tcsFile.ks: "0400"
+        vault.hashicorp.com/agent-inject-perms-server.pfx: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/secret-volume-path: "/opt/app/majun/cert"
@@ -55,6 +57,10 @@ spec:
         vault.hashicorp.com/agent-inject-template-tcsFile.ks: |  
           {{- with secret "internal/data/infra-test/majun" -}}  
           {{ .Data.data.tcsFile7Ks }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-template-server.pfx: |  
+          {{- with secret "internal/data/infra-test/majun" -}}  
+          {{ base64Decode .Data.data.dashboardpfx }}
           {{- end }}
         vault.hashicorp.com/agent-service-account-token-volume-name: "token-vol"
         vault.hashicorp.com/tls-skip-verify: "true"
