@@ -70,6 +70,12 @@ spec:
           {{- with secret "internal/data/infra-test/datastat-server " -}}  
           {{ .Data.data.software_properties }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-secret-openubmc.properties: 'internal/data/infra-test/datastat-server'
+        vault.hashicorp.com/agent-inject-perms-openubmc.properties: "0400"
+        vault.hashicorp.com/agent-inject-template-openubmc.properties: |
+          {{- with secret "internal/data/infra-test/datastat-server " -}}  
+          {{ .Data.data.openubmc_properties }}
+          {{- end }}
       labels:
         app: datastat-server
     spec:
