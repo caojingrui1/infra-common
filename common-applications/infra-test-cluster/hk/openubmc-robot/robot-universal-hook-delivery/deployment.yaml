@@ -48,6 +48,12 @@ spec:
       - name: huawei-swr-image-pull-secret
       containers:
       - name: robot-universal-hook-delivery
+        args:
+        - --port=8888
+        - --hmac-secret-file=/vault/secrets/gitcode-secret
+        - --config-file=/vault/secrets/config
+        - --enable_debug=true
+        - --handle-path=gitcode-hook
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/robot-universal-hook-delivery:develop-v1-700ec6
         resources:
           limits:
