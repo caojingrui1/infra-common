@@ -1,18 +1,38 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.health-check-flag: "off"
+    kubernetes.io/elb.id: f133a90e-f944-475b-a032-2726cee96396
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
+    kubernetes.io/elb.pass-through: onlyLocal
+  labels:
+    app: common-jenkins
+    app.kubernetes.io/component: jenkins-master
+    app.kubernetes.io/instance: control-jenkins
+    app.kubernetes.io/managed-by: Tiller
+    app.kubernetes.io/name: jenkins
+    helm.sh/chart: jenkins-1.7.4
   name: jenkins
+  namespace: jenkins
 spec:
+  externalTrafficPolicy: Local
   ports:
-    - name: http
-      port: 80
-      targetPort: 8080
-      # We pinned NodePort to fix number in order to used NodePort service
-      nodePort: 32719
-    - name: jnlp
-      port: 50000
-      targetPort: 50000
-      # We pinned NodePort to fix number in order to used NodePort service
-      nodePort: 32718
-  loadBalancerSourceRanges:
-  type: NodePort
+  - name: http
+    nodePort: 32719
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  - name: jnlp
+    nodePort: 32718
+    port: 50000
+    protocol: TCP
+    targetPort: 50000
+  selector:
+    app: common-jenkins
+    app.kubernetes.io/component: jenkins-master
+    app.kubernetes.io/instance: jenkins
+  sessionAffinity: None
+  type: LoadBalancer
