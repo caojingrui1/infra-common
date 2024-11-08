@@ -1,0 +1,30 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: usercenter-website-ingress
+  namespace: openubmc
+spec:
+  tls:
+  - hosts:
+    - usercenter.openubmc.test.osinfra.cn
+    secretName: openubmc-beta-domain-tls
+  rules:
+  - host: usercenter.openubmc.test.osinfra.cn
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: usercenter-website-service
+            port:
+              number: 8080
+      - path: /oneid/
+        pathType: Prefix
+        backend:
+          service:
+            name: om-webserver-service
+            port:
+              number: 8080
+  ingressClassName: nginx
