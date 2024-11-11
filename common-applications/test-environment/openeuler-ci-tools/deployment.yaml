@@ -80,11 +80,6 @@ spec:
                 - /bin/bash
                 - -c
                 - rm -rf /vault/secrets/*
-          command:
-            - /bin/sh
-            - -c
-            - |
-              exec uwsgi --ini /work/robot-openeuler-ci-tools/deploy/production/uwsgi.ini
           securityContext:
             allowPrivilegeEscalation: false
             runAsUser: 1000
