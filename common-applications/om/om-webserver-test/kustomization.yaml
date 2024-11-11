@@ -12,4 +12,4 @@ kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/om/om-webserver
   newName: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-test
-  newTag: tfh_dev_openubmc-4276fd
+  newTag: master-105763
