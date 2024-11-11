@@ -13,4 +13,4 @@ resources:
 - ingress.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openubmc-test-usercenter-website
-  newTag: ubmc_main-ae1ba1
+  newTag: ubmc_main-235aab
