@@ -18,6 +18,8 @@ spec:
       annotations:
         vault.hashicorp.com/agent-inject: "true"
         vault.hashicorp.com/agent-inject-perms-.gitee_personal_token.json: "0400"
+        vault.hashicorp.com/agent-run-as-user: "1000"
+        vault.hashicorp.com/agent-run-as-group: "1000"
         vault.hashicorp.com/agent-inject-secret-.gitee_personal_token.json: "internal/data/infra-test/openeuler-ci-tools"
         vault.hashicorp.com/agent-inject-template-.gitee_personal_token.json: |
           {{- with secret "internal/data/infra-test/openeuler-ci-tools" -}}
