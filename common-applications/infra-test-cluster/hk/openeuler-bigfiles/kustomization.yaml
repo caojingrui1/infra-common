@@ -16,5 +16,7 @@ resources:
 - ingress.yaml
 - secrets.yaml
 images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler-bigfiles/openeuler-bigfiles-server-test
+  newTag: master-7327ad5
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler-bigfiles/server-test
   newTag: hwcloud-8cc3778
