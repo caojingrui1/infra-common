@@ -191,16 +191,10 @@ spec:
           capabilities:
             drop:
               - ALL
-        volumeMounts:
-        - mountPath: /opt/app/sca/log/sca-utralsca-dm-service-gc/dump
-          name: log-volume
       volumes:
       - name: secret-volume
         secret:
           secretName: sca-secret
-      - name: log-volume
-        persistentVolumeClaim:
-          claimName: pvc-dm
       - name: token-vol
         projected:
           sources:
