@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pr-message-deployment
+  namespace: pr-message
+spec:
+  selector:
+    matchLabels:
+      app: pr-message
+  template:
+    metadata:
+      labels:
+        app: pr-message
+    spec:
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      containers:
+      - name: pr-message
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/mindspore/pr-message:4d52b5
+        imagePullPolicy: IfNotPresent        
+        resources:
+          requests:
+            cpu: 500m
+            memory: 500Mi
+          limits:
+            cpu: 500m
+            memory: 500Mi
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 8080
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 8080
+          timeoutSeconds: 5
+        volumeMounts:
+        - mountPath: /home/pr/pr-message/config.yaml
+          subPath: config
+          name: secret
+      volumes:
+      - name: secret
+        secret:
+          secretName: pr-message-secret
+
