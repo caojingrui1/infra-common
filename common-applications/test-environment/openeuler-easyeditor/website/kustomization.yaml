@@ -14,4 +14,4 @@ kind: Kustomization
 namespace: openeuler-easyeditor
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/easyeditor/website-test
-  newTag: openeuler-22ac97
+  newTag: openeuler-97a487
