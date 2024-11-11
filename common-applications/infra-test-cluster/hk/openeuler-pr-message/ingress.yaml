@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: openeuler-bigfiles-service
+  namespace: openeuler-bigfiles
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: prmessage-02.test.osinfra.cn
+    http:
+      paths:
+      - backend:
+          service:
+            name: pr-message
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - prmessage-02.test.osinfra.cn
+    secretName: pr-message-tls

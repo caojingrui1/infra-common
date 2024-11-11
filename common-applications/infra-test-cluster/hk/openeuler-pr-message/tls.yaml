@@ -1,0 +1,31 @@
+---
+apiVersion: secrets-manager.tuenti.io/v1alpha1
+kind: SecretDefinition
+metadata:
+  name: pr-message-tls
+  namespace: pr-message
+spec:
+  name: pr-message-tls
+  keysMap:
+    ca.crt:
+      path: secrets/data/infra-test/domain-tls
+      key: tls.cert
+    tls.crt:
+      path: secrets/data/infra-test/domain-tls
+      key: tls.cert
+    tls.key:
+      path: secrets/data/infra-test/domain-tls
+      key: tls.key
+
+---
+apiVersion: secrets-manager.tuenti.io/v1alpha1
+kind: SecretDefinition
+metadata:
+  name: pr-message-secret
+  namespace: pr-message
+spec:
+  name: pr-message-secret
+  keysMap:
+    config:
+      path: secrets/data/infra-test/pr-message
+      key: config-02
