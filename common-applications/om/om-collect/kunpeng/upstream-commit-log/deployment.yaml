@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: upstream-commit-log
-          image: swr.cn-north-4.myhuaweicloud.com/om/om-collection:0.6.17
+          image: swr.cn-north-4.myhuaweicloud.com/om/om-collection:0.6.18
           volumeMounts:
             - mountPath: /var/lib/om/config.ini
               subPath: credentials_cfg
