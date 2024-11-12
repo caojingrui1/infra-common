@@ -9,9 +9,8 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/uptime-kuma
   newTag: master-e1083f
 kind: Kustomization
-namespace: uptime-kuma
+namespace: merlin
 resources:
-- namespace.yaml
 - uptime-kuma-service.yaml
 - uptime-kuma-pvc-0.yaml
 - uptime-kuma-deployment.yaml
