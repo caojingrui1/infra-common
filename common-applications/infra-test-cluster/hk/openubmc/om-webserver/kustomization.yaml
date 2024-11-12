@@ -13,4 +13,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/om/om-webserver-test
-  newTag: tfh_dev_openubmc-4276fd
+  newTag: tfh_dev_openubmc-45c4a9
