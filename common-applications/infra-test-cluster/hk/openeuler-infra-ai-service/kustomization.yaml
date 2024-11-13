@@ -17,4 +17,4 @@ resources:
 - secrets.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/infra-ai-service-test
-  newTag: main-0ae261
+  newTag: main-56c95d
