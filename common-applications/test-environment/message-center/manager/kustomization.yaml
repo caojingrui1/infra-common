@@ -7,4 +7,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/message-center/message-manager-test
-  newTag: release_openeuler_summit-d73bc5
+  newTag: release_openeuler_summit-9bf51a
